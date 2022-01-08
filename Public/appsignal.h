@@ -98,6 +98,16 @@ signals:
 
     // 当前选中的 Socket 发生变化
     void sgl_current_socket_index_change(const QString &socketkey);
+
+
+    //////////////////////// UDP ////////////////////////////////////////
+    // 打开新增 UDP 服务端窗口
+    void sgl_open_add_udp_server_dialog();
+
+    // 打开新增 UDP 客户端窗口
+    void sgl_open_add_udp_client_dialog();
+
+    /// //////////////////////// UDP ////////////////////////////////////////
 };
 
 #endif // APPSIGNAL_H

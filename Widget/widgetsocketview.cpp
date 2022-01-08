@@ -10,8 +10,7 @@
 #include "Public/defines.h"
 #include "Dialog/dialognote.h"
 #include "Log/logger.h"
-#include "Dialog/dialogtcpserverargs.h"
-#include "Dialog/dialogtcpclientargs.h"
+#include "Dialog/dialogserverargs.h"
 #include "Public/appsignal.h"
 #include "Manager/servermanager.h"
 #include "Manager/clientmanager.h"
@@ -60,6 +59,10 @@ void WidgetSocketView::init()
 
     connect(AppSignal::getInstance(), &AppSignal::sgl_delete_tcp_client_finish, this, &WidgetSocketView::slot_delete_tcp_client_finish);
     connect(AppSignal::getInstance(), &AppSignal::sgl_delete_tcp_server_finish, this, &WidgetSocketView::slot_delete_tcp_server_finish);
+
+    // UDP
+    connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_server_dialog, this, &WidgetSocketView::slot_open_add_udp_server_dialog);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_client_dialog, this, &WidgetSocketView::slot_open_add_udp_client_dialog);
 }
 
 void WidgetSocketView::deleteItem(int index)
@@ -169,7 +172,7 @@ void WidgetSocketView::slot_client_operation(int operation, const ClientInfo &in
 
 void WidgetSocketView::slot_open_add_tcp_server_dialog()
 {
-    DialogTcpServerArgs dialog(this);
+    DialogServerArgs dialog("TCP 服务端参数", this);
     dialog.exec();
 
     if (dialog.result() == 0) return;
@@ -198,7 +201,7 @@ void WidgetSocketView::slot_open_add_tcp_server_dialog()
 
 void WidgetSocketView::slot_open_add_tcp_client_dialog()
 {
-    DialogTcpClientArgs dialog(this);
+    DialogServerArgs dialog("TCP 客户端参数", this);
     dialog.exec();
 
     if (dialog.result() == 0) return;
@@ -399,6 +402,18 @@ void WidgetSocketView::slot_delete_tcp_server_finish(const QString &serverkey)
 
         mModelSockets->removeRow(index.row(), index.parent());
     }
+}
+
+void WidgetSocketView::slot_open_add_udp_server_dialog()
+{
+    DialogServerArgs dialog("UDP 服务端参数", this);
+    dialog.exec();
+}
+
+void WidgetSocketView::slot_open_add_udp_client_dialog()
+{
+    DialogServerArgs dialog("UDP 客户端参数", this);
+    dialog.exec();
 }
 
 void WidgetSocketView::slot_current_change(const QModelIndex &current, const QModelIndex &previous)

@@ -270,10 +270,10 @@ QMenu::item
 {
     color: #333333;
     background-color: transparent;
-    min-height: 2.4em;
+    min-height: 1.6em;
     padding-left: 1em;
     margin: 4px 1px;
-    min-width: 12em; /* 自动撑大 QMenu */
+    min-width: 8em; /* 自动撑大 QMenu */
 }
 
 QMenu::item:selected  {
@@ -461,7 +461,7 @@ QScrollBar::sub-line:vertical {
 }
 
 /* QDialog */
-QDialog#DialogTcpServerArgs
+QDialog#DialogServerArgs
 {
     min-width: 20em;
 }

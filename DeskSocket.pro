@@ -23,8 +23,7 @@ QMAKE_CXXFLAGS_WARN_OFF += -Wunused-parameter
 SOURCES += \
     Dialog/dialogabout.cpp \
     Dialog/dialognote.cpp \
-    Dialog/dialogtcpclientargs.cpp \
-    Dialog/dialogtcpserverargs.cpp \
+    Dialog/dialogserverargs.cpp \
     Log/logger.cpp \
     Manager/clientmanager.cpp \
     Manager/servermanager.cpp \
@@ -41,8 +40,7 @@ SOURCES += \
 HEADERS += \
     Dialog/dialogabout.h \
     Dialog/dialognote.h \
-    Dialog/dialogtcpclientargs.h \
-    Dialog/dialogtcpserverargs.h \
+    Dialog/dialogserverargs.h \
     Log/logger.h \
     Manager/clientmanager.h \
     Manager/servermanager.h \
@@ -61,8 +59,7 @@ HEADERS += \
 FORMS += \
     Dialog/dialogabout.ui \
     Dialog/dialognote.ui \
-    Dialog/dialogtcpclientargs.ui \
-    Dialog/dialogtcpserverargs.ui \
+    Dialog/dialogserverargs.ui \
     Widget/widgetsocketview.ui \
     Widget/widgettabcontent.ui \
     Widget/widgettabpages.ui \

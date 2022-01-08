@@ -81,6 +81,8 @@
     </property>
     <addaction name="actionAddTcpServer"/>
     <addaction name="actionAddTcpClient"/>
+    <addaction name="actionAddUdpServer"/>
+    <addaction name="actionAddUdpClient"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -122,6 +124,22 @@
    </property>
    <property name="toolTip">
     <string>关于</string>
+   </property>
+  </action>
+  <action name="actionAddUdpServer">
+   <property name="text">
+    <string>UDP 服务端</string>
+   </property>
+   <property name="toolTip">
+    <string>新增 UDP 服务端</string>
+   </property>
+  </action>
+  <action name="actionAddUdpClient">
+   <property name="text">
+    <string>UDP 客户端</string>
+   </property>
+   <property name="toolTip">
+    <string>新增 UDP 客户端</string>
    </property>
   </action>
  </widget>
