@@ -16,7 +16,7 @@ INCLUDEPATH += $$PWD/Libs/hpsocket/include
 
 LIBS += -l$$PWD/Libs/hpsocket/lib/HPSocket_U
 
-DESTDIR = ..\bin
+DESTDIR = ..\output
 
 QMAKE_CXXFLAGS_WARN_OFF += -Wunused-parameter
 

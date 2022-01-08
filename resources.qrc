@@ -1,25 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/qss/style.qss</file>
-        <file>resources/image/pipeline/hide.png</file>
-        <file>resources/image/pipeline/show.png</file>
-        <file>resources/image/public/boat_small.png</file>
         <file>resources/image/public/checkbox_checked.png</file>
         <file>resources/image/public/combobox_down.png</file>
         <file>resources/image/public/dialog_close.png</file>
         <file>resources/image/public/dialog_close_hover.png</file>
-        <file>resources/image/tool/delete.png</file>
-        <file>resources/image/tool/export.png</file>
-        <file>resources/image/tool/open.png</file>
-        <file>resources/image/tool/pqShowOrientationAxes@2x.png</file>
-        <file>resources/image/tool/pqXMinus@2x.png</file>
-        <file>resources/image/tool/pqXPlus@2x.png</file>
-        <file>resources/image/tool/pqYMinus@2x.png</file>
-        <file>resources/image/tool/pqYPlus@2x.png</file>
-        <file>resources/image/tool/pqZMinus@2x.png</file>
-        <file>resources/image/tool/pqZoomToSelection@2x.png</file>
-        <file>resources/image/tool/pqZPlus@2x.png</file>
-        <file>resources/image/tool/select.png</file>
         <file>resources/image/public/client.png</file>
         <file>resources/image/public/server.png</file>
         <file>resources/image/public/tree_view_right.png</file>
