@@ -1,0 +1,472 @@
+﻿QWidget
+{
+    font: 9pt "微软雅黑"
+}
+
+QWidget:focus
+{
+    outline: none; /*去掉选中时的虚线边框*/
+}
+
+QWidget[background="true"]
+{
+    background-color: #fefefe;
+}
+
+/* 状态栏样式 */
+QStatusBar
+{
+    background-color: #fefefe;
+    border-top: 0px solid #dddddd;
+}
+
+/* TreeView */
+QTreeView
+{
+    border: 1px solid #dddddd;
+    border-right: none;
+    border-top: none;
+}
+
+QTreeView::item
+{
+    min-height: 12ex;
+    background-color: #00000000;
+    color: #222222;
+}
+
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+    border-image: none;
+    image: url(:/resources/image/public/tree_view_right.png);
+}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings  {
+    border-image: none;
+    image: url(:/resources/image/public/tree_view_down.png);
+}
+
+
+/* QDockWidget */
+QDockWidget
+{
+    background-color: #fefefe;
+}
+
+/* QPushButton */
+QPushButton[Wcd="true"]
+{
+    min-height: 1.6em;
+    border: 1px solid #68687f;
+    border-radius: 2px;
+    padding-left: 1em;
+    padding-right: 1em;
+    color: #fefefe;
+    background-color: #55557f;
+}
+
+QPushButton[Wcd="true"]:hover
+{
+    background-color: #5d5d8a;
+    border: none;
+}
+
+QPushButton[Wcd="true"]:pressed
+{
+    background-color: #4b4b7d;
+}
+
+QPushButton[Wcd="true"]:!enabled
+{
+    background-color: #444444;
+}
+
+QPushButton[Ok="true"]
+{
+    min-height: 1.6em;
+    border: 1px solid #b3d8ff;
+    border-radius: 2px;
+    padding-left: 1em;
+    padding-right: 1em;
+    color: #fefefe;
+    background-color: #409eff;
+}
+
+QPushButton[Ok="true"]:hover
+{
+    background-color: #66b1ff;
+}
+
+QPushButton[Ok="true"]:pressed
+{
+    background-color: #409eff;
+}
+
+QPushButton[Ok="true"]:!enabled
+{
+    background-color: #444444;
+}
+
+QPushButton[Cancel="true"]
+{
+    min-height: 1.6em;
+    border: 1px solid #dcdfe6;
+    border-radius: 2px;
+    padding-left: 1em;
+    padding-right: 1em;
+    color: #666666;
+    background-color: #f3f4f5;
+}
+
+QPushButton[Cancel="true"]:hover
+{
+    background-color: #fefefe;
+}
+
+QPushButton[Cancel="true"]:pressed
+{
+    background-color: #f3f4f5;
+}
+
+QPushButton[Cancel="true"]:!enabled
+{
+    background-color: #444444;
+}
+
+QPushButton[menu="true"]
+{
+    font: 8pt "微软雅黑";
+    min-height: 2em;
+    min-width: 2em;
+    border: none;
+    color: #aaaaaa;
+    font-style: italic;
+    background-color: #fefefe;
+}
+
+QPushButton[menu="true"]:hover
+{
+    background-color: #fefefe;
+}
+
+QPushButton[menu="true"]:checked
+{
+    color: #409eff;
+}
+
+/* QLineEdit */
+QLineEdit
+{
+    min-height: 1.8em;
+    border: 1px solid #dddddd;
+    border-radius: 2px;
+    padding-left: 0.5em;
+}
+
+QLineEdit:hover
+{
+    border: 1px solid #c0c4cc;
+}
+
+QLineEdit:focus
+{
+    border: 1px solid #57a9fd;
+}
+
+/* Line */
+QFrame[Wcd="true"]
+{
+    border-top: 1px solid #dddddd;
+    background-color: transparent;
+}
+
+QSlider::groove:horizontal {
+    border: 1px solid transparent;
+    background: transparent;
+    height: 5px;
+    border-radius: 1px;
+    padding-left:-1px;
+    padding-right:-1px;
+}
+
+QSlider::sub-page:horizontal {
+    background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+        stop: 0 #5DCCFF, stop: 1 #1874CD);
+    border: 1px solid #dddddd;
+    height: 10px;
+    border-radius: 2px;
+}
+
+QSlider::add-page:horizontal {
+    background: #575757;
+    border: 0px solid #dddddd;
+    height: 10px;
+    border-radius: 2px;
+}
+
+QSlider::handle:horizontal
+{
+    background: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+    stop:0.7 #5d5d8a, stop:0.9 #dddddd);
+
+    width: 17;
+    margin-top: -6px;
+    margin-bottom: -6px;
+    border-radius: 8px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.7 #2A8BDA,
+    stop:0.9 #75757d);
+}
+
+QSlider::sub-page:horizontal:disabled {
+    background: #00009C;
+    border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+    background: #eee;
+    border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+    background: #eee;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+QMenuBar
+{
+    background-color: #fefefe;
+    border: none;
+    border-bottom: 1px solid #dddddd;
+    min-height: 1.8em;
+}
+
+QMenuBar::item
+{
+    padding-left: 1em;
+    padding-right: 1em;
+    background-color: transparent;
+}
+
+QMenuBar::item::selected
+{
+    background-color:#f2f3f5;
+    border-radius: 0.2em;;
+}
+
+QMenu
+{
+    background-color : #fefefe;
+    padding: 2px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+}
+
+QMenu::item
+{
+    color: #333333;
+    background-color: transparent;
+    min-height: 2.4em;
+    padding-left: 1em;
+    margin: 4px 1px;
+    min-width: 12em; /* 自动撑大 QMenu */
+}
+
+QMenu::item:selected  {
+    background-color: #f2f3f5;
+}
+
+/* QComboBox */
+QComboBox
+{
+    min-height: 1.7em;
+    border: 1px solid #dcdfe6;
+    border-radius: 3px;
+    padding-left: 6px;
+}
+
+QComboBox QAbstractItemView
+{
+    outline: 0px solid gray;   /* 选定项的虚框 */
+    border: 1px solid #dcdfe6;   /* 整个下拉窗体的边框 */
+    background-color: #fefefe;   /* 整个下拉窗体的背景色 */
+}
+
+QComboBox:hover
+{
+    border: 1px solid #c0c4cc;
+}
+
+QComboBox::drop-down
+{
+    padding-right: 1em;
+    border: none;
+    min-width: 1em;
+    min-height: 1em;
+}
+
+QComboBox::down-arrow
+{
+    border-image: url(:/resources/image/public/combobox_down.png);
+    min-width: 1em;
+    min-height: 1em;
+}
+
+QComboBox QAbstractItemView::item
+{
+    color: #696b6f;
+    padding-left: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+QComboBox QAbstractItemView::item:hover
+{
+    padding-left: 0px;
+    color: #333333;
+    background-color: #f5f7fa;
+}
+
+QComboBox QAbstractItemView::item:selected
+{
+    padding-left: 0px;
+    color: #333333;
+    background-color: #f5f7fa;
+}
+
+/* QTableView */
+
+QTableView
+{
+    border: 1px solid #dddddd;
+}
+
+QTableView::item
+{
+    background-color: #fefefe;
+}
+
+QTableView::item:selected
+{
+    background-color: #dddddd;
+}
+
+QTableView::item:!selected
+{
+    background-color: #fefefe;
+}
+
+QTableView::item:!focus
+{
+    background-color: #fefefe;
+}
+
+QHeaderView::section
+{
+    padding-left: 0.2em;
+    border-left: 0px solid #000;
+    border-right: 1px solid #d5d5d5;
+    border-top: 0px solid #000;
+    border-bottom: 1px solid #d5d5d5;
+    background-color: #fefefe;
+}
+
+QHeaderView::section:last
+{
+    border-right: 1px solid transparent;
+}
+
+/* QGroupBox */
+QGroupBox
+{
+    border: 1px solid #dddddd;
+    border-radius: 0.2em;
+    margin: 0.8em;
+    padding: 0.8em;
+}
+
+QGroupBox::title
+{
+     subcontrol-origin: margin;
+     position: relative;
+     left: 1.5em;
+     top: 0.4em;
+}
+
+/* QCheckBox */
+QCheckBox::indicator {
+    border: 1px solid #dddddd;
+    border-radius: 0.1em;
+}
+
+QCheckBox::indicator:checked {
+    border: none;
+    border-image: url(:/res/image/public/checkbox_checked.png);
+}
+
+
+/* QTabWidget */
+QTabWidget::pane {
+    background-color: #fefefe;
+    border: 1px solid #dddddd;
+    border-top: none;
+}
+
+/* QTextBrowser */
+QTextBrowser {
+    background-color: #fefefe;
+    border: 1px solid #dddddd;
+    border-radius: 0.2em;
+    padding: 0.5em;
+}
+
+/* QTextEdit */
+QTextEdit {
+    background-color: #fefefe;
+    border: 1px solid #dddddd;
+    border-radius: 0.2em;
+    padding: 0.5em;
+}
+
+/* QScrollBar */
+QScrollBar::vertical
+{
+    background: #dddddd;
+    border: 1px solid #dddddd;
+    border-radius: 0.2em;
+    margin:0px,0px,0px,0px;
+    width: 0.5em;
+}
+
+QScrollBar::handle:vertical {
+    background-color: rgb(108, 113, 125);
+    border: none;
+    border-radius: 0.1em;
+    min-height: 3em;
+    width: 0.4em;
+}
+
+QScrollBar::add-line:vertical {
+    height: 0em;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+    height: 0em;
+    subcontrol-origin:margin;
+}
+
+/* QDialog */
+QDialog#DialogTcpServerArgs
+{
+    min-width: 20em;
+}
+
+QDialog#DialogTcpClientArgs
+{
+    min-width: 20em;
+}
