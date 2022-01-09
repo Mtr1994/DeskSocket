@@ -14,10 +14,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    qRegisterMetaType<ServerInfo>("ServerInfo");
-    qRegisterMetaType<ClientInfo>("ClientInfo");
-    qRegisterMetaType<TcpSocket>("TcpSocket");
-
     // 加载样式
     QFile qss(":/resources/qss/style.qss");
     qss.open(QFile::ReadOnly);
