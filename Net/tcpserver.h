@@ -3,13 +3,9 @@
 
 #include <QObject>
 #include <QByteArray>
-#include "HPSocket/HPSocket.h"
 #include "Public/appsignal.h"
 #include "Public/defines.h"
-
-// test
-#include <QDebug>
-#include <QThread>
+#include "baseserver.h"
 
 namespace mtr {
 
@@ -30,7 +26,7 @@ public:
         QString ipv4 = getServerAddress(pSender);
         USHORT usPort = getServerPort(pSender);
 
-        emit AppSignal::getInstance()->sgl_tcp_server_status_change(ipv4, usPort, Tcp_Server_On);
+        emit AppSignal::getInstance()->sgl_server_status_change(TCP, ipv4, usPort, Server_Started);
 
         // 由于在关闭服务的时候无法获取监听地址，需要在此处记录
         mServerAddress = ipv4;
@@ -41,30 +37,24 @@ public:
     EnHandleResult OnAccept(ITcpServer* pSender, CONNID dwConnID, UINT_PTR soClient)
     {
         Q_UNUSED(soClient);
-        QString ip = getServerAddress(pSender);
-        USHORT port = getServerPort(pSender);
+        QString key = QString("TCPSERVER:%1:%2").arg(mServerAddress, QString::number(mServerPort));
 
-        QString key = QString("%1:%2").arg(ip, QString::number(port));
+        QString ip = getSocketAddress(pSender, dwConnID);
+        USHORT port = getSocketPort(pSender, dwConnID);
 
-        ip = getSocketAddress(pSender, dwConnID);
-        port = getSocketPort(pSender, dwConnID);
-
-        emit AppSignal::getInstance()->sgl_recv_new_slave_tcp_client(key, ip, port, dwConnID);
+        emit AppSignal::getInstance()->sgl_recv_new_slave_client(TCP, key, ip, port, dwConnID);
         return HR_OK;
     }
 
     EnHandleResult OnReceive(ITcpServer* pSender, CONNID dwConnID, const BYTE* pData, int iLength)
     {
-        QString ip = getServerAddress(pSender);
-        USHORT port = getServerPort(pSender);
+        QString key = QString("TCPSERVER:%1:%2").arg(mServerAddress, QString::number(mServerPort));
 
-        QString key = QString("%1:%2").arg(ip, QString::number(port));
-
-        ip = getSocketAddress(pSender, dwConnID);
-        port = getSocketPort(pSender, dwConnID);
+        QString ip = getSocketAddress(pSender, dwConnID);
+        USHORT port = getSocketPort(pSender, dwConnID);
 
         QByteArray data = QByteArray::fromRawData((const char*)pData, iLength);
-        emit AppSignal::getInstance()->sgl_thread_recv_slave_tcp_client_data(key, ip, port, dwConnID, data);
+        emit AppSignal::getInstance()->sgl_thread_recv_slave_client_data(key, ip, port, dwConnID, data);
         return HR_OK;
     }
 
@@ -80,8 +70,8 @@ public:
         QString socketIP = getSocketAddress(pSender, dwConnID);
         USHORT socketPort = getSocketPort(pSender, dwConnID);
 
-        QString socketkey = QString("%1:%2*%3*%4*%5").arg(mServerAddress, QString::number(mServerPort), socketIP, QString::number(socketPort), QString::number(dwConnID));
-        emit AppSignal::getInstance()->sgl_close_slave_tcp_client_result(socketkey);
+        QString socketkey = QString("TCPSERVER:%1:%2*%3*%4*%5").arg(mServerAddress, QString::number(mServerPort), socketIP, QString::number(socketPort), QString::number(dwConnID));
+        emit AppSignal::getInstance()->sgl_close_slave_client_result(socketkey);
 
         return HR_OK;
     }
@@ -89,7 +79,7 @@ public:
     EnHandleResult OnShutdown(ITcpServer* pSender)
     {
         Q_UNUSED(pSender);
-        emit AppSignal::getInstance()->sgl_tcp_server_status_change(mServerAddress, mServerPort, Tcp_Server_Shutdown);
+        emit AppSignal::getInstance()->sgl_server_status_change(TCP, mServerAddress, mServerPort, Server_Shutdown);
         return HR_OK;
     }
 
@@ -134,30 +124,26 @@ private:
     uint16_t mServerPort;
 };
 
-class TcpServer : public QObject
+class TcpServer : public BaseServer
 {
     Q_OBJECT
 public:
-    explicit TcpServer(const QString &ip, uint32_t port, QObject *parent = nullptr);
+    explicit TcpServer(const QString &ip, uint32_t port);
     ~TcpServer();
 
-    bool start();
+    bool start() override;
 
-    void stop();
+    void stop() override;
 
-    bool restart();
+    bool restart() override;
 
-    void closeAllConnection();
+    void clearClient() override;
 
-    QString getServerKey();
+    bool write(CONNID dwConnID, const QByteArray &data) override;
 
-    bool write(CONNID dwConnID, const QByteArray &data);
+    bool closeSocket(CONNID dwConnID) override;
 
-    bool closeSocket(CONNID dwConnID);
-
-    QString getSocketAddress( CONNID dwConnID);
-
-    uint16_t getSocketPort(CONNID dwConnID);
+    QString getServerKey() override;
 
 private:
     QString mIPV4;

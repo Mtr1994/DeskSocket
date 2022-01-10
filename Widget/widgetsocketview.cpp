@@ -14,9 +14,7 @@
 #include "Public/appsignal.h"
 #include "Manager/servermanager.h"
 #include "Manager/clientmanager.h"
-
-//test
-#include <QDebug>
+#include "Log/logger.h"
 
 using namespace mtr;
 
@@ -49,20 +47,20 @@ void WidgetSocketView::init()
     connect(ui->socketView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &WidgetSocketView::slot_current_change);
     connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_tcp_server_dialog, this, &WidgetSocketView::slot_open_add_tcp_server_dialog);
     connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_tcp_client_dialog, this, &WidgetSocketView::slot_open_add_tcp_client_dialog);
-
-    // TCP 服务信号
-    connect(AppSignal::getInstance(), &AppSignal::sgl_tcp_server_status_change, this, &WidgetSocketView::slot_tcp_server_status_change);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_recv_new_slave_tcp_client, this, &WidgetSocketView::slot_recv_new_slave_tcp_client);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_close_slave_tcp_client_result, this, &WidgetSocketView::slot_close_slave_tcp_client_result);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_tcp_client_connected, this, &WidgetSocketView::slot_tcp_client_connected);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_tcp_client_closed, this, &WidgetSocketView::slot_tcp_client_closed);
-
-    connect(AppSignal::getInstance(), &AppSignal::sgl_delete_tcp_client_finish, this, &WidgetSocketView::slot_delete_tcp_client_finish);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_delete_tcp_server_finish, this, &WidgetSocketView::slot_delete_tcp_server_finish);
-
-    // UDP
     connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_server_dialog, this, &WidgetSocketView::slot_open_add_udp_server_dialog);
     connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_client_dialog, this, &WidgetSocketView::slot_open_add_udp_client_dialog);
+
+
+    // TCP 服务信号
+    connect(AppSignal::getInstance(), &AppSignal::sgl_server_status_change, this, &WidgetSocketView::slot_server_status_change);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_recv_new_slave_client, this, &WidgetSocketView::slot_recv_new_slave_client);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_close_slave_client_result, this, &WidgetSocketView::slot_close_slave_client_result);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_client_connected, this, &WidgetSocketView::slot_client_connected);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_client_closed, this, &WidgetSocketView::slot_client_closed);
+
+    connect(AppSignal::getInstance(), &AppSignal::sgl_delete_client_finish, this, &WidgetSocketView::slot_delete_client_finish);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_delete_server_finish, this, &WidgetSocketView::slot_delete_server_finish);
+
 }
 
 void WidgetSocketView::deleteItem(int index)
@@ -91,85 +89,6 @@ void WidgetSocketView::setCurrentIndex(const QModelIndex &index)
     ui->socketView->setCurrentIndex(index);
 }
 
-void WidgetSocketView::slot_server_operation(int operation, const ServerInfo &info)
-{
-    if (operation == Server_Add)
-    {
-        LOG_DEBUG("add server");
-        QString key = QString("%1:%2").arg(info.ip).arg(info.port);
-        QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/server.png"), info.key);
-        item->setData(Tcp_Server, Qt::UserRole + 1);
-        item->setData(info.name, Qt::UserRole + 2);
-        item->setData(info.ip, Qt::UserRole + 3);
-        item->setData(info.port, Qt::UserRole + 4);
-        mModelSockets->appendRow(item);
-    }
-    else if (operation == Server_Close)
-    {
-         QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::DisplayRole, info.key, 1, Qt::MatchExactly | Qt::MatchRecursive);
-         if (list.isEmpty()) return;
-         mModelSockets->removeRow(list.at(0).row());
-    }
-}
-
-void WidgetSocketView::slot_client_operation(int operation, const ClientInfo &info)
-{
-    if (operation == Client_Add)
-    {
-        if (info.type == Tcp_Client_Slave)
-        {
-            QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::DisplayRole, info.socketkey, 1, Qt::MatchExactly | Qt::MatchRecursive);
-            if (list.isEmpty())
-            {
-                LOG_DEBUG("add client slave");
-                QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/client.png"), info.socketkey);
-                item->setData(info.type, Qt::UserRole + 1);
-                item->setData(info.serverkey, Qt::UserRole + 2);
-                item->setData(info.socketkey, Qt::UserRole + 3);
-                item->setData(info.socketDescriptor, Qt::UserRole + 4);
-
-                list = mModelSockets->match(mModelSockets->index(0, 0), Qt::DisplayRole, info.serverkey, 1, Qt::MatchExactly | Qt::MatchRecursive);
-
-                if (list.isEmpty())
-                {
-                    delete item;
-                    return;
-                }
-                QStandardItem *parentItem = mModelSockets->itemFromIndex(list.at(0));
-                if (nullptr == parentItem)
-                {
-                    delete item;
-                    return;
-                }
-                else
-                {
-                    parentItem->appendRow(item);
-                    ui->socketView->setCurrentIndex(item->index());
-                }
-            }
-        }
-        else if (info.type == Tcp_Client)
-        {
-            LOG_DEBUG("add client");
-            QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/client.png"), info.socketkey);
-            item->setData(info.type, Qt::UserRole + 1);
-            item->setData(info.serverkey, Qt::UserRole + 2);
-            item->setData(info.socketkey, Qt::UserRole + 3);
-            item->setData(info.socketDescriptor, Qt::UserRole + 4);
-
-            mModelSockets->appendRow(item);
-        }
-    }
-    else if (operation == Client_Close)
-    {
-        QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::DisplayRole, info.socketkey, 1, Qt::MatchExactly | Qt::MatchRecursive);
-        if (list.isEmpty()) return;
-
-        QModelIndex index = list.first();
-        mModelSockets->removeRow(index.row(), index.parent());
-    }
-}
-
 void WidgetSocketView::slot_open_add_tcp_server_dialog()
 {
     DialogServerArgs dialog("TCP 服务端参数", this);
@@ -183,7 +102,7 @@ void WidgetSocketView::slot_open_add_tcp_server_dialog()
     QString key = QString("%1:%2").arg(ip_4, QString::number(port));
 
     // 查找，已存在则不再添加
-    QString mark = "TCPSERVER" + key;
+    QString mark = "TCPSERVER:" + key;
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (!list.empty())
     {
@@ -193,10 +112,10 @@ void WidgetSocketView::slot_open_add_tcp_server_dialog()
 
     QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/server.png"), key);
     item->setData(mark, Qt::UserRole + 1);
-    item->setData(Tcp_Server_StartUp, Qt::UserRole + 2);
+    item->setData(Server_Starting, Qt::UserRole + 2);
     mModelSockets->appendRow(item);
 
-    emit AppSignal::getInstance()->sgl_add_new_tcp_server(ip_4, port);
+    emit AppSignal::getInstance()->sgl_add_new_server(TCP, ip_4, port);
 }
 
 void WidgetSocketView::slot_open_add_tcp_client_dialog()
@@ -212,7 +131,7 @@ void WidgetSocketView::slot_open_add_tcp_client_dialog()
     QString key = QString("%1:%2").arg(ip_4, QString::number(port));
 
     // 查找，已存在则不再添加
-    QString mark = "TCPCLIENT" + key;
+    QString mark = "TCPCLIENT:" + key;
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (!list.empty())
     {
@@ -222,136 +141,124 @@ void WidgetSocketView::slot_open_add_tcp_client_dialog()
 
     QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/client.png"), key);
     item->setData(mark, Qt::UserRole + 1);
-    item->setData(Tcp_Client_Connecting, Qt::UserRole + 2);
+    item->setData(Client_Connecting, Qt::UserRole + 2);
     item->setData(key, Qt::UserRole + 4);
     mModelSockets->appendRow(item);
 
-    emit AppSignal::getInstance()->sgl_add_new_tcp_client(ip_4, port);
+    emit AppSignal::getInstance()->sgl_add_new_client(TCP, ip_4, port);
 }
 
-void WidgetSocketView::slot_tcp_server_status_change(const QString &ip_4, uint16_t port, int status)
+void WidgetSocketView::slot_server_status_change(uint16_t protocol, const QString &ip_4, uint16_t port, int status)
 {
-    qDebug() << "ip_4" << ip_4 << " port " << port << " status " << status;
-    QString mark = QString("TCPSERVER%1:%2").arg(ip_4, QString::number(port));
+    QString mark = ((protocol == TCP) ? "TCP" : "UDP") + QString("SERVER:%1:%2").arg(ip_4, QString::number(port));
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        qDebug() << "找不到服务，改变状态失败" << mark;
+        LOG_INFO(QString("找不到服务，改变状态失败 %1").arg(mark).toStdString().data());
+        return;
     }
-    else
+    for (auto index : list)
     {
-        for (auto index : list)
+        if (!index.isValid()) continue;
+        QStandardItem *item = mModelSockets->itemFromIndex(index);
+        if (nullptr != item)
         {
-            if (!index.isValid()) continue;
-            QStandardItem *item = mModelSockets->itemFromIndex(index);
-            if (nullptr != item)
-            {
-                qDebug() << "找到目标  TCP  服务" << index.data(Qt::DisplayRole).toString();
-                item->setData(status, Qt::UserRole + 2);
-                QString key = QString("%1:%2").arg(ip_4, QString::number(port));
-                item->setData(key, Qt::UserRole + 4);
-                break;
-            }
+            item->setData(status, Qt::UserRole + 2);
+            break;
         }
     }
 }
 
-void WidgetSocketView::slot_recv_new_slave_tcp_client(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid)
+void WidgetSocketView::slot_recv_new_slave_client(uint16_t protocol, const QString &serverkey, const QString &ip_4, uint16_t port, uint64_t dwconnid)
 {
-    QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::DisplayRole, key, -1, Qt::MatchRecursive | Qt::MatchExactly);
+    QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, serverkey, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        qDebug() << "找不到";
+        LOG_INFO(QString("找不到所属的服务 %1").arg(serverkey).toStdString().data());
+        return;
     }
-    else
+
+    for (auto index : list)
     {
-        for (auto index : list)
+        if (!index.isValid()) continue;
+        QStandardItem *item = mModelSockets->itemFromIndex(index);
+        if (nullptr != item)
         {
-            if (!index.isValid()) continue;
-            QStandardItem *item = mModelSockets->itemFromIndex(index);
-            if (nullptr != item)
-            {
-                QString childKey = QString("%1:%2").arg(ip_4, QString::number(port));
-                QStandardItem *child = new QStandardItem(QIcon(":/resources/image/public/client.png"), childKey);
-                child->setData("TCPSLAVECLIENT" + childKey, Qt::UserRole + 1);
-                child->setData(Tcp_Client_Connected, Qt::UserRole + 2);
+            QString childName = QString("%1:%2").arg(ip_4, QString::number(port));
+            QStandardItem *child = new QStandardItem(QIcon(":/resources/image/public/client.png"), childName);
+            child->setData(QString("%1%2:%3").arg(((protocol == TCP) ? "TCP" : "UDP"), "SLAVECLIENT", childName), Qt::UserRole + 1);
+            child->setData(Client_Connected, Qt::UserRole + 2);
 
-                // 四元组，确定唯一 socket
-                QString socketKey = QString("%1*%2*%3*%4").arg(key, ip_4, QString::number(port), QString::number(dwconnid));
-                qDebug() << "add  socket key " << socketKey;
-                child->setData(socketKey, Qt::UserRole + 3);
-                child->setData(key, Qt::UserRole + 4);
-                child->setData(dwconnid, Qt::UserRole + 5);
-                item->appendRow(child);
+            // 四元组，确定唯一 socket
+            QString socketKey = QString("%1*%2*%3*%4").arg(serverkey, ip_4, QString::number(port), QString::number(dwconnid));
+            child->setData(socketKey, Qt::UserRole + 3);
+            child->setData(serverkey, Qt::UserRole + 4);
+            child->setData(dwconnid, Qt::UserRole + 5);
+            item->appendRow(child);
 
-                // 通知页面新增 Tab 页
-                emit AppSignal::getInstance()->sgl_add_tcp_tab_page("TCPSLAVECLIENT", key, ip_4, port, dwconnid);
-                break;
-            }
+            // 通知页面新增 Tab 页
+            emit AppSignal::getInstance()->sgl_add_tab_page(protocol, "SLAVECLIENT", serverkey, ip_4, port, dwconnid);
+            break;
         }
     }
 }
 
-void WidgetSocketView::slot_close_slave_tcp_client_result(const QString &socketkey)
+void WidgetSocketView::slot_close_slave_client_result(const QString &socketkey)
 {
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 3, socketkey, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        qDebug() << "找不到指定的 TCP 连接";
+        LOG_INFO(QString("找不到指定的连接 %1").arg(socketkey).toStdString().data());
+        return;
     }
-    else
-    {
-        QModelIndex index = list.at(0);
-        if (!index.isValid()) return;
 
-        mModelSockets->removeRow(index.row(), index.parent());
-    }
+    QModelIndex index = list.at(0);
+    if (!index.isValid()) return;
+
+    mModelSockets->removeRow(index.row(), index.parent());
 }
 
-void WidgetSocketView::slot_tcp_client_connected(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid)
+void WidgetSocketView::slot_client_connected(uint16_t protocol, const QString &serverkey, const QString &ip_4, uint16_t port, uint64_t dwconnid)
 {
-    QString mask = "TCPCLIENT" + key;
+    QString mask = serverkey;
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mask, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        qDebug() << "找不到";
+        LOG_INFO(QString("找不到指定服务 %1").arg(serverkey).toStdString().data());
+        return;
     }
-    else
+
+    // 通知页面新增 Tab 页
+    QModelIndex index = list.at(0);
+    if (!index.isValid()) return;
+    QStandardItem *item = mModelSockets->itemFromIndex(index);
+    if (nullptr != item)
     {
-        qDebug() << "修改状态（待完成）";
-        // 通知页面新增 Tab 页
-        QModelIndex index = list.at(0);
-        if (!index.isValid()) return;
-        QStandardItem *item = mModelSockets->itemFromIndex(index);
-        if (nullptr != item)
-        {
-            item->setData(Tcp_Client_Connected, Qt::UserRole + 2);
+        item->setData(Client_Connected, Qt::UserRole + 2);
 
-            // 四元组，确定唯一 socket
-            QString socketKey = QString("%1*%2*%3*%4").arg(key, ip_4, QString::number(port), QString::number(dwconnid));
-            qDebug() << "socketKey 2" << socketKey;
-            item->setData(socketKey, Qt::UserRole + 3);
-            item->setData(dwconnid, Qt::UserRole + 5);
+        // 四元组，确定唯一 socket
+        QString socketKey = QString("%1*%2*%3*%4").arg(serverkey, ip_4, QString::number(port), QString::number(dwconnid));
+        item->setData(socketKey, Qt::UserRole + 3);
+        item->setData(serverkey, Qt::UserRole + 4);
+        item->setData(dwconnid, Qt::UserRole + 5);
 
-            emit AppSignal::getInstance()->sgl_add_tcp_tab_page("TCPCLIENT", key, ip_4, port, dwconnid);
-        }
+        emit AppSignal::getInstance()->sgl_add_tab_page(protocol, "CLIENT", serverkey, ip_4, port, dwconnid);
     }
 }
 
-void WidgetSocketView::slot_tcp_client_closed(const QString &socketkey)
+void WidgetSocketView::slot_client_closed(const QString &socketkey)
 {
     QStringList listSocketInfo = socketkey.split('*');
     if (listSocketInfo.length() != 4)
     {
-        qDebug() << "报告错误";
+        LOG_INFO("系统异常");
         return;
     }
-    QString mark = "TCPCLIENT" + listSocketInfo.at(0);
-    qDebug() << "slot_tcp_client_closed " << mark;
+    QString mark = listSocketInfo.at(0);
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        qDebug() << "找不到指定的 TCP (主动)连接";
+        LOG_INFO(QString("找不到指定的(主动)连接 %1").arg(socketkey).toStdString().data());
     }
     else
     {
@@ -362,23 +269,23 @@ void WidgetSocketView::slot_tcp_client_closed(const QString &socketkey)
         QStandardItem *item = mModelSockets->itemFromIndex(index);
         if (nullptr != item)
         {
-            item->setData(Tcp_Client_Closed, Qt::UserRole + 2);
+            item->setData(Client_Closed, Qt::UserRole + 2);
         }
     }
 }
 
-void WidgetSocketView::slot_delete_tcp_client_finish(const QString &serverkey, bool status)
+void WidgetSocketView::slot_delete_client_finish(const QString &serverkey, bool status)
 {
     if (!status)
     {
-        qDebug() << "报告删除失败";
+        LOG_INFO(QString("删除失败 %1").arg(serverkey).toStdString().data());
         return;
     }
-    QString mark = "TCPCLIENT" + serverkey;
+    QString mark = serverkey;
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        qDebug() << "找不到指定的 TCP (主动)连接";
+        LOG_INFO(QString("找不到指定的(主动)连接 %1").arg(serverkey).toStdString().data());
     }
     else
     {
@@ -388,12 +295,12 @@ void WidgetSocketView::slot_delete_tcp_client_finish(const QString &serverkey, b
     }
 }
 
-void WidgetSocketView::slot_delete_tcp_server_finish(const QString &serverkey)
+void WidgetSocketView::slot_delete_server_finish(const QString &serverkey)
 {
-    QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 4, serverkey, 1, Qt::MatchRecursive | Qt::MatchExactly);
+    QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, serverkey, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        qDebug() << "找不到指定的 TCP 服务 " << serverkey;
+        LOG_INFO(QString("找不到指定的服务 %1").arg(serverkey).toStdString().data());
     }
     else
     {
@@ -408,12 +315,58 @@ void WidgetSocketView::slot_open_add_udp_server_dialog()
 {
     DialogServerArgs dialog("UDP 服务端参数", this);
     dialog.exec();
+
+    if (dialog.result() == 0) return;
+
+    // 添加本地记录 (默认正在启动状态)
+    QString ip_4 = dialog.getAddress();
+    uint32_t port = dialog.getPort().toUInt();
+    QString key = QString("%1:%2").arg(ip_4, QString::number(port));
+
+    // 查找，已存在则不再添加
+    QString mark = "UDPSERVER:" + key;
+    QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
+    if (!list.empty())
+    {
+        // 已存在
+        return;
+    }
+
+    QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/server.png"), key);
+    item->setData(mark, Qt::UserRole + 1);
+    item->setData(Server_Starting, Qt::UserRole + 2);
+    mModelSockets->appendRow(item);
+
+    emit AppSignal::getInstance()->sgl_add_new_server(UDP, ip_4, port);
 }
 
 void WidgetSocketView::slot_open_add_udp_client_dialog()
 {
     DialogServerArgs dialog("UDP 客户端参数", this);
     dialog.exec();
+
+    if (dialog.result() == 0) return;
+
+    // 添加本地记录 (默认正在链接状态)
+    QString ipv4 = dialog.getAddress();
+    uint32_t port = dialog.getPort().toUInt();
+    QString key = QString("%1:%2").arg(ipv4, QString::number(port));
+
+    // 查找，已存在则不再添加
+    QString mark = "UDPCLIENT:" + key;
+    QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
+    if (!list.empty())
+    {
+        // 已存在
+        return;
+    }
+
+    QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/client.png"), key);
+    item->setData(mark, Qt::UserRole + 1);
+    item->setData(Client_Connected, Qt::UserRole + 2);
+    mModelSockets->appendRow(item);
+
+    emit AppSignal::getInstance()->sgl_add_new_client(UDP, ipv4, port);
 }
 
 void WidgetSocketView::slot_current_change(const QModelIndex &current, const QModelIndex &previous)
@@ -438,48 +391,46 @@ void WidgetSocketView::on_socketView_customContextMenuRequested(const QPoint &po
     if (nullptr == item) return;
     QString mark = item->data(Qt::UserRole + 1).toString();
 
-    qDebug() << "mask " << mark;
-    if (mark.contains("TCPSERVER"))
+    if (mark.contains("SERVER"))
     {
         QMenu menu(this);
         int status = item->data(Qt::UserRole + 2).toUInt();
-        QString key = item->data(Qt::UserRole + 4).toString();
-
+        QString serverKey = mark;
         QAction actionStart("开始监听");
-        actionStart.setEnabled(status == Tcp_Server_Shutdown);
-        connect(&actionStart, &QAction::triggered, [key]() {
-            emit AppSignal::getInstance()->sgl_start_tcp_server(key);
+        actionStart.setEnabled(status == Server_Shutdown);
+        connect(&actionStart, &QAction::triggered, [serverKey]() {
+            emit AppSignal::getInstance()->sgl_restart_server(serverKey);
         });
         QAction actionStop("停止监听");
-        actionStop.setDisabled(status == Tcp_Server_Shutdown);
-        connect(&actionStop, &QAction::triggered, [key]() {
-            emit AppSignal::getInstance()->sgl_stop_tcp_server(key);
+        actionStop.setDisabled(status == Server_Shutdown);
+        connect(&actionStop, &QAction::triggered, [serverKey]() {
+            emit AppSignal::getInstance()->sgl_stop_server(serverKey);
         });
-        QAction actionDeleteServer("删除服务");
-        connect(&actionDeleteServer, &QAction::triggered, [key]() {
-            emit AppSignal::getInstance()->sgl_delete_tcp_server(key);
+        QAction actiondelete_server("删除服务");
+        connect(&actiondelete_server, &QAction::triggered, [serverKey]() {
+            emit AppSignal::getInstance()->sgl_delete_server(serverKey);
         });
         QAction actionDeleteConnect("删除所有连接");
-        actionDeleteConnect.setEnabled(status == Tcp_Server_On);
-        connect(&actionDeleteConnect, &QAction::triggered, [key]() {
-           emit AppSignal::getInstance()->sgl_close_all_slave_tcp_client(key);
+        actionDeleteConnect.setEnabled(status == Server_Started);
+        connect(&actionDeleteConnect, &QAction::triggered, [serverKey]() {
+           emit AppSignal::getInstance()->sgl_close_all_slave_client(serverKey);
         });
 
         menu.addAction(&actionStart);
         menu.addAction(&actionStop);
-        menu.addAction(&actionDeleteServer);
+        menu.addAction(&actiondelete_server);
         menu.addAction(&actionDeleteConnect);
 
         menu.exec(QCursor::pos());
     }
-    else if (mark.contains("TCPSLAVECLIENT"))
+    else if (mark.contains("SLAVECLIENT"))
     {
         QMenu menu(this);
-        QAction actionDeleteClient("断开连接");
+        QAction actionDeleteClient("删除连接");
         QString serverKey = item->data(Qt::UserRole + 4).toString();
         uint64_t dwconnid = item->data(Qt::UserRole + 5).toULongLong();
         connect(&actionDeleteClient, &QAction::triggered, [serverKey, dwconnid]() {
-            emit AppSignal::getInstance()->sgl_delete_slave_tcp_client(serverKey, dwconnid);
+            emit AppSignal::getInstance()->sgl_delete_slave_client(serverKey, dwconnid);
         });
 
         menu.addAction(&actionDeleteClient);
@@ -489,29 +440,40 @@ void WidgetSocketView::on_socketView_customContextMenuRequested(const QPoint &po
     {
         QMenu menu(this);
         int status = item->data(Qt::UserRole + 2).toUInt();
-        QString serverKey = item->data(Qt::UserRole + 4).toString();
+        QString serverKey = item->data(Qt::UserRole + 1).toString();
 
         QAction actionReconnect("重新连接");
-        qDebug() << "status " << status;
-        actionReconnect.setEnabled(status == Tcp_Client_Closed);
+        actionReconnect.setEnabled(status == Client_Closed);
         connect(&actionReconnect, &QAction::triggered, [serverKey]() {
-            emit AppSignal::getInstance()->sgl_connect_tcp_client(serverKey);
+            emit AppSignal::getInstance()->sgl_reconnect_client(serverKey);
         });
         menu.addAction(&actionReconnect);
 
         QAction actionDisconnect("断开连接");
-        actionDisconnect.setDisabled(status == Tcp_Client_Closed);
+        actionDisconnect.setDisabled(status == Client_Closed);
         connect(&actionDisconnect, &QAction::triggered, [serverKey]() {
-            emit AppSignal::getInstance()->sgl_disconnect_tcp_client(serverKey);
+            emit AppSignal::getInstance()->sgl_disconnect_client(serverKey);
         });
         menu.addAction(&actionDisconnect);
 
         QAction actionDeleteClient("删除连接");
         connect(&actionDeleteClient, &QAction::triggered, [serverKey]() {
-            emit AppSignal::getInstance()->sgl_delete_tcp_client(serverKey);
+            emit AppSignal::getInstance()->sgl_delete_client(serverKey);
         });
         menu.addAction(&actionDeleteClient);
 
+        menu.exec(QCursor::pos());
+    }
+    else if (mark.contains("UDPCLIENT"))
+    {
+        QMenu menu(this);
+        QAction actionDeleteClient("删除连接");
+        QString serverKey = item->data(Qt::UserRole + 4).toString();
+        connect(&actionDeleteClient, &QAction::triggered, [serverKey]() {
+            emit AppSignal::getInstance()->sgl_delete_client(serverKey);
+        });
+
+        menu.addAction(&actionDeleteClient);
         menu.exec(QCursor::pos());
     }
 }

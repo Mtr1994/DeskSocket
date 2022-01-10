@@ -9,12 +9,9 @@
 #include "Public/softconstants.h"
 #include "Public/appsignal.h"
 
-// test
-#include <QDebug>
-
-WidgetTabContent::WidgetTabContent(const QString &flag, const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, QWidget *parent) :
+WidgetTabContent::WidgetTabContent(uint16_t protocol, const QString &flag, const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::WidgetTabContent), mContentFlag(flag), mServerKey(key), mClientAddress(ip_4),mClientPort(port),mClientID(dwconnid)
+    ui(new Ui::WidgetTabContent), mProtocol(protocol), mContentFlag(flag), mServerKey(key), mClientAddress(ip_4),mClientPort(port),mClientID(dwconnid)
 {
     ui->setupUi(this);
 
@@ -53,7 +50,7 @@ void WidgetTabContent::applySendResult(int length)
 
     QByteArray array = QByteArray::fromStdString(ui->tbSendDatas->toPlainText().toStdString());
     appendData(QString::fromStdString(array.toStdString()), SEND_DATA);
-    ui->tbSendDatas->clear();
+    // ui->tbSendDatas->clear();
     ui->tbSendDatas->clearFocus();
 }
 
@@ -82,13 +79,12 @@ void WidgetTabContent::on_btnSend_clicked()
     }
 
     QString contentKey = QString("%1*%2*%3*%4").arg(mServerKey, mClientAddress, QString::number(mClientPort), QString::number(mClientID));
-
-    if (mContentFlag == "TCPSLAVECLIENT")
+    if (mContentFlag == "SLAVECLIENT")
     {
-        emit AppSignal::getInstance()->sgl_slave_tcp_client_sent_data(mServerKey, contentKey, mClientID, array);
+        emit AppSignal::getInstance()->sgl_slave_client_sent_data(mServerKey, contentKey, mClientID, array);
     }
-    else if (mContentFlag == "TCPCLIENT")
+    else if (mContentFlag == "CLIENT")
     {
-        emit AppSignal::getInstance()->sgl_tcp_client_sent_data(mServerKey, contentKey, mClientID, array);
+        emit AppSignal::getInstance()->sgl_client_sent_data(mServerKey, contentKey, mClientID, array);
     }
 }

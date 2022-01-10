@@ -5,15 +5,13 @@
 #include <QString>
 #include <QByteArray>
 
+enum Protocol{ TCP = 1, UDP };
+
 enum {Tcp_Server, Tcp_Client_Slave, Tcp_Client, Udp_Server, Udp_Client};
 
-enum ClientOperation{Client_Add = 1, Client_Startup, Client_Pause, Client_Close, Client_Data, Client_StatusChange, Client_Error};
+enum ServerStatus{Server_Started = 1, Server_Shutdown, Server_Starting};
 
-enum ServerOperation{Server_Add = 1, Server_Pause, Server_Startup, Server_Close};
-
-enum TcpServerStatus{Tcp_Server_On = 1, Tcp_Server_Shutdown, Tcp_Server_StartUp};
-
-enum TcpClientStatus{Tcp_Client_Connected = 1, Tcp_Client_Closed, Tcp_Client_Connecting};
+enum ClientStatus{Client_Connected = 1, Client_Closed, Client_Connecting};
 
 typedef struct {
     int type; // 区分被动接受的套接字和主动连接的套接字

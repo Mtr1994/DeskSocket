@@ -4,8 +4,8 @@
 
 using namespace mtr;
 
-TcpServer::TcpServer(const QString &ip, uint32_t port, QObject *parent)
-    : QObject(parent), mIPV4(ip), mPort(port)
+TcpServer::TcpServer(const QString &ip, uint32_t port)
+    : BaseServer(ip, port), mIPV4(ip), mPort(port)
 {
 
 }
@@ -31,7 +31,7 @@ bool TcpServer::restart()
     return mTcpPackServer->Start(LPCTSTR(mIPV4.toStdWString().data()), mPort);
 }
 
-void TcpServer::closeAllConnection()
+void TcpServer::clearClient()
 {
     CONNID pIDs[65535] = { 0 };
     // dwCount 必须赋值，且要大于实际的连接数量才行，否则 GetAllConnectionIDs 返回 false
@@ -49,7 +49,7 @@ void TcpServer::closeAllConnection()
 
 QString TcpServer::getServerKey()
 {
-    return QString("%1:%2").arg(mIPV4, QString::number(mPort));
+    return QString("TCPSERVER:%1:%2").arg(mIPV4, QString::number(mPort));
 }
 
 bool TcpServer::write(CONNID dwConnID, const QByteArray &data)
@@ -60,22 +60,4 @@ bool TcpServer::write(CONNID dwConnID, const QByteArray &data)
 bool TcpServer::closeSocket(CONNID dwConnID)
 {
     return mTcpPackServer->Disconnect(dwConnID);
-}
-
-QString TcpServer::getSocketAddress( CONNID dwConnID)
-{
-    TCHAR szAddress[100];
-    int iAddressLen = sizeof(szAddress) / sizeof(TCHAR);
-    USHORT usPort = 0;
-    mTcpPackServer->GetRemoteAddress(dwConnID, szAddress, iAddressLen, usPort);
-    return QString::fromStdWString(szAddress);
-}
-
-uint16_t TcpServer::getSocketPort(CONNID dwConnID)
-{
-    TCHAR szAddress[100];
-    int iAddressLen = sizeof(szAddress) / sizeof(TCHAR);
-    USHORT usPort = 0;
-    mTcpPackServer->GetRemoteAddress(dwConnID, szAddress, iAddressLen, usPort);
-    return usPort;
 }

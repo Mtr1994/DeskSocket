@@ -3,9 +3,6 @@
 
 #include <QRectF>
 
-//test
-#include <QDebug>
-
 DialogNote::DialogNote(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNote)

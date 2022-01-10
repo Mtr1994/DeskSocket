@@ -4,7 +4,7 @@
 
 using namespace mtr;
 
-TcpSocket::TcpSocket(QObject *parent) : QObject(parent)
+TcpSocket::TcpSocket()
 {
 
 }
@@ -24,7 +24,7 @@ bool TcpSocket::connect()
 
 QString TcpSocket::getServerKey()
 {
-    return QString("%1:%2").arg(mServerAddress, QString::number(mServerPort));
+    return QString("TCPCLIENT:%1:%2").arg(mServerAddress, QString::number(mServerPort));
 }
 
 bool TcpSocket::write(const QByteArray &data)

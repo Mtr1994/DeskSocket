@@ -10,9 +10,6 @@
 
 #include "Public/defines.h"
 
-// test
-#include <QDebug>
-
 class TreeItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
@@ -36,19 +33,19 @@ public:
         QRectF rectangle(rect.width() - rect.width() / 12, rect.height() / 2.0 + rect.y() - 4, 8, 8);
         QString mark = index.data(Qt::UserRole + 1).toString();
         painter->setRenderHint(QPainter::Antialiasing, true);
-        if (mark.startsWith("TCPSERVER"))
+        if (mark.contains("SERVER"))
         {
             int status = index.data(Qt::UserRole + 2).toUInt();
-            QColor color = (status == Tcp_Server_On) ? QColor(82, 196, 26, 255) : (status == Tcp_Server_Shutdown) ? QColor(245, 34, 45, 255) : QColor(24, 144, 255, 255);
+            QColor color = (status == Server_Started) ? QColor(82, 196, 26, 255) : (status == Server_Shutdown) ? QColor(245, 34, 45, 255) : QColor(24, 144, 255, 255);
 
             painter->setPen(QPen(color));
             painter->setBrush(QBrush(color));
             painter->drawEllipse(rectangle);
         }
-        else if (mark.startsWith("TCPCLIENT"))
+        else if (mark.contains("CLIENT"))
         {
             int status = index.data(Qt::UserRole + 2).toUInt();
-            QColor color = (status == Tcp_Client_Connected) ? QColor(82, 196, 26, 255) : (status == Tcp_Client_Closed) ? QColor(245, 34, 45, 255) : QColor(24, 144, 255, 255);
+            QColor color = (status == Client_Connected) ? QColor(82, 196, 26, 255) : (status == Client_Closed) ? QColor(245, 34, 45, 255) : QColor(24, 144, 255, 255);
 
             painter->setPen(QPen(color));
             painter->setBrush(QBrush(color));

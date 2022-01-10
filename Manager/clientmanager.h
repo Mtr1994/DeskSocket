@@ -3,13 +3,12 @@
 
 #include <QObject>
 #include <QList>
-#include <QAbstractSocket>
 
 #include "Public/defines.h"
 
 namespace mtr {
 
-class TcpSocket;
+class BaseSocket;
 class ClientManager : public QObject
 {
     Q_OBJECT
@@ -23,18 +22,15 @@ public:
 
 public slots:
     // 自定义槽函数
-    void slot_add_new_tcp_client(const QString &ip_4, uint16_t port);
-    void slot_tcp_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const QByteArray &data);
-    void slot_delete_tcp_client(const QString &serverkey);
+    void slot_add_new_client(uint16_t protocol, const QString &ipv4, uint16_t port);
+    void slot_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const QByteArray &data);
+    void slot_delete_client(const QString &serverkey);
 
-    void slot_disconnect_tcp_client(const QString &serverkey);
-    void slot_connect_tcp_client(const QString &serverkey);
-
-signals:
-    void sgl_client_operation(int operation, const ClientInfo& info);
+    void slot_disconnect_client(const QString &serverkey);
+    void slot_connect_client(const QString &serverkey);
 
 private:
-    QList<TcpSocket*> mListTcpSocket;
+    QList<BaseSocket*> mListSocket;
 };
 
 }

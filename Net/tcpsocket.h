@@ -2,12 +2,12 @@
 #define TCPSOCKET_H
 #include "HPSocket/HPSocket.h"
 #include "Public/appsignal.h"
+#include "Public/defines.h"
+#include "basesocket.h"
 
 #include <QObject>
 #include <QTcpSocket>
 
-// test
-#include <QDebug>
 
 namespace mtr {
 
@@ -26,12 +26,12 @@ public:
     {
         QString ip = getServerAddress(pSender);
         USHORT port = getServerPort(pSender);
-        QString key = QString("%1:%2").arg(ip, QString::number(port));
+        QString key = QString("TCPCLIENT:%1:%2").arg(ip, QString::number(port));
 
         ip = getSocketAddress(pSender);
         port = getSocketPort(pSender);
 
-        emit AppSignal::getInstance()->sgl_tcp_client_connected(key, ip, port, dwConnID);
+        emit AppSignal::getInstance()->sgl_client_connected(TCP, key, ip, port, dwConnID);
         return HR_OK;
     }
 
@@ -44,13 +44,13 @@ public:
     {
         QString ip = getServerAddress(pSender);
         USHORT port = getServerPort(pSender);
-        QString key = QString("%1:%2").arg(ip, QString::number(port));
+        QString key = QString("TCPCLIENT:%1:%2").arg(ip, QString::number(port));
 
         ip = getSocketAddress(pSender);
         port = getSocketPort(pSender);
 
         QByteArray data = QByteArray::fromRawData((const char*)pData, iLength);
-        emit AppSignal::getInstance()->sgl_thread_recv_tcp_client_data(key, ip, port, dwConnID, data);
+        emit AppSignal::getInstance()->sgl_thread_recv_client_data(key, ip, port, dwConnID, data);
         return HR_OK;
     }
 
@@ -61,6 +61,14 @@ public:
 
     EnHandleResult OnSend(ITcpClient* pSender, CONNID dwConnID, const BYTE* pData, int iLength)
     {
+        QString serverIP = getServerAddress(pSender);
+        USHORT serverPort = getServerPort(pSender);
+        QString socketIP = getSocketAddress(pSender);
+        USHORT socketPort = getSocketPort(pSender);
+
+        QString socketkey = QString("TCPCLIENT:%1:%2*%3*%4*%5").arg(serverIP, QString::number(serverPort), socketIP, QString::number(socketPort), QString::number(dwConnID));
+        QByteArray data = QByteArray::fromRawData((const char*)pData, iLength);
+        emit AppSignal::getInstance()->sgl_client_sent_data_result(socketkey, true, data.length(), "数据发送完成");
         return HR_OK;
     }
 
@@ -71,9 +79,8 @@ public:
         QString socketIP = getSocketAddress(pSender);
         USHORT socketPort = getSocketPort(pSender);
 
-        QString socketkey = QString("%1:%2*%3*%4*%5").arg(serverIP, QString::number(serverPort), socketIP, QString::number(socketPort), QString::number(dwConnID));
-        qDebug() << "socketkey 1" << socketkey;
-        emit AppSignal::getInstance()->sgl_tcp_client_closed(socketkey);
+        QString socketkey = QString("TCPCLIENT:%1:%2*%3*%4*%5").arg(serverIP, QString::number(serverPort), socketIP, QString::number(socketPort), QString::number(dwConnID));
+        emit AppSignal::getInstance()->sgl_client_closed(socketkey);
         return HR_OK;
     }
 
@@ -114,19 +121,16 @@ private:
     }
 };
 
-class TcpSocket : public QObject
+class TcpSocket : public BaseSocket
 {
     Q_OBJECT
 public:
-    explicit TcpSocket(QObject *parent = nullptr);
+    explicit TcpSocket();
 
     bool connect(const QString &ipv4, uint16_t port);
     bool connect();
-
     QString getServerKey();
-
     bool write(const QByteArray &data);
-
     bool closeSocket();
 
 private:

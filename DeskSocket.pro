@@ -29,8 +29,12 @@ SOURCES += \
     Log/logger.cpp \
     Manager/clientmanager.cpp \
     Manager/servermanager.cpp \
+    Net/baseserver.cpp \
+    Net/basesocket.cpp \
     Net/tcpserver.cpp \
     Net/tcpsocket.cpp \
+    Net/udpserver.cpp \
+    Net/udpsocket.cpp \
     Public/appsignal.cpp \
     Public/softconstants.cpp \
     Widget/widgetsocketview.cpp \
@@ -46,8 +50,12 @@ HEADERS += \
     Log/logger.h \
     Manager/clientmanager.h \
     Manager/servermanager.h \
+    Net/baseserver.h \
+    Net/basesocket.h \
     Net/tcpserver.h \
     Net/tcpsocket.h \
+    Net/udpserver.h \
+    Net/udpsocket.h \
     Public/appsignal.h \
     Public/defines.h \
     Public/softconstants.h \

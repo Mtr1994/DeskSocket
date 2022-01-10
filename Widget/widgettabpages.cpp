@@ -6,9 +6,7 @@
 
 #include "Widget/widgettabcontent.h"
 #include "Public/appsignal.h"
-
-// test
-#include <QDebug>
+#include "Log/logger.h"
 
 WidgetTabPages::WidgetTabPages(QWidget *parent) :
     QWidget(parent),
@@ -27,14 +25,15 @@ WidgetTabPages::~WidgetTabPages()
 void WidgetTabPages::init()
 {
     ui->tabWidget->tabBar()->hide();
-    connect(AppSignal::getInstance(), &AppSignal::sgl_add_tcp_tab_page, this, &WidgetTabPages::slot_add_tcp_tab_page);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_thread_recv_slave_tcp_client_data, this, &WidgetTabPages::slot_thread_recv_slave_tcp_client_data, Qt::QueuedConnection);
+
+    connect(AppSignal::getInstance(), &AppSignal::sgl_add_tab_page, this, &WidgetTabPages::slot_add_tab_page);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_thread_recv_slave_client_data, this, &WidgetTabPages::slot_thread_recv_slave_client_data, Qt::QueuedConnection);
     connect(AppSignal::getInstance(), &AppSignal::sgl_current_socket_index_change, this, &WidgetTabPages::slot_current_socket_index_change);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_slave_tcp_client_sent_data_result, this, &WidgetTabPages::slot_slave_tcp_client_sent_data_result);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_close_slave_tcp_client_result, this, &WidgetTabPages::slot_close_slave_tcp_client_result);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_thread_recv_tcp_client_data, this, &WidgetTabPages::slot_thread_recv_tcp_client_data);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_tcp_client_sent_data_result, this, &WidgetTabPages::slot_tcp_client_sent_data_result);
-    connect(AppSignal::getInstance(), &AppSignal::sgl_tcp_client_closed, this, &WidgetTabPages::sgl_tcp_client_closed);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_slave_client_sent_data_result, this, &WidgetTabPages::slot_slave_client_sent_data_result);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_close_slave_client_result, this, &WidgetTabPages::slot_close_slave_client_result);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_thread_recv_client_data, this, &WidgetTabPages::slot_thread_recv_client_data);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_client_sent_data_result, this, &WidgetTabPages::slot_client_sent_data_result);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_client_closed, this, &WidgetTabPages::slot_client_closed);
 }
 
 int WidgetTabPages::getTabCount()
@@ -42,27 +41,7 @@ int WidgetTabPages::getTabCount()
     return ui->tabWidget->count();
 }
 
-void WidgetTabPages::removeTab(int socketptr)
-{
-//    WidgetTabContent *content = mMapContent.take(socketptr);
-//    if (nullptr == content) return;
-//    int index = ui->tabWidget->indexOf(content);
-//    if (index < 0) return;
-//    ui->tabWidget->removeTab(index);
-}
-
-void WidgetTabPages::appentData(int socketptr, const QByteArray &data)
-{
-//    WidgetTabContent *content = mMapContent.value(socketptr);
-//    if (nullptr == content) return;
-
-//    QTextCodec *codec = QTextCodec::codecForName(content->getCurrentCodeTypeName().data());
-//    QString string = codec->toUnicode(data);
-
-//    content->appendData(string);
-}
-
-void WidgetTabPages::slot_add_tcp_tab_page(const QString &flag, const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid)
+void WidgetTabPages::slot_add_tab_page(uint16_t protocol, const QString &flag, const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid)
 {
     int current = 0;
     if (ui->tabWidget->count() > 0)
@@ -70,7 +49,7 @@ void WidgetTabPages::slot_add_tcp_tab_page(const QString &flag, const QString &k
         current = ui->tabWidget->currentIndex();
     }
 
-    WidgetTabContent *content = new WidgetTabContent(flag, key, ip_4, port, dwconnid, this);
+    WidgetTabContent *content = new WidgetTabContent(protocol, flag, key, ip_4, port, dwconnid, this);
     ui->tabWidget->addTab(content, "-----");
     ui->tabWidget->setCurrentIndex(current);
 
@@ -78,13 +57,11 @@ void WidgetTabPages::slot_add_tcp_tab_page(const QString &flag, const QString &k
     QString string = codec->toUnicode(QString("连接成功 ---- 地址: %1 ---- 端口: %2").arg(ip_4, QString::number(port)).toStdString().data());
     content->appendData(string, WidgetTabContent::SYSTEM_DATA);
 
-    connect(content, &WidgetTabContent::sgl_client_operation, this, &WidgetTabPages::sgl_client_operation);
-
     QString contentKey = QString("%1*%2*%3*%4").arg(key, ip_4, QString::number(port), QString::number(dwconnid));
     mMapContent.insert(contentKey, content);
 }
 
-void WidgetTabPages::slot_thread_recv_slave_tcp_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data)
+void WidgetTabPages::slot_thread_recv_slave_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data)
 {
     QString contentKey = QString("%1*%2*%3*%4").arg(key, ip_4, QString::number(port), QString::number(dwconnid));
     WidgetTabContent *content = mMapContent.value(contentKey);
@@ -102,7 +79,7 @@ void WidgetTabPages::slot_current_socket_index_change(const QString &socketkey)
     ui->tabWidget->setCurrentWidget(mMapContent.value(socketkey));
 }
 
-void WidgetTabPages::slot_slave_tcp_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error)
+void WidgetTabPages::slot_slave_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error)
 {
     if (!mMapContent.contains(contentKey)) return;
     auto widget = mMapContent.value(contentKey);
@@ -116,23 +93,24 @@ void WidgetTabPages::slot_slave_tcp_client_sent_data_result(const QString &conte
     }
 }
 
-void WidgetTabPages::slot_close_slave_tcp_client_result(const QString &socketkey)
+void WidgetTabPages::slot_close_slave_client_result(const QString &socketkey)
 {
     WidgetTabContent *content = mMapContent.take(socketkey);
     if (nullptr == content) return;
     int index = ui->tabWidget->indexOf(content);
     if (index < 0) return;
     ui->tabWidget->removeTab(index);
+
+
 }
 
-void WidgetTabPages::slot_thread_recv_tcp_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data)
+void WidgetTabPages::slot_thread_recv_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data)
 {
     QString contentKey = QString("%1*%2*%3*%4").arg(key, ip_4, QString::number(port), QString::number(dwconnid));
-    qDebug() << "recv key " << contentKey;
     WidgetTabContent *content = mMapContent.value(contentKey);
     if (nullptr == content)
     {
-        qDebug() << "找不到指定的窗口";
+        LOG_INFO(QString("找不到指定窗口 %1").arg(contentKey).toStdString().data());
         return;
     }
 
@@ -142,7 +120,7 @@ void WidgetTabPages::slot_thread_recv_tcp_client_data(const QString &key, const 
     content->appendData(string);
 }
 
-void WidgetTabPages::slot_tcp_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error)
+void WidgetTabPages::slot_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error)
 {
     if (!mMapContent.contains(contentKey)) return;
     auto widget = mMapContent.value(contentKey);
@@ -156,11 +134,12 @@ void WidgetTabPages::slot_tcp_client_sent_data_result(const QString &contentKey,
     }
 }
 
-void WidgetTabPages::sgl_tcp_client_closed(const QString &socketkey)
+void WidgetTabPages::slot_client_closed(const QString &socketkey)
 {
     WidgetTabContent *content = mMapContent.take(socketkey);
     if (nullptr == content) return;
     int index = ui->tabWidget->indexOf(content);
     if (index < 0) return;
     ui->tabWidget->removeTab(index);
+    LOG_INFO(QString("删除已关闭的主动连接窗口 %1").arg(socketkey).toStdString().data());
 }

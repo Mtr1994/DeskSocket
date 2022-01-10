@@ -17,7 +17,7 @@ class WidgetTabContent : public QWidget
     Q_OBJECT
 public:
     enum DataEnum {RECV_DATA = 1, SEND_DATA, SYSTEM_DATA};
-    explicit WidgetTabContent(const QString &flag, const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, QWidget *parent = nullptr);
+    explicit WidgetTabContent(uint16_t protocol, const QString &flag, const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, QWidget *parent = nullptr);
     ~WidgetTabContent();
 
     void init();
@@ -39,6 +39,7 @@ private:
     Ui::WidgetTabContent *ui;
 
     // 内容标志（改 四元组描述的是 被动 TCP、主动 TCP或者是 UDP）
+    uint16_t mProtocol;
     QString mContentFlag;
 
     // 服务端信息
