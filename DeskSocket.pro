@@ -33,6 +33,7 @@ SOURCES += \
     Net/basesocket.cpp \
     Net/tcpserver.cpp \
     Net/tcpsocket.cpp \
+    Net/udpbroadcast.cpp \
     Net/udpserver.cpp \
     Net/udpsocket.cpp \
     Public/appsignal.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     Net/basesocket.h \
     Net/tcpserver.h \
     Net/tcpsocket.h \
+    Net/udpbroadcast.h \
     Net/udpserver.h \
     Net/udpsocket.h \
     Public/appsignal.h \

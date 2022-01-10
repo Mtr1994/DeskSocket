@@ -9,6 +9,12 @@ DialogServerArgs::DialogServerArgs(const QString &title, QWidget *parent) :
 
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
     setWindowTitle(title);
+
+    if (title.contains("广播"))
+    {
+        ui->tbAddress->setText("255.255.255.255");
+        ui->tbAddress->setEnabled(false);
+    }
 }
 
 DialogServerArgs::~DialogServerArgs()

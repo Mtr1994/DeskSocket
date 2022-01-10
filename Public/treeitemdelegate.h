@@ -42,7 +42,7 @@ public:
             painter->setBrush(QBrush(color));
             painter->drawEllipse(rectangle);
         }
-        else if (mark.contains("CLIENT"))
+        else if (mark.contains("CLIENT") || (mark.contains("BROADCAST")))
         {
             int status = index.data(Qt::UserRole + 2).toUInt();
             QColor color = (status == Client_Connected) ? QColor(82, 196, 26, 255) : (status == Client_Closed) ? QColor(245, 34, 45, 255) : QColor(24, 144, 255, 255);

@@ -39,6 +39,7 @@ void MainWindow::init()
     connect(ui->actionAddTcpClient, &QAction::triggered, AppSignal::getInstance(), &AppSignal::sgl_open_add_tcp_client_dialog);
     connect(ui->actionAddUdpServer, &QAction::triggered, AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_server_dialog);
     connect(ui->actionAddUdpClient, &QAction::triggered, AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_client_dialog);
+    connect(ui->actionAddUDPBroadcast, &QAction::triggered, AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_cast_client_dialog);
 
     connect(ui->actionVersion, &QAction::triggered, this, &MainWindow::slot_show_about_us);
 }

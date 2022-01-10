@@ -5,7 +5,7 @@
 #include <QString>
 #include <QByteArray>
 
-enum Protocol{ TCP = 1, UDP };
+enum Protocol{ TCP = 1, UDP, BROADCAST };
 
 enum {Tcp_Server, Tcp_Client_Slave, Tcp_Client, Udp_Server, Udp_Client};
 

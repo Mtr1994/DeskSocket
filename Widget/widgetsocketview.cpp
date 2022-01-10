@@ -49,7 +49,7 @@ void WidgetSocketView::init()
     connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_tcp_client_dialog, this, &WidgetSocketView::slot_open_add_tcp_client_dialog);
     connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_server_dialog, this, &WidgetSocketView::slot_open_add_udp_server_dialog);
     connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_client_dialog, this, &WidgetSocketView::slot_open_add_udp_client_dialog);
-
+    connect(AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_cast_client_dialog, this, &WidgetSocketView::slot_open_add_udp_cast_client_dialog);
 
     // TCP 服务信号
     connect(AppSignal::getInstance(), &AppSignal::sgl_server_status_change, this, &WidgetSocketView::slot_server_status_change);
@@ -154,7 +154,7 @@ void WidgetSocketView::slot_server_status_change(uint16_t protocol, const QStrin
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        LOG_INFO(QString("找不到服务，改变状态失败 %1").arg(mark).toStdString().data());
+        LOG_DEBUG(QString("找不到服务，改变状态失败 %1").arg(mark).toStdString().data());
         return;
     }
     for (auto index : list)
@@ -174,7 +174,7 @@ void WidgetSocketView::slot_recv_new_slave_client(uint16_t protocol, const QStri
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, serverkey, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        LOG_INFO(QString("找不到所属的服务 %1").arg(serverkey).toStdString().data());
+        LOG_DEBUG(QString("找不到所属的服务 %1").arg(serverkey).toStdString().data());
         return;
     }
 
@@ -208,7 +208,7 @@ void WidgetSocketView::slot_close_slave_client_result(const QString &socketkey)
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 3, socketkey, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        LOG_INFO(QString("找不到指定的连接 %1").arg(socketkey).toStdString().data());
+        LOG_DEBUG(QString("找不到指定的连接 %1").arg(socketkey).toStdString().data());
         return;
     }
 
@@ -224,7 +224,7 @@ void WidgetSocketView::slot_client_connected(uint16_t protocol, const QString &s
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mask, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        LOG_INFO(QString("找不到指定服务 %1").arg(serverkey).toStdString().data());
+        LOG_DEBUG(QString("找不到指定服务 %1").arg(serverkey).toStdString().data());
         return;
     }
 
@@ -251,14 +251,14 @@ void WidgetSocketView::slot_client_closed(const QString &socketkey)
     QStringList listSocketInfo = socketkey.split('*');
     if (listSocketInfo.length() != 4)
     {
-        LOG_INFO("系统异常");
+        LOG_DEBUG("系统异常");
         return;
     }
     QString mark = listSocketInfo.at(0);
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        LOG_INFO(QString("找不到指定的(主动)连接 %1").arg(socketkey).toStdString().data());
+        LOG_DEBUG(QString("找不到指定的(主动)连接 %1").arg(socketkey).toStdString().data());
     }
     else
     {
@@ -278,14 +278,14 @@ void WidgetSocketView::slot_delete_client_finish(const QString &serverkey, bool 
 {
     if (!status)
     {
-        LOG_INFO(QString("删除失败 %1").arg(serverkey).toStdString().data());
+        LOG_DEBUG(QString("删除失败 %1").arg(serverkey).toStdString().data());
         return;
     }
     QString mark = serverkey;
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.empty())
     {
-        LOG_INFO(QString("找不到指定的(主动)连接 %1").arg(serverkey).toStdString().data());
+        LOG_DEBUG(QString("找不到指定的(主动)连接 %1").arg(serverkey).toStdString().data());
     }
     else
     {
@@ -367,6 +367,35 @@ void WidgetSocketView::slot_open_add_udp_client_dialog()
     mModelSockets->appendRow(item);
 
     emit AppSignal::getInstance()->sgl_add_new_client(UDP, ipv4, port);
+}
+
+void WidgetSocketView::slot_open_add_udp_cast_client_dialog()
+{
+    DialogServerArgs dialog("UDP 广播参数", this);
+    dialog.exec();
+
+    if (dialog.result() == 0) return;
+
+    // 添加本地记录 (默认正在链接状态)
+    QString ipv4 = dialog.getAddress();
+    uint32_t port = dialog.getPort().toUInt();
+    QString key = QString("%1:%2").arg(ipv4, QString::number(port));
+
+    // 查找，已存在则不再添加
+    QString mark = "UDPCLIENT:" + key;
+    QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, mark, 1, Qt::MatchRecursive | Qt::MatchExactly);
+    if (!list.empty())
+    {
+        // 已存在
+        return;
+    }
+
+    QStandardItem *item = new QStandardItem(QIcon(":/resources/image/public/client.png"), key);
+    item->setData(mark, Qt::UserRole + 1);
+    item->setData(Client_Connecting, Qt::UserRole + 2);
+    mModelSockets->appendRow(item);
+
+    emit AppSignal::getInstance()->sgl_add_new_client(BROADCAST, ipv4, port);
 }
 
 void WidgetSocketView::slot_current_change(const QModelIndex &current, const QModelIndex &previous)

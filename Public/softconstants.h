@@ -13,8 +13,6 @@ public:
 
     static void fillComboBox(ItemType type, QComboBox* cb);
 
-    static QString getSocketError(int error);
-
 private:
     static QString mItemStr;
     static QJsonDocument mJsonDocument;

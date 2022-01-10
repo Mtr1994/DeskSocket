@@ -129,6 +129,4 @@ private:
 
 }
 
-
-
 #endif // UDPSOCKET_H

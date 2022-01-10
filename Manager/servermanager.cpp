@@ -48,7 +48,7 @@ void ServerManager::slot_add_new_server(uint16_t protocol, const QString &ipv4, 
     BaseServer *server = nullptr;
     if (protocol == TCP) server = new TcpServer(ipv4, port);
     else if (protocol == UDP) server = new UdpServer(ipv4, port);
-    else LOG_INFO("unknow protocol");
+    else LOG_DEBUG("unknow protocol");
 
     bool status = server->start();
     if (!status)
@@ -117,7 +117,7 @@ void ServerManager::slot_restart_server(const QString &serverkey)
                 QStringList list = key.split(':');
                 if (list.length() != 3)
                 {
-                    LOG_INFO("系统异常");
+                    LOG_DEBUG("系统异常");
                 }
                 else
                 {

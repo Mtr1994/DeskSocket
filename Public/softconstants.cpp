@@ -11,32 +11,6 @@ QString SoftConstants::mItemStr = "{\"0\": {\"1\": \"UTF-8\",\"2\": \"GBK\"},"
                                    "\"4\": {\"1\": \"简单抽取\",\"2\": \"二次线性抽取\"}"
                                   "}";
 
-
-QString SocketError[24] = {        "ConnectionRefusedError",
-                                   "RemoteHostClosedError",
-                                   "HostNotFoundError",
-                                   "SocketAccessError",
-                                   "SocketResourceError",
-                                   "SocketTimeoutError",
-                                   "DatagramTooLargeError",
-                                   "NetworkError",
-                                   "AddressInUseError",
-                                   "SocketAddressNotAvailableError",
-                                   "UnsupportedSocketOperationError",
-                                   "UnfinishedSocketOperationError",
-                                   "ProxyAuthenticationRequiredError",
-                                   "SslHandshakeFailedError",
-                                   "ProxyConnectionRefusedError",
-                                   "ProxyConnectionClosedError",
-                                   "ProxyConnectionTimeoutError",
-                                   "ProxyNotFoundError",
-                                   "ProxyProtocolError",
-                                   "OperationError",
-                                   "SslInternalError",
-                                   "SslInvalidUserDataError",
-                                   "TemporaryError",
-                                   "UnknownSocketError"};
-
 QJsonDocument SoftConstants::mJsonDocument = QJsonDocument::fromJson(mItemStr.toUtf8());
 
 SoftConstants::SoftConstants()
@@ -57,12 +31,4 @@ void SoftConstants::fillComboBox(ItemType type, QComboBox *cb)
     }
 
     cb->setView(new QListView());
-}
-
-QString SoftConstants::getSocketError(int error)
-{
-    if (error > 23) return "undefined error";
-    if (error == -1) return SocketError[23];
-
-    return SocketError[error];
 }

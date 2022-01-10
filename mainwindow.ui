@@ -83,6 +83,7 @@
     <addaction name="actionAddTcpClient"/>
     <addaction name="actionAddUdpServer"/>
     <addaction name="actionAddUdpClient"/>
+    <addaction name="actionAddUDPBroadcast"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -90,7 +91,14 @@
     </property>
     <addaction name="actionVersion"/>
    </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>工具</string>
+    </property>
+    <addaction name="actionJSONFormat"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_3"/>
    <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -140,6 +148,22 @@
    </property>
    <property name="toolTip">
     <string>新增 UDP 客户端</string>
+   </property>
+  </action>
+  <action name="actionAddUDPBroadcast">
+   <property name="text">
+    <string>UDP 　广播</string>
+   </property>
+   <property name="toolTip">
+    <string>UDP 　广播</string>
+   </property>
+  </action>
+  <action name="actionJSONFormat">
+   <property name="text">
+    <string>JSON 格式化</string>
+   </property>
+   <property name="toolTip">
+    <string>JSON 格式化</string>
    </property>
   </action>
  </widget>

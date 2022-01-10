@@ -58,6 +58,7 @@ private slots:
     // UDP
     void slot_open_add_udp_server_dialog();
     void slot_open_add_udp_client_dialog();
+    void slot_open_add_udp_cast_client_dialog();
 
 private:
     void slot_current_change(const QModelIndex &current, const QModelIndex &previous);

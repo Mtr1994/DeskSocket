@@ -110,7 +110,7 @@ void WidgetTabPages::slot_thread_recv_client_data(const QString &key, const QStr
     WidgetTabContent *content = mMapContent.value(contentKey);
     if (nullptr == content)
     {
-        LOG_INFO(QString("找不到指定窗口 %1").arg(contentKey).toStdString().data());
+        LOG_DEBUG(QString("找不到指定窗口 %1").arg(contentKey).toStdString().data());
         return;
     }
 
@@ -141,5 +141,5 @@ void WidgetTabPages::slot_client_closed(const QString &socketkey)
     int index = ui->tabWidget->indexOf(content);
     if (index < 0) return;
     ui->tabWidget->removeTab(index);
-    LOG_INFO(QString("删除已关闭的主动连接窗口 %1").arg(socketkey).toStdString().data());
+    LOG_DEBUG(QString("删除已关闭的主动连接窗口 %1").arg(socketkey).toStdString().data());
 }

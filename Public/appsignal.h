@@ -104,6 +104,10 @@ signals:
     void sgl_open_add_udp_server_dialog();
 
     void sgl_open_add_udp_client_dialog();
+
+    void sgl_open_add_udp_cast_client_dialog();
+    // 打开一个广播 客户端
+
     /// //////////////////////// UDP ////////////////////////////////////////
 };
 

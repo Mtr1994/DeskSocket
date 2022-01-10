@@ -1,7 +1,9 @@
 ﻿#include "clientmanager.h"
 #include "Net/tcpsocket.h"
 #include "Net/udpsocket.h"
+#include "Net/udpbroadcast.h"
 #include "Public/appsignal.h"
+#include "Log/logger.h"
 
 #include <QHostAddress>
 
@@ -42,9 +44,15 @@ void ClientManager::slot_add_new_client(uint16_t protocol, const QString &ipv4, 
         socket = new UdpSocket;
         socket->connect(ipv4, port);
     }
+    else if (protocol == BROADCAST)
+    {
+        socket = new UdpBroadcast;
+        bool status = socket->connect(ipv4, port);
+        LOG_DEBUG(status);
+    }
     else
     {
-        // 异常日志输出
+        LOG_DEBUG("未知的协议类型");
     }
     mListSocket.append(socket);
 }
