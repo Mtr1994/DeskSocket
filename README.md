@@ -1,7 +1,7 @@
 # DeskSocket
 
 ![Platform](https://img.shields.io/badge/paltform-win--64-brightgreen)
-![Qt Version](https://img.shields.io/badge/Qt-6.x.x、5.x.x-yellowgreen)
+![Qt Version](https://img.shields.io/badge/_Qt_-6.x.x、5.x.x-yellowgreen)
 ![Build](https://img.shields.io/badge/build-MSVC_2019_x64-blue)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Mtr1994/DeskSocket)
 ![GitHub](https://img.shields.io/github/license/Mtr1994/DeskSocket)
