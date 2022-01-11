@@ -20,6 +20,8 @@ public:
 private slots:
     void slot_show_about_us();
 
+    void slot_open_format_json_dialog();
+
 private:
     Ui::MainWindow *ui;
 };

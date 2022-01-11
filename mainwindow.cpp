@@ -8,6 +8,7 @@
 #include "Log/logger.h"
 #include "Dialog/dialogabout.h"
 #include "Public/appsignal.h"
+#include "Dialog/dialogformatjson.h"
 
 using namespace mtr;
 
@@ -42,10 +43,19 @@ void MainWindow::init()
     connect(ui->actionAddUDPBroadcast, &QAction::triggered, AppSignal::getInstance(), &AppSignal::sgl_open_add_udp_cast_client_dialog);
 
     connect(ui->actionVersion, &QAction::triggered, this, &MainWindow::slot_show_about_us);
+
+    // 工具窗口
+    connect(ui->actionJSONFormat, &QAction::triggered, this, &MainWindow::slot_open_format_json_dialog);
 }
 
 void MainWindow::slot_show_about_us()
 {
     DialogAbout about(this);
     about.exec();
+}
+
+void MainWindow::slot_open_format_json_dialog()
+{
+    DialogFormatJson dialog(this);
+    dialog.exec();
 }

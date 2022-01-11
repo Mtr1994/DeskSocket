@@ -155,6 +155,50 @@ QPushButton[menu="true"]:checked
     color: #409eff;
 }
 
+QPushButton#btnFormatJson
+{
+    min-height: 2.4em;
+    min-width: 6em;
+    border: none;
+    border-radius: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+    color: #fefefe;
+    background-color: #409eff;
+}
+
+QPushButton#btnFormatJson:hover
+{
+    background-color: #aa409eff;
+}
+
+QPushButton#btnFormatJson:pressed
+{
+    background-color: #409eff;
+}
+
+QPushButton#btnCopyResult
+{
+    min-height: 2.4em;
+    min-width: 6em;
+    border: none;
+    border-radius: 0.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+    color: #fefefe;
+    background-color: #52c41a;
+}
+
+QPushButton#btnCopyResult:hover
+{
+    background-color: #aa52c41a;
+}
+
+QPushButton#btnCopyResult:pressed
+{
+    background-color: #52c41a;
+}
+
 /* QLineEdit */
 QLineEdit
 {

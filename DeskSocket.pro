@@ -24,6 +24,7 @@ QMAKE_CXXFLAGS_WARN_OFF += -Wunused-parameter
 
 SOURCES += \
     Dialog/dialogabout.cpp \
+    Dialog/dialogformatjson.cpp \
     Dialog/dialognote.cpp \
     Dialog/dialogserverargs.cpp \
     Log/logger.cpp \
@@ -46,6 +47,7 @@ SOURCES += \
 
 HEADERS += \
     Dialog/dialogabout.h \
+    Dialog/dialogformatjson.h \
     Dialog/dialognote.h \
     Dialog/dialogserverargs.h \
     Log/logger.h \
@@ -70,6 +72,7 @@ HEADERS += \
 
 FORMS += \
     Dialog/dialogabout.ui \
+    Dialog/dialogformatjson.ui \
     Dialog/dialognote.ui \
     Dialog/dialogserverargs.ui \
     Widget/widgetsocketview.ui \

@@ -152,10 +152,10 @@
   </action>
   <action name="actionAddUDPBroadcast">
    <property name="text">
-    <string>UDP 　广播</string>
+    <string>UDP 局域网广播</string>
    </property>
    <property name="toolTip">
-    <string>UDP 　广播</string>
+    <string>UDP 局域网广播</string>
    </property>
   </action>
   <action name="actionJSONFormat">
