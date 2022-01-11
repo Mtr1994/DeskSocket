@@ -6,7 +6,15 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Mtr1994/DeskSocket)
 ![GitHub](https://img.shields.io/github/license/Mtr1994/DeskSocket)
 
-`DeskSocket` 是一款用于测试网络通信的桌面（`Windows 10`）工具软件，软件支持 `TCP 服务端`、`TCP 客户端` 、`UDP 服务端` 、`UDP 客户端`和局域网广播五种工作模式；同时提供一些日常工作中常用的计算工具；满足程序员日常工作中对网络数据通信测试的需求。
+`DeskSocket` 是一款用于测试网络通信的桌面（`Windows 10`）工具软件，软件支持以下几种功能
+
+* `TCP 服务端`
+* `TCP 客户端` 
+* `UDP 服务端` 
+* `UDP 客户端`
+* `局域网广播`
+
+同时，软件也提供了一些日常工作中常用的计算工具；满足程序员日常工作中对网络数据通信测试的需求。
 
 #### 第三方依赖说明
 
