@@ -2,7 +2,8 @@
 
 ![GitHub](https://img.shields.io/github/license/Mtr1994/DeskSocket)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Mtr1994/DeskSocket)
-https://img.shields.io/badge/paltform-win--64-brightgreen
+![Platform](https://img.shields.io/badge/paltform-win--64-brightgreen)
+![Qt Version](https://img.shields.io/badge/Qt-6.x.x、5.x.x-yellowgreen)
 
 `DeskSocket` 是一款用于测试网络通信的桌面（`Windows 10`）工具软件，软件支持 `TCP 服务端`、`TCP 客户端` 、`UDP 服务端` 和`UDP 客户端` 四种工作模式；同时对每种模式提供几种重要的菜单功能，满足程序员日常工作中对网络数据通信测试的需求。
 
