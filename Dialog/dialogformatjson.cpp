@@ -22,7 +22,7 @@ DialogFormatJson::~DialogFormatJson()
 void DialogFormatJson::init()
 {
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
-    setWindowTitle("JSON 格式化");
+    setWindowTitle("JSON 字符串格式化工具");
 
     connect(ui->btnFormatJson, &QPushButton::clicked, this, &DialogFormatJson::slot_format_click);
     connect(ui->btnCopyResult, &QPushButton::clicked, this, &DialogFormatJson::slot_copy_click);
@@ -47,7 +47,19 @@ void DialogFormatJson::slot_format_click()
         return;
     }
 
-    ui->tbValue->setText(document.toJson(QJsonDocument::Indented));
+    uint8_t flag = mFormatCount % 2;
+    if (!flag)
+    {
+        ui->tbValue->setText(document.toJson(QJsonDocument::Indented));
+        ui->btnFormatJson->setText("格式化（缩进模式）");
+    }
+    else
+    {
+        ui->tbValue->setText(document.toJson(QJsonDocument::Compact));
+        ui->btnFormatJson->setText("格式化（紧凑模式）");
+    }
+    mFormatCount++;
+
     ui->lbMessage->setText("<p style=\"color:#52c41a; font-size:50%\">格式化成功</p>");
 }
 

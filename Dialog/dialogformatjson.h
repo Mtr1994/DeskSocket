@@ -25,6 +25,8 @@ private:
 
 private:
     Ui::DialogFormatJson *ui;
+
+    uint32_t mFormatCount = 0;
 };
 
 #endif // DIALOGFORMATJSON_H

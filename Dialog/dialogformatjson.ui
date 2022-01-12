@@ -65,7 +65,7 @@
         <item>
          <widget class="QPushButton" name="btnFormatJson">
           <property name="text">
-           <string>格式化</string>
+           <string>格式化（缩进型）</string>
           </property>
          </widget>
         </item>
