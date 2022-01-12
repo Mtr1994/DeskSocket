@@ -16,6 +16,10 @@
 
 同时，软件也提供了一些日常工作中常用的计算工具；满足程序员日常工作中对网络数据通信测试的需求。
 
+##### 软件界面
+
+![主界面](https://github.com/Mtr1994/ImageFactory/blob/master/DeskSocket/main_page.png)
+
 #### 第三方依赖说明
 
 * 软件使用 `HP Socket` 作为通信库，在实际的运行过程中，需要将动态库（./Libs/hpsocket/bin/HPSocket_U.dll）添加到系统环境变量，或者将其拷贝到可执行文件夹所在目录
