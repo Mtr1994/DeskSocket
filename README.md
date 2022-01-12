@@ -18,7 +18,7 @@
 
 #### 软件界面
 
-![主界面](https://raw.githubusercontent.com/Mtr1994/ImageFactory/master/DeskSocket/main_page.png)
+![主界面示例](https://raw.githubusercontent.com/Mtr1994/ImageFactory/master/DeskSocket/main_page.png)
 
 #### 第三方依赖说明
 
