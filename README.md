@@ -16,9 +16,9 @@
 
 同时，软件也提供了一些日常工作中常用的计算工具；满足程序员日常工作中对网络数据通信测试的需求。
 
-##### 软件界面
+#### 软件界面
 
-![主界面](https://github.com/Mtr1994/ImageFactory/blob/master/DeskSocket/main_page.png)
+![主界面](https://raw.githubusercontent.com/Mtr1994/ImageFactory/master/DeskSocket/main_page.png)
 
 #### 第三方依赖说明
 
