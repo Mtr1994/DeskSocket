@@ -1,4 +1,4 @@
-#ifndef WIDGETSOCKETVIEW_H
+﻿#ifndef WIDGETSOCKETVIEW_H
 #define WIDGETSOCKETVIEW_H
 
 #include <QWidget>

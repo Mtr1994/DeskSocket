@@ -1,4 +1,4 @@
-#include "udpbroadcast.h"
+﻿#include "udpbroadcast.h"
 
 using namespace mtr;
 
@@ -27,7 +27,7 @@ QString UdpBroadcast::getServerKey()
     return QString("UDPCLIENT:%1:%2").arg(mServerAddress, QString::number(mServerPort));
 }
 
-bool UdpBroadcast::write(const QByteArray &data)
+bool UdpBroadcast::write(const std::string &data)
 {
     return mUdpCastPtr->Send((BYTE*)data.data(), data.length());
 }

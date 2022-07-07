@@ -54,7 +54,7 @@ public:
         USHORT port = getSocketPort(pSender, dwConnID);
 
         QByteArray data = QByteArray::fromRawData((const char*)pData, iLength);
-        emit AppSignal::getInstance()->sgl_thread_recv_slave_client_data(key, ip, port, dwConnID, data);
+        emit AppSignal::getInstance()->sgl_thread_recv_slave_client_data(key, ip, port, dwConnID, data.toStdString());
         return HR_OK;
     }
 
@@ -139,7 +139,7 @@ public:
 
     void clearClient() override;
 
-    bool write(CONNID dwConnID, const QByteArray &data) override;
+    bool write(CONNID dwConnID, const std::string &data) override;
 
     bool closeSocket(CONNID dwConnID) override;
 

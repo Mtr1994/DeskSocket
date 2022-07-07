@@ -1,4 +1,4 @@
-#ifndef UDPBROADCAST_H
+﻿#ifndef UDPBROADCAST_H
 #define UDPBROADCAST_H
 #include "HPSocket/HPSocket.h"
 #include "Public/appsignal.h"
@@ -114,7 +114,7 @@ public:
     bool connect(const QString &ipv4, uint16_t port);
     bool connect();
     QString getServerKey();
-    bool write(const QByteArray &data);
+    bool write(const std::string &data);
     bool closeSocket();
 
 private:

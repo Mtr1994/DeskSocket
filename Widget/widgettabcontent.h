@@ -33,7 +33,7 @@ signals:
     void sgl_client_operation(int operation, const ClientInfo& info);
 
 private slots:
-    void on_btnSend_clicked();
+    void slot_btn_send_click();
 
 private:
     Ui::WidgetTabContent *ui;

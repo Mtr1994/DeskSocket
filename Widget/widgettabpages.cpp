@@ -8,6 +8,9 @@
 #include "Public/appsignal.h"
 #include "Log/logger.h"
 
+// test
+#include <QDebug>
+
 WidgetTabPages::WidgetTabPages(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetTabPages)
@@ -61,14 +64,14 @@ void WidgetTabPages::slot_add_tab_page(uint16_t protocol, const QString &flag, c
     mMapContent.insert(contentKey, content);
 }
 
-void WidgetTabPages::slot_thread_recv_slave_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data)
+void WidgetTabPages::slot_thread_recv_slave_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const std::string &data)
 {
     QString contentKey = QString("%1*%2*%3*%4").arg(key, ip_4, QString::number(port), QString::number(dwconnid));
     WidgetTabContent *content = mMapContent.value(contentKey);
     if (nullptr == content) return;
 
     QTextCodec *codec = QTextCodec::codecForName(content->getCurrentCodeTypeName().data());
-    QString string = codec->toUnicode(data);
+    QString string = codec->toUnicode(QString::fromStdString(data).toStdString().data());
 
     content->appendData(string);
 }
@@ -100,11 +103,9 @@ void WidgetTabPages::slot_close_slave_client_result(const QString &socketkey)
     int index = ui->tabWidget->indexOf(content);
     if (index < 0) return;
     ui->tabWidget->removeTab(index);
-
-
 }
 
-void WidgetTabPages::slot_thread_recv_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data)
+void WidgetTabPages::slot_thread_recv_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const std::string &data)
 {
     QString contentKey = QString("%1*%2*%3*%4").arg(key, ip_4, QString::number(port), QString::number(dwconnid));
     WidgetTabContent *content = mMapContent.value(contentKey);
@@ -114,10 +115,8 @@ void WidgetTabPages::slot_thread_recv_client_data(const QString &key, const QStr
         return;
     }
 
-    QTextCodec *codec = QTextCodec::codecForName(content->getCurrentCodeTypeName().data());
-    QString string = codec->toUnicode(data);
-
-    content->appendData(string);
+    // 这种写法能都防止 string 中含有 0x00 而导致的数据截断
+    content->appendData(QString::fromStdString(data));
 }
 
 void WidgetTabPages::slot_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error)

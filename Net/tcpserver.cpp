@@ -52,7 +52,7 @@ QString TcpServer::getServerKey()
     return QString("TCPSERVER:%1:%2").arg(mIPV4, QString::number(mPort));
 }
 
-bool TcpServer::write(CONNID dwConnID, const QByteArray &data)
+bool TcpServer::write(CONNID dwConnID, const std::string &data)
 {
     return  mTcpPackServer->Send(dwConnID, (BYTE*)data.data(), data.length());
 }

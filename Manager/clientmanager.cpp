@@ -57,9 +57,9 @@ void ClientManager::slot_add_new_client(uint16_t protocol, const QString &ipv4, 
     mListSocket.append(socket);
 }
 
-void ClientManager::slot_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const QByteArray &data)
+void ClientManager::slot_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const std::string &data)
 {
-    Q_UNUSED(dwconnid);
+    Q_UNUSED(dwconnid); Q_UNUSED(contentKey);
     bool status = false;
     QString error = "未找到正确的服务";
     for (auto &socket : mListSocket)

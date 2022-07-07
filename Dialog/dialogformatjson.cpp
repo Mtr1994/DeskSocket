@@ -1,4 +1,4 @@
-#include "dialogformatjson.h"
+﻿#include "dialogformatjson.h"
 #include "ui_dialogformatjson.h"
 
 #include <QJsonDocument>

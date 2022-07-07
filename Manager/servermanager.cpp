@@ -59,7 +59,7 @@ void ServerManager::slot_add_new_server(uint16_t protocol, const QString &ipv4, 
     mListServer.append(server);
 }
 
-void ServerManager::slot_slave_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const QByteArray &data)
+void ServerManager::slot_slave_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const std::string &data)
 {
     bool status = false;
     QString error = "未找到正确的服务";

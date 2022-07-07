@@ -8,6 +8,9 @@
 #include <QObject>
 #include <QTcpSocket>
 
+// test
+#include <QDebug>
+
 
 namespace mtr {
 
@@ -50,7 +53,7 @@ public:
         port = getSocketPort(pSender);
 
         QByteArray data = QByteArray::fromRawData((const char*)pData, iLength);
-        emit AppSignal::getInstance()->sgl_thread_recv_client_data(key, ip, port, dwConnID, data);
+        emit AppSignal::getInstance()->sgl_thread_recv_client_data(key, ip, port, dwConnID, data.toStdString());
         return HR_OK;
     }
 
@@ -130,7 +133,7 @@ public:
     bool connect(const QString &ipv4, uint16_t port);
     bool connect();
     QString getServerKey();
-    bool write(const QByteArray &data);
+    bool write(const std::string &data);
     bool closeSocket();
 
 private:

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright: JessMA Open Source (ldcsaa@gmail.com)
  *
  * Author	: Bruce Liang
@@ -132,9 +132,9 @@ typedef enum EnHandleResult
 ************************************************************************/
 typedef enum EnFetchResult
 {
-	FR_OK				= 0,	// 成功
-	FR_LENGTH_TOO_LONG	= 1,	// 抓取长度过大
-	FR_DATA_NOT_FOUND	= 2,	// 找不到 ConnID 对应的数据
+    FR_OK				= 0,	// 成功
+    FR_LENGTH_TOO_LONG	= 1,	// 抓取长度过大
+    FR_DATA_NOT_FOUND	= 2,	// 找不到 ConnID 对应的数据
 } En_HP_FetchResult;
 
 /************************************************************************

@@ -29,6 +29,8 @@ void WidgetTabContent::init()
     ui->splitter->setStretchFactor(1, 2);
 
     SoftConstants::fillComboBox(SoftConstants::Item_CodeType, ui->cbbCodeType);
+
+    connect(ui->btnSend, &QPushButton::clicked, this, &WidgetTabContent::slot_btn_send_click);
 }
 
 void WidgetTabContent::appendError(const QString &data)
@@ -41,7 +43,19 @@ void WidgetTabContent::appendData(const QString &data, int type)
 {
     QString tip = (type == RECV_DATA) ? "接收" : (type == SEND_DATA) ? "发送" : "系统";
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
-    ui->tbDatas->append("<p style=\"font-family:Perpetua; color:#999999; font-size:50%\">" + time + ": (" + tip + ")</p>" + "<p color='#666666'> &nbsp;&nbsp;&nbsp;&nbsp;" + data + "</p>");
+
+    QString text = data;
+    if (ui->menuHex->isChecked())
+    {
+        text = QByteArray::fromStdString(text.toStdString()).toHex().toStdString().data();
+    }
+    else
+    {
+        QTextCodec *codec = QTextCodec::codecForName(ui->cbbCodeType->currentText().toStdString().data());
+        text = codec->toUnicode(data.toStdString().data());
+    }
+
+    ui->tbDatas->append("<p style=\"font-family:Perpetua; color:#999999; font-size:50%\">" + time + ": (" + tip + ")</p>" + "<p color='#666666'> &nbsp;&nbsp;&nbsp;&nbsp;" + text + "</p>");
 }
 
 void WidgetTabContent::applySendResult(int length)
@@ -64,27 +78,30 @@ std::string WidgetTabContent::getCurrentCodeTypeName()
  * 发送数据接口
  */
 
-void WidgetTabContent::on_btnSend_clicked()
+void WidgetTabContent::slot_btn_send_click()
 {
     if (ui->tbSendDatas->toPlainText().isEmpty()) return;
-
-    QByteArray array = QByteArray::fromStdString(ui->tbSendDatas->toPlainText().toStdString());
-    QTextCodec *codec = QTextCodec::codecForName(ui->cbbCodeType->currentText().toStdString().data());
-    array = codec->fromUnicode(array);
+    std::string package;
 
     if (ui->menuHex->isChecked())
     {
-        array = array.toHex();
-        array = array.toUpper();
+        package = QByteArray::fromHex(ui->tbSendDatas->toPlainText().trimmed().toStdString().data()).toStdString();
     }
+    else
+    {
+        package = QByteArray::fromStdString(ui->tbSendDatas->toPlainText().toStdString().data()).toStdString();
+    }
+
+    QTextCodec *codec = QTextCodec::codecForName(ui->cbbCodeType->currentText().toStdString().data());
+    package = codec->fromUnicode(QString::fromStdString(package)).toStdString();
 
     QString contentKey = QString("%1*%2*%3*%4").arg(mServerKey, mClientAddress, QString::number(mClientPort), QString::number(mClientID));
     if (mContentFlag == "SLAVECLIENT")
     {
-        emit AppSignal::getInstance()->sgl_slave_client_sent_data(mServerKey, contentKey, mClientID, array);
+        emit AppSignal::getInstance()->sgl_slave_client_sent_data(mServerKey, contentKey, mClientID, package);
     }
     else if (mContentFlag == "CLIENT")
     {
-        emit AppSignal::getInstance()->sgl_client_sent_data(mServerKey, contentKey, mClientID, array);
+        emit AppSignal::getInstance()->sgl_client_sent_data(mServerKey, contentKey, mClientID, package);
     }
 }

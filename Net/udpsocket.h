@@ -1,4 +1,4 @@
-#ifndef UDPSOCKET_H
+﻿#ifndef UDPSOCKET_H
 #define UDPSOCKET_H
 #include "HPSocket/HPSocket.h"
 #include "Public/appsignal.h"
@@ -39,7 +39,7 @@ public:
         port = getSocketPort(pSender);
 
         QByteArray data = QByteArray::fromRawData((const char*)pData, iLength);
-        emit AppSignal::getInstance()->sgl_thread_recv_client_data(key, ip, port, dwConnID, data);
+        emit AppSignal::getInstance()->sgl_thread_recv_client_data(key, ip, port, dwConnID, data.toStdString());
         return HR_OK;
     }
     EnHandleResult OnClose(IUdpClient* pSender, CONNID dwConnID, EnSocketOperation enOperation, int iErrorCode)
@@ -116,7 +116,7 @@ public:
     bool connect(const QString &ipv4, uint16_t port);
     bool connect();
     QString getServerKey();
-    bool write(const QByteArray &data);
+    bool write(const std::string &data);
     bool closeSocket();
 
 private:

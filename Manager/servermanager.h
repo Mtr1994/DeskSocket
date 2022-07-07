@@ -22,7 +22,7 @@ public:
 public slots:
     void slot_add_new_server(uint16_t protocol, const QString &ipv4, uint16_t port);
 
-    void slot_slave_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const QByteArray &data);
+    void slot_slave_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const std::string &data);
 
     void slot_delete_slave_client(const QString &serverkey, uint64_t dwconnid);
 

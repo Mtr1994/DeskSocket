@@ -4,6 +4,9 @@
 
 using namespace mtr;
 
+// test
+#include <QDebug>
+
 TcpSocket::TcpSocket()
 {
 
@@ -27,7 +30,7 @@ QString TcpSocket::getServerKey()
     return QString("TCPCLIENT:%1:%2").arg(mServerAddress, QString::number(mServerPort));
 }
 
-bool TcpSocket::write(const QByteArray &data)
+bool TcpSocket::write(const std::string &data)
 {
     return mTcpClientPtr->Send((BYTE*)data.data(), data.length());
 }

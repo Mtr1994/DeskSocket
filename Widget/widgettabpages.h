@@ -31,11 +31,11 @@ public:
 
 public slots:
     void slot_add_tab_page(uint16_t protocol, const QString &flag, const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid);
-    void slot_thread_recv_slave_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data);
+    void slot_thread_recv_slave_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const std::string &data);
     void slot_current_socket_index_change(const QString &socketkey);
     void slot_slave_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error);
     void slot_close_slave_client_result(const QString &socketkey);
-    void slot_thread_recv_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data);
+    void slot_thread_recv_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const std::string &data);
     void slot_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error);
     void slot_client_closed(const QString &socketkey);
 

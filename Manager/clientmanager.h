@@ -23,7 +23,7 @@ public:
 public slots:
     // 自定义槽函数
     void slot_add_new_client(uint16_t protocol, const QString &ipv4, uint16_t port);
-    void slot_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const QByteArray &data);
+    void slot_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const std::string &data);
     void slot_delete_client(const QString &serverkey);
 
     void slot_disconnect_client(const QString &serverkey);

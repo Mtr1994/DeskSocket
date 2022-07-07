@@ -60,7 +60,6 @@ void WidgetSocketView::init()
 
     connect(AppSignal::getInstance(), &AppSignal::sgl_delete_client_finish, this, &WidgetSocketView::slot_delete_client_finish);
     connect(AppSignal::getInstance(), &AppSignal::sgl_delete_server_finish, this, &WidgetSocketView::slot_delete_server_finish);
-
 }
 
 void WidgetSocketView::deleteItem(int index)

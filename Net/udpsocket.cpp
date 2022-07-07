@@ -1,4 +1,4 @@
-#include "udpsocket.h"
+﻿#include "udpsocket.h"
 
 using namespace mtr;
 
@@ -25,7 +25,7 @@ QString mtr::UdpSocket::getServerKey()
     return QString("UDPCLIENT:%1:%2").arg(mServerAddress, QString::number(mServerPort));
 }
 
-bool mtr::UdpSocket::write(const QByteArray &data)
+bool mtr::UdpSocket::write(const std::string &data)
 {
     return mUdpClientPtr->Send((BYTE*)data.data(), data.length());
 }

@@ -12,6 +12,10 @@ using namespace mtr;
 
 int main(int argc, char *argv[])
 {
+    qRegisterMetaType<uint16_t>("uint16_t");
+    qRegisterMetaType<uint64_t>("uint64_t");
+    qRegisterMetaType<std::string>("std::string");
+
     QApplication a(argc, argv);
 
     // 加载样式

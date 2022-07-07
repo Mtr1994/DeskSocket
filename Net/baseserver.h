@@ -1,4 +1,4 @@
-#ifndef BASESERVER_H
+﻿#ifndef BASESERVER_H
 #define BASESERVER_H
 #include "HPSocket/HPSocket.h"
 
@@ -20,7 +20,7 @@ public:
 
     virtual void clearClient() = 0;
 
-    virtual bool write(CONNID dwConnID, const QByteArray &data) = 0;
+    virtual bool write(CONNID dwConnID, const std::string &data) = 0;
 
     virtual bool closeSocket(CONNID dwConnID) = 0;
 

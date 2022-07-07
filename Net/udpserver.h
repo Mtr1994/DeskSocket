@@ -1,4 +1,4 @@
-#ifndef UDPSERVER_H
+﻿#ifndef UDPSERVER_H
 #define UDPSERVER_H
 
 #include <QObject>
@@ -61,7 +61,7 @@ public:
         USHORT port = getSocketPort(pSender, dwConnID);
 
         QByteArray data = QByteArray::fromRawData((const char*)pData, iLength);
-        emit AppSignal::getInstance()->sgl_thread_recv_slave_client_data(key, ip, port, dwConnID, data);
+        emit AppSignal::getInstance()->sgl_thread_recv_slave_client_data(key, ip, port, dwConnID, data.toStdString());
         return HR_OK;
     }
 
@@ -137,7 +137,7 @@ public:
 
     void clearClient();
 
-    bool write(CONNID dwConnID, const QByteArray &data);
+    bool write(CONNID dwConnID, const std::string &data);
 
     bool closeSocket(CONNID dwConnID);
 

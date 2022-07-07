@@ -1,4 +1,4 @@
-#ifndef APPSIGNAL_H
+﻿#ifndef APPSIGNAL_H
 #define APPSIGNAL_H
 
 #include <QObject>
@@ -28,10 +28,10 @@ signals:
     void sgl_recv_new_slave_client(uint16_t protocol, const QString &serverkey, const QString &ip_4, uint16_t port, uint64_t dwconnid);
 
     // 接受一个客户端数据
-    void sgl_thread_recv_slave_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data);
+    void sgl_thread_recv_slave_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const std::string &data);
 
     // 接受的客户端发送数据
-    void sgl_slave_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const QByteArray &data);
+    void sgl_slave_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const std::string &data);
 
     // 接受的客户端发送数据结果
     void sgl_slave_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error);
@@ -70,10 +70,10 @@ signals:
     void sgl_add_tab_page(uint16_t protocol, const QString &flag, const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid);
 
     // 收到客户端（主动）数据
-    void sgl_thread_recv_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const QByteArray &data);
+    void sgl_thread_recv_client_data(const QString &key, const QString &ip_4, uint16_t port, uint64_t dwconnid, const std::string &data);
 
     // 客户端（主动）发送数据
-    void sgl_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const QByteArray &data);
+    void sgl_client_sent_data(const QString &serverkey, const QString &contentKey, uint64_t dwconnid, const std::string &data);
 
     // 客户端（主动）发送数据结果
     void sgl_client_sent_data_result(const QString &contentKey, bool status, uint32_t length, const QString &error);

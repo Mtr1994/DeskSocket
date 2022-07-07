@@ -1,4 +1,4 @@
-#include "udpserver.h"
+﻿#include "udpserver.h"
 
 using namespace mtr;
 
@@ -29,7 +29,7 @@ void UdpServer::clearClient()
 
 }
 
-bool UdpServer::write(CONNID dwConnID, const QByteArray &data)
+bool UdpServer::write(CONNID dwConnID, const std::string &data)
 {
     return  mUdpServer->Send(dwConnID, (BYTE*)data.data(), data.length());
 }
