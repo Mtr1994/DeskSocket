@@ -1,4 +1,10 @@
-﻿QWidget
+﻿QMainWindow#MainWindow
+{
+    min-width: 64em;
+    min-height: 40em;
+}
+
+QWidget
 {
     font: 9pt "Microsoft YaHei UI";
 }
@@ -32,6 +38,7 @@ QTreeView
     border: 1px solid #dddddd;
     border-right: none;
     border-top: none;
+    min-width: 16em;
 }
 
 QTreeView::item

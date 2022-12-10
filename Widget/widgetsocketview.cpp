@@ -422,6 +422,7 @@ void WidgetSocketView::on_socketView_customContextMenuRequested(const QPoint &po
     if (mark.contains("SERVER"))
     {
         QMenu menu(this);
+        menu.setWindowFlags(menu.windowFlags() | Qt::NoDropShadowWindowHint);
         int status = item->data(Qt::UserRole + 2).toUInt();
         QString serverKey = mark;
         QAction actionStart("开始监听");
@@ -454,6 +455,7 @@ void WidgetSocketView::on_socketView_customContextMenuRequested(const QPoint &po
     else if (mark.contains("SLAVECLIENT"))
     {
         QMenu menu(this);
+        menu.setWindowFlags(menu.windowFlags() | Qt::NoDropShadowWindowHint);
         QAction actionDeleteClient("删除连接");
         QString serverKey = item->data(Qt::UserRole + 4).toString();
         uint64_t dwconnid = item->data(Qt::UserRole + 5).toULongLong();
@@ -467,6 +469,7 @@ void WidgetSocketView::on_socketView_customContextMenuRequested(const QPoint &po
     else if (mark.contains("TCPCLIENT"))
     {
         QMenu menu(this);
+        menu.setWindowFlags(menu.windowFlags() | Qt::NoDropShadowWindowHint);
         int status = item->data(Qt::UserRole + 2).toUInt();
         QString serverKey = item->data(Qt::UserRole + 1).toString();
 
@@ -495,6 +498,7 @@ void WidgetSocketView::on_socketView_customContextMenuRequested(const QPoint &po
     else if (mark.contains("UDPCLIENT"))
     {
         QMenu menu(this);
+        menu.setWindowFlags(menu.windowFlags() | Qt::NoDropShadowWindowHint);
         QAction actionDeleteClient("删除连接");
         QString serverKey = item->data(Qt::UserRole + 4).toString();
         connect(&actionDeleteClient, &QAction::triggered, [serverKey]() {
