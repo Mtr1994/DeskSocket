@@ -68,38 +68,11 @@ QDockWidget
 }
 
 /* QPushButton */
-QPushButton[Wcd="true"]
-{
-    min-height: 1.6em;
-    border: 1px solid #68687f;
-    border-radius: 2px;
-    padding-left: 1em;
-    padding-right: 1em;
-    color: #fefefe;
-    background-color: #55557f;
-}
-
-QPushButton[Wcd="true"]:hover
-{
-    background-color: #5d5d8a;
-    border: none;
-}
-
-QPushButton[Wcd="true"]:pressed
-{
-    background-color: #4b4b7d;
-}
-
-QPushButton[Wcd="true"]:!enabled
-{
-    background-color: #444444;
-}
-
 QPushButton[Ok="true"]
 {
     min-height: 1.6em;
-    border: 1px solid #b3d8ff;
-    border-radius: 2px;
+    border: 1px solid #aa409eff;
+    border-radius: 0.2em;
     padding-left: 1em;
     padding-right: 1em;
     color: #fefefe;
@@ -330,7 +303,12 @@ QMenu::item
     min-height: 1.6em;
     padding-left: 1em;
     margin: 4px 1px;
-    min-width: 8em; /* 自动撑大 QMenu */
+    min-width: 8em;
+}
+
+QMenu::item:disabled
+{
+    color: #999999;
 }
 
 QMenu::item:selected  {

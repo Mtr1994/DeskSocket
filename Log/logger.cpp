@@ -25,9 +25,10 @@ void Logger::init()
     spdlog::flush_every(std::chrono::seconds(60));
     logger->set_pattern("%Y-%m-%d %H:%M:%S.%e [%l][%t] <%s> {%#}: %v");
 
-    // Set the default logger to file logger
-    auto console = spdlog::stdout_color_mt("console");
-    spdlog::set_default_logger(console);
-    spdlog::set_level(spdlog::level::debug); // Set global log level to debug
+//    // Set the default logger to file logger
+//    auto console = spdlog::stdout_color_mt("console");
+//    spdlog::set_default_logger(console);
+//    // Set global log level to debug
+//    spdlog::set_level(spdlog::level::debug);
 }
 
