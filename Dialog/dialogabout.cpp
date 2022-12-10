@@ -31,8 +31,9 @@ void DialogAbout::init()
     }
     else
     {
-        ui->lbVersion->setText(QString("00" + lst.at(0)).right(2) + "-" +
-                               QString("00" + lst.at(1)).right(2) + "-" +
-                               QString("00" + lst.at(2)).right(2));
+        ui->lbVersion->setText(QString("00" + lst.at(0)).right(2) + "." +
+                               QString("00" + lst.at(1)).right(2) + "." +
+                               QString("00" + lst.at(2)).right(2) + "." +
+                               QString("00" + lst.at(3)).right(2));
     }
 }

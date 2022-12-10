@@ -13,6 +13,12 @@ QWidget[background="true"]
     background-color: #fefefe;
 }
 
+QDialog#DialogAbout
+{
+    min-width: 24em;
+    min-height: 12em;
+}
+
 /* 状态栏样式 */
 QStatusBar
 {

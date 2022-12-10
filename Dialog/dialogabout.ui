@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="widgetAbout" native="true">
      <property name="background" stdset="0">
       <bool>true</bool>
      </property>
@@ -98,7 +98,7 @@
 color: gray;</string>
         </property>
         <property name="text">
-         <string>Author: Mtr</string>
+         <string>Author: Mtr1994</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
