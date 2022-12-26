@@ -3,6 +3,9 @@
 
 #include <QDateTime>
 #include <QTextCodec>
+#include <QListView>
+#include <QMenu>
+#include <QAction>
 
 #include "Public/defines.h"
 #include "Log/logger.h"
@@ -28,7 +31,10 @@ void WidgetTabContent::init()
     ui->splitter->setStretchFactor(0, 8);
     ui->splitter->setStretchFactor(1, 2);
 
+    connect(ui->tbDatas, &QTextEdit::customContextMenuRequested, this, &WidgetTabContent::slot_tb_logs_costom_menu_request);
+
     SoftConstants::fillComboBox(SoftConstants::Item_CodeType, ui->cbbCodeType);
+    ui->cbbCodeType->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
 
     connect(ui->btnSend, &QPushButton::clicked, this, &WidgetTabContent::slot_btn_send_click);
 }
@@ -36,16 +42,25 @@ void WidgetTabContent::init()
 void WidgetTabContent::appendError(const QString &data)
 {
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
-    ui->tbDatas->append("<p style=\"font-family:Perpetua; color:#999999; font-size:50%\">" + time + ":错误</p>" + "<p color='#fd5401'> &nbsp;&nbsp;&nbsp;&nbsp;" + data + "</p>");
+    ui->tbDatas->append("<p style=\"color:#999999; font-size: 8pt;\">" + time + ":错误</p>" + "<p color='#fd5401'> &nbsp;&nbsp;&nbsp;&nbsp;" + data + "</p>");
 }
 
 void WidgetTabContent::appendData(const QString &data, int type)
 {
+    // 不回显发送的内容
+    if (type == SEND_DATA) return;
+
+    if (type == RECV_DATA)
+    {
+        mTotalRecvBytes += QByteArray::fromStdString(data.toStdString()).length();
+        ui->lbRecvBytes->setText(QString("接收：%1").arg(QString::number(mTotalRecvBytes)));
+    }
+
     QString tip = (type == RECV_DATA) ? "接收" : (type == SEND_DATA) ? "发送" : "系统";
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
 
     QString text = data;
-    if (ui->menuHex->isChecked())
+    if (ui->menuHexRecv->isChecked() && (type == RECV_DATA))
     {
         text = QByteArray::fromStdString(text.toStdString()).toHex().toStdString().data();
     }
@@ -55,12 +70,15 @@ void WidgetTabContent::appendData(const QString &data, int type)
         text = codec->toUnicode(data.toStdString().data());
     }
 
-    ui->tbDatas->append("<p style=\"font-family:Perpetua; color:#999999; font-size:50%\">" + time + ": (" + tip + ")</p>" + "<p color='#666666'> &nbsp;&nbsp;&nbsp;&nbsp;" + text + "</p>");
+    ui->tbDatas->append("<p style=\"color:#999999; font-size: 8pt;\">" + time + ": (" + tip + ")</p>" + "<p color='#666666'> &nbsp;&nbsp;&nbsp;&nbsp;" + text + "</p>");
 }
 
 void WidgetTabContent::applySendResult(int length)
 {
     if (length == 0) return appendError("发送失败");
+
+    mTotalSendBytes += length;
+    ui->lbSendBytes->setText(QString("发送：%1").arg(QString::number(mTotalSendBytes)));
 
     QByteArray array = QByteArray::fromStdString(ui->tbSendDatas->toPlainText().toStdString());
     appendData(QString::fromStdString(array.toStdString()), SEND_DATA);
@@ -83,7 +101,7 @@ void WidgetTabContent::slot_btn_send_click()
     if (ui->tbSendDatas->toPlainText().isEmpty()) return;
     std::string package;
 
-    if (ui->menuHex->isChecked())
+    if (ui->menuHexSend->isChecked())
     {
         package = QByteArray::fromHex(ui->tbSendDatas->toPlainText().trimmed().toStdString().data()).toStdString();
     }
@@ -104,4 +122,22 @@ void WidgetTabContent::slot_btn_send_click()
     {
         emit AppSignal::getInstance()->sgl_client_sent_data(mServerKey, contentKey, mClientID, package);
     }
+}
+
+void WidgetTabContent::slot_tb_logs_costom_menu_request(const QPoint &pos)
+{
+    Q_UNUSED(pos);
+    QMenu menu(this);
+    menu.setWindowFlags(Qt::NoDropShadowWindowHint | menu.windowFlags() | Qt::FramelessWindowHint);
+    menu.setAttribute(Qt::WA_TranslucentBackground);
+    QAction actionCopy("复制");
+    // 选中才能复制
+    connect(&actionCopy, &QAction::triggered, this, [this]() { ui->tbDatas->copy(); });
+    QAction actionClear("全部清理");
+    connect(&actionClear, &QAction::triggered, this, [this]() { ui->tbDatas->clear(); });
+
+    menu.addAction(&actionCopy);
+    menu.addAction(&actionClear);
+
+    menu.exec(QCursor::pos());
 }

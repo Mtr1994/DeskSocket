@@ -8,7 +8,6 @@
 
 #include "Public/treeitemdelegate.h"
 #include "Public/defines.h"
-#include "Dialog/dialognote.h"
 #include "Log/logger.h"
 #include "Dialog/dialogserverargs.h"
 #include "Public/appsignal.h"

@@ -35,6 +35,8 @@ signals:
 private slots:
     void slot_btn_send_click();
 
+    void slot_tb_logs_costom_menu_request(const QPoint &pos);
+
 private:
     Ui::WidgetTabContent *ui;
 
@@ -52,6 +54,12 @@ private:
 
     // tab 所对应的套接字
     int mSocketptr = 0;
+
+    // 发送的字节数量
+    uint64_t mTotalSendBytes = 0;
+
+    // 接收的字节数量
+    uint64_t mTotalRecvBytes = 0;
 };
 
 #endif // WIDGETTABCONTENT_H

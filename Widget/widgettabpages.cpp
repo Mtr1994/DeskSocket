@@ -140,5 +140,7 @@ void WidgetTabPages::slot_client_closed(const QString &socketkey)
     int index = ui->tabWidget->indexOf(content);
     if (index < 0) return;
     ui->tabWidget->removeTab(index);
+
+    // 不主动关闭，删除才关闭
     LOG_DEBUG(QString("删除已关闭的主动连接窗口 %1").arg(socketkey).toStdString().data());
 }

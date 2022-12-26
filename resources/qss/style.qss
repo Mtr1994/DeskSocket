@@ -1,17 +1,11 @@
-﻿QMainWindow#MainWindow
+﻿QWidget
 {
-    min-width: 64em;
-    min-height: 40em;
-}
-
-QWidget
-{
-    font: 9pt "Microsoft YaHei UI";
+    font: 9pt "Microsoft YaHei";
 }
 
 QWidget:focus
 {
-    outline: none; /*去掉选中时的虚线边框*/
+    outline: none;
 }
 
 QWidget[background="true"]
@@ -23,13 +17,6 @@ QDialog#DialogAbout
 {
     min-width: 24em;
     min-height: 12em;
-}
-
-/* 状态栏样式 */
-QStatusBar
-{
-    background-color: #fefefe;
-    border-top: 0px solid #dddddd;
 }
 
 /* TreeView */
@@ -49,13 +36,15 @@ QTreeView::item
 }
 
 QTreeView::branch:has-children:!has-siblings:closed,
-QTreeView::branch:closed:has-children:has-siblings {
+QTreeView::branch:closed:has-children:has-siblings
+{
     border-image: none;
     image: url(:/resources/image/public/tree_view_right.png);
 }
 
 QTreeView::branch:open:has-children:!has-siblings,
-QTreeView::branch:open:has-children:has-siblings  {
+QTreeView::branch:open:has-children:has-siblings
+{
     border-image: none;
     image: url(:/resources/image/public/tree_view_down.png);
 }
@@ -211,6 +200,7 @@ QFrame[Wcd="true"]
     background-color: transparent;
 }
 
+/* QSlider */
 QSlider::groove:horizontal {
     border: 1px solid transparent;
     background: transparent;
@@ -267,6 +257,7 @@ QSlider::handle:horizontal:disabled {
     border-radius: 4px;
 }
 
+/* QMenuBar */
 QMenuBar
 {
     background-color: #fefefe;
@@ -288,21 +279,22 @@ QMenuBar::item::selected
     border-radius: 0.2em;;
 }
 
+/* QMenu */
 QMenu
 {
-    background-color : #fefefe;
-    padding: 2px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
+    background-color: #fefefe;
+    border: 1px solid #f0f0f0;
+    border-radius: 0.2em;
 }
 
 QMenu::item
 {
     color: #333333;
     background-color: transparent;
-    min-height: 1.6em;
+    min-height: 2.4em;
     padding-left: 1em;
-    margin: 4px 1px;
+    border-radius: 0.2em;
+    margin: 0.2em 0.3em;
     min-width: 8em;
 }
 
@@ -311,24 +303,25 @@ QMenu::item:disabled
     color: #999999;
 }
 
-QMenu::item:selected  {
+QMenu::item:selected
+{
     background-color: #f2f3f5;
 }
 
 /* QComboBox */
 QComboBox
 {
-    min-height: 1.7em;
+    min-height: 1.8em;
     border: 1px solid #dcdfe6;
-    border-radius: 3px;
-    padding-left: 6px;
+    border-radius: 0.2em;
+    padding-left: 0.5em;
 }
 
 QComboBox QAbstractItemView
 {
-    outline: 0px solid gray;   /* 选定项的虚框 */
-    border: 1px solid #dcdfe6;   /* 整个下拉窗体的边框 */
-    background-color: #fefefe;   /* 整个下拉窗体的背景色 */
+    outline: 0px solid gray;
+    border: 1px solid #dcdfe6;
+    background-color: #fefefe;
 }
 
 QComboBox:hover
@@ -353,66 +346,22 @@ QComboBox::down-arrow
 
 QComboBox QAbstractItemView::item
 {
+    font: 9pt "Microsoft YaHei";
     color: #696b6f;
-    padding-left: 6px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    min-height: 1.8em;
+    padding-left: 0.5em;
 }
 
 QComboBox QAbstractItemView::item:hover
 {
-    padding-left: 0px;
     color: #333333;
     background-color: #f5f7fa;
 }
 
 QComboBox QAbstractItemView::item:selected
 {
-    padding-left: 0px;
     color: #333333;
     background-color: #f5f7fa;
-}
-
-/* QTableView */
-
-QTableView
-{
-    border: 1px solid #dddddd;
-}
-
-QTableView::item
-{
-    background-color: #fefefe;
-}
-
-QTableView::item:selected
-{
-    background-color: #dddddd;
-}
-
-QTableView::item:!selected
-{
-    background-color: #fefefe;
-}
-
-QTableView::item:!focus
-{
-    background-color: #fefefe;
-}
-
-QHeaderView::section
-{
-    padding-left: 0.2em;
-    border-left: 0px solid #000;
-    border-right: 1px solid #d5d5d5;
-    border-top: 0px solid #000;
-    border-bottom: 1px solid #d5d5d5;
-    background-color: #fefefe;
-}
-
-QHeaderView::section:last
-{
-    border-right: 1px solid transparent;
 }
 
 /* QGroupBox */
@@ -474,23 +423,34 @@ QScrollBar::vertical
     border: 1px solid #dddddd;
     border-radius: 0.2em;
     margin:0px,0px,0px,0px;
-    width: 0.5em;
+    width: 0.48em;
 }
 
-QScrollBar::handle:vertical {
-    background-color: rgb(108, 113, 125);
+QScrollBar::sub-page:vertical {
+    background: rgba(0, 0, 0, 6);
+}
+
+QScrollBar::add-page:vertical {
+    background: rgba(0, 0, 0, 6);
+}
+
+QScrollBar::handle:vertical
+{
+    background-color: rgba(108, 113, 125, 128);
     border: none;
-    border-radius: 0.1em;
-    min-height: 3em;
-    width: 0.4em;
+    border-radius: 0.2em;
+    min-height: 5em;
+    width: 0.48em;
 }
 
-QScrollBar::add-line:vertical {
+QScrollBar::add-line:vertical
+{
     height: 0em;
     subcontrol-origin: margin;
 }
 
-QScrollBar::sub-line:vertical {
+QScrollBar::sub-line:vertical
+{
     height: 0em;
     subcontrol-origin:margin;
 }
@@ -504,4 +464,51 @@ QDialog#DialogServerArgs
 QDialog#DialogTcpClientArgs
 {
     min-width: 20em;
+}
+
+/* QListView */
+QListView
+{
+    border: 1px solid #dcdfe6;
+    border-radius: 0.2em;
+}
+
+QListView::item
+{
+    background-color: #fefefe;
+    min-height: 1.2em;
+    color: #666666;
+    border-radius: 0.2em;
+}
+
+QListView::item:hover
+{
+    background-color: #55dcdfe6;
+}
+
+QListView::item:selected
+{
+    color: #409eff;
+    background-color: #dcdfe6;
+}
+
+/* QLabel */
+QLabel#lbSendBytes
+{
+    color: rgb(250, 200, 88);
+    background-color: rgb(255, 255, 255);
+    padding: 0em 0.6em;
+    border-radius: 0.2em;
+    border: 1px solid rgb(250, 200, 88);
+    min-width: 4.8em;
+}
+
+QLabel#lbRecvBytes
+{
+    color: rgb(145, 204, 117);
+    background-color: rgb(255, 255, 255);
+    padding: 0em 0.6em;
+    border-radius: 0.2em;
+    border: 1px solid rgb(145, 204, 117);
+    min-width: 4.8em;
 }

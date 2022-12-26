@@ -30,11 +30,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    QRect rect = QGuiApplication::screens().at(0)->availableGeometry();
-    resize(rect.width() * 0.52, rect.height() * 0.6);
+    qRegisterMetaType<uint16_t>("uint16_t");
+    qRegisterMetaType<uint64_t>("uint64_t");
+    qRegisterMetaType<std::string>("std::string");
 
-    ui->splitter->setStretchFactor(0, 2);
-    ui->splitter->setStretchFactor(1, 9);
+    QRect rect = QGuiApplication::screens().at(0)->availableGeometry();
+    resize(rect.width() * 0.48, rect.width() * 0.48 * 0.618);
 
     connect(ui->actionAddTcpServer, &QAction::triggered, AppSignal::getInstance(), &AppSignal::sgl_open_add_tcp_server_dialog);
     connect(ui->actionAddTcpClient, &QAction::triggered, AppSignal::getInstance(), &AppSignal::sgl_open_add_tcp_client_dialog);
@@ -46,6 +47,10 @@ void MainWindow::init()
 
     // 工具窗口
     connect(ui->actionJSONFormat, &QAction::triggered, this, &MainWindow::slot_open_format_json_dialog);
+
+    ui->menuNew->setWindowFlag(Qt::NoDropShadowWindowHint);
+    ui->menuTool->setWindowFlag(Qt::NoDropShadowWindowHint);
+    ui->menuHelp->setWindowFlag(Qt::NoDropShadowWindowHint);
 }
 
 void MainWindow::slot_show_about_us()

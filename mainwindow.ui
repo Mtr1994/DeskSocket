@@ -35,6 +35,12 @@
     </property>
     <item row="0" column="0">
      <widget class="QSplitter" name="splitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -44,11 +50,18 @@
       <property name="childrenCollapsible">
        <bool>false</bool>
       </property>
-      <widget class="WidgetSocketView" name="widgetSocketView" native="true"/>
+      <widget class="WidgetSocketView" name="widgetSocketView" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
       <widget class="WidgetTabPages" name="tabPages" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
+         <horstretch>1</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
@@ -75,7 +88,7 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="menuNew">
     <property name="title">
      <string>新建</string>
     </property>
@@ -85,23 +98,22 @@
     <addaction name="actionAddUdpClient"/>
     <addaction name="actionAddUDPBroadcast"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="menuTool">
     <property name="title">
      <string>帮助</string>
     </property>
     <addaction name="actionVersion"/>
    </widget>
-   <widget class="QMenu" name="menu_3">
+   <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>工具</string>
     </property>
     <addaction name="actionJSONFormat"/>
    </widget>
-   <addaction name="menu"/>
-   <addaction name="menu_3"/>
-   <addaction name="menu_2"/>
+   <addaction name="menuNew"/>
+   <addaction name="menuHelp"/>
+   <addaction name="menuTool"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAddTcpServer">
    <property name="text">
     <string>TCP 服务器</string>
