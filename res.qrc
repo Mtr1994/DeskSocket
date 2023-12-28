@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resource/qss/style.qss</file>
+        <file>Resource/image/public/checkbox_checked.png</file>
+        <file>Resource/image/public/combobox_down.png</file>
+        <file>Resource/image/public/dialog_close.png</file>
+        <file>Resource/image/public/dialog_close_hover.png</file>
+        <file>Resource/image/public/client.png</file>
+        <file>Resource/image/public/server.png</file>
+        <file>Resource/image/public/tree_view_right.png</file>
+        <file>Resource/image/public/tree_view_down.png</file>
+        <file>Resource/json/constants.json</file>
+        <file>Resource/image/error.svg</file>
+        <file>Resource/image/info.svg</file>
+        <file>Resource/image/success.svg</file>
+        <file>Resource/image/header.svg</file>
+    </qresource>
+</RCC>

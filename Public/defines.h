@@ -5,28 +5,25 @@
 #include <QString>
 #include <QByteArray>
 
-enum Protocol{ TCP = 1, UDP, BROADCAST };
+enum Protocol { TCP = 1, UDP, BROADCAST };
 
-enum {Tcp_Server, Tcp_Client_Slave, Tcp_Client, Udp_Server, Udp_Client};
+enum {Tcp_Server, Udp_Server, Tcp_Client_Slave, Udp_Client_Slave, Tcp_Client, Udp_Client, Udp_Client_Cast};
 
-enum ServerStatus{Server_Started = 1, Server_Shutdown, Server_Starting};
+enum ServerStatus{Server_Starting = 0, Server_Started , Server_Stoping, Server_Stoped};
 
-enum ClientStatus{Client_Connected = 1, Client_Closed, Client_Connecting};
+enum ClientStatus{Client_Connecting = 0, Client_Connected, Client_Stoping, Client_Stoped};
 
-typedef struct {
-    int type; // 区分被动接受的套接字和主动连接的套接字
-    QString serverkey;
-    QString socketkey;
-    qintptr socketDescriptor;
-    QString error;
-    QByteArray data;
-}ClientInfo;
-
-typedef struct {
-    QString key;
+typedef struct
+{
+    int type;
+    int status;
+    QString token;
     QString name;
-    QString ip;
-    uint32_t port;
-}ServerInfo;
+    QString peerAddress;
+    uint16_t peerPort;
+    QString localAddress;
+    uint16_t localPort;
+    uint16_t clientNumber;
+}NetworkObjectDetail;
 
 #endif // DEFINES_H

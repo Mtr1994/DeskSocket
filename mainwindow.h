@@ -18,9 +18,23 @@ public:
     void init();
 
 private slots:
+    void slot_create_tcp_server();
+
+    void slot_create_tcp_client();
+
+    void slot_create_udp_server();
+
+    void slot_create_udp_client();
+
+    void slot_create_udp_cast_client();
+
     void slot_show_about_us();
 
     void slot_open_format_json_dialog();
+
+    void slot_open_setting_dialog();
+
+    void slot_show_system_toast_message(const QString &msg, int status);
 
 private:
     Ui::MainWindow *ui;
