@@ -112,7 +112,7 @@ void WidgetNetwrokObjectView::slot_view_custom_context_menu_requested(const QPoi
         int status = item->data(Qt::UserRole + 2).toUInt();
 
         QAction actionReconnect("重新连接");
-        actionReconnect.setEnabled(status == Client_Stoped);
+        actionReconnect.setEnabled(status >= Client_Stoping);
         connect(&actionReconnect, &QAction::triggered, [token]()
         {
             emit AppSignal::getInstance()->sgl_start_network_object(token);
@@ -120,7 +120,7 @@ void WidgetNetwrokObjectView::slot_view_custom_context_menu_requested(const QPoi
         menu.addAction(&actionReconnect);
 
         QAction actionDisconnect("关闭连接");
-        actionDisconnect.setDisabled(status == Client_Stoped);
+        actionDisconnect.setDisabled(status >= Client_Stoping);
         connect(&actionDisconnect, &QAction::triggered, [token]()
         {
             emit AppSignal::getInstance()->sgl_stop_network_object(token);

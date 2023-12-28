@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "DeskSocket"
-#define MyAppVersion "1.5.0"
+#define MyAppVersion "1.6.0"
 #define MyAppPublisher "Mtr1994"
 #define MyAppURL "https://www.baidu.com/"
 #define MyAppExeName "DeskSocket.exe"
@@ -22,9 +22,9 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=C:\Users\87482\Desktop
-OutputBaseFilename=DeskSocket_offine_installer_1_5_0
-Compression=lzma2
+OutputDir=C:\Users\admin\Desktop
+OutputBaseFilename=DeskSocket_offine_installer_1_6_0
+Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 
@@ -35,8 +35,8 @@ Name: "chinese"; MessagesFile: "compiler:Languages\Chinese.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\87482\Desktop\DeskSocket\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\87482\Desktop\DeskSocket\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\admin\Desktop\DeskSocket\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\admin\Desktop\DeskSocket\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
