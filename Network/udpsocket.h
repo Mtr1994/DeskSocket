@@ -73,6 +73,7 @@ public:
     void stop(int32_t dwConnID) override;
     void clear() override;
     void close()override;
+    void edit(const QString &address, uint16_t port) override;
     void send(const std::string &data, uint32_t length, int32_t dwConnID) override;
     NetworkObjectDetail getObjectDetail(int32_t dwConnID) override;
 

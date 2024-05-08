@@ -8,7 +8,7 @@
 class AppConstants
 {
 public:
-    enum ItemType { Item_CodeType };
+    enum ItemType { Item_CodeType, Item_Log_Type };
     AppConstants();
 
 private:

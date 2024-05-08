@@ -28,15 +28,22 @@ QWidget#widgetServerDetailBase
 
 QWidget#widgetServerIcon
 {
-    min-width: 6em;
-    min-height: 6em;
-    border-radius: 1em;
-    background-color: #fc9153;
+    min-width: 24em;
+    min-height: 5em;
+    border-radius: 0.3em;
+    background-color: #f3f4f5;
 }
+
 QWidget#widgetNetworkViewBase
 {
     max-width: 15em;
     min-width: 15em;
+}
+
+QWidget#widgetServerDetailsBase
+{
+    border-radius: 0.3em;
+    background-color: #f3f4f5;
 }
 
 /* TreeView */
@@ -49,7 +56,7 @@ QTreeView
 
 QTreeView::item
 {
-    min-height: 12ex;
+    min-height: 3.2em;
     background-color: #00000000;
     color: #222222;
 }
@@ -79,7 +86,7 @@ QPushButton[Ok="true"]
 {
     min-height: 1.6em;
     border: 1px solid #aa409eff;
-    border-radius: 0.2em;
+    border-radius: 2px;
     padding-left: 1em;
     padding-right: 1em;
     color: #fefefe;
@@ -173,10 +180,12 @@ QPushButton#btnCopyResult:pressed
 /* QLineEdit */
 QLineEdit
 {
-    min-height: 1.8em;
-    border: 1px solid #dddddd;
-    border-radius: 2px;
-    padding-left: 0.5em;
+    min-width: 9em;
+    min-height: 1.6em;
+    border: 1px solid #dcdfe6;
+    border-radius: 0.2em;
+    padding-left: 0.6em;
+    color: #333333;
 }
 
 QLineEdit:hover
@@ -187,6 +196,17 @@ QLineEdit:hover
 QLineEdit:focus
 {
     border: 1px solid #57a9fd;
+}
+
+QLineEdit:!enabled
+{
+    color: #888888;
+}
+
+QLineEdit#tbAddress,#tbPort
+{
+    min-height: 1.8em;
+    min-width: 15.05em;
 }
 
 /* Line */
@@ -279,7 +299,7 @@ QMenuBar::item::selected
 QMenu
 {
     background-color: #fefefe;
-    border: 1px solid #f0f0f0;
+    border: 1px solid #d0d0d0;
     border-radius: 0.2em;
 }
 
@@ -288,10 +308,11 @@ QMenu::item
     color: #333333;
     background-color: transparent;
     min-height: 2.4em;
-    padding-left: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
     border-radius: 0.2em;
     margin: 0.2em 0.3em;
-    min-width: 8em;
+    min-width: 6em;
 }
 
 QMenu::item:disabled
@@ -307,12 +328,12 @@ QMenu::item:selected
 /* QComboBox */
 QComboBox
 {
-    min-width: 10em;
+    min-width: 14em;
     min-height: 1.8em;
     border: 1px solid #dcdfe6;
     border-radius: 0.2em;
-    padding-left: 0.7em;
-    color: #888888;
+    padding-left: 0.6em;
+    color: #333333;
 }
 
 QComboBox QAbstractItemView
@@ -543,4 +564,10 @@ QLabel#lbRecvBytes
     padding: 0em 0.6em;
     border: none;
     min-width: 6.4em;
+}
+
+QLabel#lbServerIconType
+{
+    image: url(:/Resource/image/public/server.png);
+    padding: 0.8em;
 }

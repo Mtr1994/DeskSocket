@@ -8,19 +8,26 @@ AppConfig::AppConfig(QObject *parent) : QObject(parent)
 
 }
 
-void AppConfig::init()
+bool AppConfig::init()
 {
-    if (!QFile::exists("conf.ini"))
+    bool exits = QFile::exists("conf.ini");
+    if (!exits)
     {
         QFile file("conf.ini");
-        if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) return;
+        if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) return false;
     }
 
     mSetting = new QSettings("conf.ini", QSettings::IniFormat);
     mSetting->setIniCodec(QTextCodec::codecForName("utf-8"));
 
-    // 默认编码类型
-    setValue("Setting", "format", "UTF-8");
+    if (!exits)
+    {
+        // 默认编码类型
+        setValue("Setting", "format", "UTF-8");
+        setValue("Setting", "log", "0");
+    }
+
+    return true;
 }
 
 AppConfig *AppConfig::getInstance()

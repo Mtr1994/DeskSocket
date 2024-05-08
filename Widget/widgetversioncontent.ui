@@ -134,7 +134,7 @@ color: gray;</string>
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>email: 874823787@qq.com</string>
+         <string>Email: 874823787@qq.com</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

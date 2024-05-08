@@ -13,10 +13,6 @@
 #include "Public/appconfig.h"
 #include "Network/networkobject.h"
 
-// test
-#include <QDebug>
-#include <QThread>
-
 WidgetSocketContent::WidgetSocketContent(NetworkObject *netObj, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetSocketContent), mNetworkObject(netObj)
@@ -38,11 +34,14 @@ void WidgetSocketContent::init()
 
     connect(AppSignal::getInstance(), &AppSignal::sgl_update_network_object, this, &WidgetSocketContent::slot_update_network_object);
     connect(AppSignal::getInstance(), &AppSignal::sgl_recv_network_data, this, &WidgetSocketContent::slot_recv_network_data);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_recreate_network_object, this, &WidgetSocketContent::slot_recreate_network_object);
 
     connect(ui->tbDatas, &QTextEdit::customContextMenuRequested, this, &WidgetSocketContent::slot_tb_logs_costom_menu_request);
     connect(ui->tbSendDatas, &QTextEdit::customContextMenuRequested, this, &WidgetSocketContent::slot_tb_sender_custom_menu_request);
 
     connect(ui->btnSend, &QPushButton::clicked, this, &WidgetSocketContent::slot_btn_send_click);
+    connect(ui->menuAutoSend, &QPushButton::clicked, this, &WidgetSocketContent::slot_btn_auto_send_click);
+    connect(&mAutoSendTimer, &QTimer::timeout, this, &WidgetSocketContent::slot_auto_sent_trigger);
 
     appendMessage("正在初始化套接字 ... ");
 }
@@ -96,8 +95,6 @@ void WidgetSocketContent::slot_btn_send_click()
 
     mTotalSendBytes += package.length();
     updateStatistics();
-
-    qDebug() << "WidgetSocketContent::slot_btn_send_click" << QThread::currentThreadId();
     mNetworkObject->send(package.data(), (uint32_t)package.length(), mDwConnID);
 }
 
@@ -146,13 +143,32 @@ void WidgetSocketContent::slot_tb_sender_custom_menu_request(const QPoint &pos)
     menu.exec(QCursor::pos());
 }
 
+void WidgetSocketContent::slot_btn_auto_send_click()
+{
+    if (ui->menuAutoSend->isChecked())
+    {
+        mAutoSendTimer.start();
+    }
+    else
+    {
+        mAutoSendTimer.stop();
+    }
+}
+
+void WidgetSocketContent::slot_auto_sent_trigger()
+{
+    int interval = AppConfig::getInstance()->getValue("Setting", "interval").toUInt();
+    if (interval < 10) interval = 10;
+    mAutoSendTimer.setInterval(interval);
+    emit ui->btnSend->clicked();
+}
+
 void WidgetSocketContent::slot_update_network_object(const QString &token)
 {
-    qDebug() << "WidgetSocketContent::slot_update_network_object";
     if (nullptr == mNetworkObject) return;
-
     NetworkObjectDetail detail = mNetworkObject->getObjectDetail(mDwConnID);
     if (detail.token != token) return;
+    LOG_INFO("update network object, token is {}", token.toStdString());
     if (detail.status == 0)
     {
         QString msg = QString("%1 - %2  正在连接").arg(detail.peerAddress, QString::number(detail.peerPort));
@@ -177,11 +193,10 @@ void WidgetSocketContent::slot_update_network_object(const QString &token)
 
 void WidgetSocketContent::slot_recv_network_data(const QString& token, const std::string &data, uint16_t length)
 {
-    qDebug() << "slot_recv_network_data1 " << length << token;
     if (nullptr == mNetworkObject) return;
     NetworkObjectDetail detail = mNetworkObject->getObjectDetail(mDwConnID);
-    qDebug() << "slot_recv_network_data2 " << detail.token;
     if (detail.token != token) return;
+    LOG_INFO("recv socket data, token is {}, data length is {}", token.toStdString(), length);
 
     mTotalRecvBytes += length;
     updateStatistics();
@@ -189,6 +204,14 @@ void WidgetSocketContent::slot_recv_network_data(const QString& token, const std
     std::string recvData = data;
     if (ui->menuHexRecv->isChecked()) recvData = QByteArray::fromStdString(data).toHex().toStdString();
     appendMessage(recvData.data());
+}
+
+void WidgetSocketContent::slot_recreate_network_object(const QString &token, const QString &address, uint16_t port)
+{
+    NetworkObjectDetail detail = mNetworkObject->getObjectDetail(mDwConnID);
+    if (detail.token != token) return;
+
+    appendMessage(QString("网络连接参数更新：%1:%2").arg(address, QString::number(port)));
 }
 
 void WidgetSocketContent::updateStatistics()

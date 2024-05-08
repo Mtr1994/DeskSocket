@@ -8,9 +8,6 @@
 #include <QMenu>
 #include <QMimeData>
 
-// test
-#include <QDebug>
-
 WidgetFormatJson::WidgetFormatJson(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetFormatJson)

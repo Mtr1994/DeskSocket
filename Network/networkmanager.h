@@ -16,7 +16,7 @@ public:
     void init();
 
 public slots:
-    void slot_prepare_network_object(int type, const QString& address, uint16_t port);
+    void slot_create_network_object(int type, const QString& address, uint16_t port);
 };
 
 #endif // NETWORKMANAGER_H

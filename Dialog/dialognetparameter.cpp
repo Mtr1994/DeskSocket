@@ -13,7 +13,21 @@ DialogNetParameter::DialogNetParameter(int type, const QString& title, QWidget *
 {
     ui->setupUi(this);
 
-    init( title);
+    init(title);
+}
+
+DialogNetParameter::DialogNetParameter(const QString& address, const QString& port, const QString& token, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::DialogNetParameter)
+{
+    ui->setupUi(this);
+    mIsEditStatus = true;
+    mNetObjectToken = token;
+
+    ui->tbAddress->setText(address.trimmed());
+    ui->tbPort->setText(port.trimmed());
+
+    init("编辑参数");
 }
 
 DialogNetParameter::~DialogNetParameter()
@@ -29,16 +43,24 @@ void DialogNetParameter::init(const QString &title)
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
     setWindowTitle(title);
 
-    if (mNetworkObjectType == Udp_Client_Cast)
+    if (mIsEditStatus)
     {
-        ui->tbAddress->setText("255.255.255.255");
-        ui->tbAddress->setEnabled(false);
+        // add logoc here
     }
     else
     {
-        ui->tbAddress->setText(AppConfig::getInstance()->getValue("Para", "address"));
-        ui->tbPort->setText(AppConfig::getInstance()->getValue("Para", "port"));
+        if (mNetworkObjectType == Udp_Client_Cast)
+        {
+            ui->tbAddress->setText("255.255.255.255");
+            ui->tbAddress->setEnabled(false);
+        }
+        else
+        {
+            ui->tbAddress->setText(AppConfig::getInstance()->getValue("Para", "address"));
+            ui->tbPort->setText(AppConfig::getInstance()->getValue("Para", "port"));
+        }
     }
+
 
     connect(ui->btnCancel, &QPushButton::clicked, this, &DialogNetParameter::slot_btn_cancel_clicked);
     connect(ui->btnConfirm, &QPushButton::clicked, this, &DialogNetParameter::slot_btn_confirm_clicked);
@@ -54,7 +76,14 @@ void DialogNetParameter::slot_btn_confirm_clicked()
     QString address = ui->tbAddress->text();
     uint16_t port = ui->tbPort->text().trimmed().toUInt();
 
-    emit AppSignal::getInstance()->sgl_prepare_network_object(mNetworkObjectType, address, port);
+    if (mIsEditStatus)
+    {
+        emit AppSignal::getInstance()->sgl_recreate_network_object(mNetObjectToken, address, port);
+    }
+    else
+    {
+        emit AppSignal::getInstance()->sgl_create_network_object(mNetworkObjectType, address, port);
+    }
 
     AppConfig::getInstance()->setValue("Para", "address", address);
     AppConfig::getInstance()->setValue("Para", "port", QString::number(port));

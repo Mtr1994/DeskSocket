@@ -1,7 +1,5 @@
 ﻿#include "tcpserver.h"
-
-// test
-#include <QDebug>
+#include "Log/logger.h"
 
 TcpServer::TcpServer(const QString &address, uint16_t port, QObject *parent)
     : NetworkObject{parent}, mLocalAddress(address), mLocalPort(port), mTcpSocketListener(this)
@@ -12,14 +10,14 @@ TcpServer::TcpServer(const QString &address, uint16_t port, QObject *parent)
 
 void TcpServer::start()
 {
-    qDebug() << "TcpServer::start " << mLocalAddress << mLocalPort;
+    LOG_DEBUG("tcp server start {} {}", mLocalAddress.toStdString(), mLocalPort);
     if (mTcpPackServer->GetState() <= SS_STARTED) return;
     mTcpPackServer->Start(LPCTSTR(mLocalAddress.toStdString().data()), mLocalPort);
 }
 
 void TcpServer::stop(int32_t dwConnID)
 {
-    qDebug() << "TcpServer::stop(int32_t dwConnID) " << dwConnID;
+    LOG_DEBUG("tcp connect close {}", dwConnID);
     if (dwConnID < 0) mTcpPackServer->Stop();
     else mTcpPackServer->Disconnect(dwConnID);
 }
@@ -42,13 +40,18 @@ void TcpServer::clear()
 
 void TcpServer::close()
 {
+    LOG_DEBUG("tcp server delete {}", mLocalAddress.toStdString());
     mTcpSocketListener.setActiveStatus(false);
     mTcpPackServer->Stop();
     deleteLater();
-
-    qDebug() << "delete server ";
-
     emit sgl_delete_network_object_finish();
+}
+
+void TcpServer::edit(const QString &address, uint16_t port)
+{
+    mLocalAddress = address;
+    mLocalPort = port;
+    emit AppSignal::getInstance()->sgl_update_network_object(getObjectDetail(-1).token);
 }
 
 void TcpServer::send(const std::string &data, uint32_t length, int32_t dwConnID)

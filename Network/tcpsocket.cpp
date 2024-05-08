@@ -1,8 +1,7 @@
 ﻿#include "tcpsocket.h"
+#include "Log/logger.h"
 
-// test
-#include <QDebug>
-#include <QThread>
+#include <QByteArray>
 
 TcpSocket::TcpSocket(const QString &address, uint16_t port, QObject *parent)
     : NetworkObject{parent}, mPeerAddress(address), mPeerPort(port), mTcpClientListener(this)
@@ -13,9 +12,9 @@ TcpSocket::TcpSocket(const QString &address, uint16_t port, QObject *parent)
 
 void TcpSocket::start()
 {
+    LOG_DEBUG("tcp socket start {}", mPeerAddress.toStdString());
     if (mTcpClientPtr->GetState() <= SS_STARTED) return;
     mTcpClientPtr->Start(LPCTSTR(mPeerAddress.toStdString().data()), mPeerPort);
-    qDebug() << "TcpSocket::start" << QThread::currentThreadId();
 }
 
 void TcpSocket::stop(int32_t dwConnID)
@@ -38,11 +37,17 @@ void TcpSocket::close()
     emit sgl_delete_network_object_finish();
 }
 
+void TcpSocket::edit(const QString &address, uint16_t port)
+{
+    mPeerAddress = address;
+    mPeerPort = port;
+    emit AppSignal::getInstance()->sgl_update_network_object(getObjectDetail(-1).token);
+}
+
 void TcpSocket::send(const std::string &data, uint32_t length, int32_t dwConnID)
 {
+    LOG_DEBUG("tcp socket send data, id is {}, length is {}, data is {}", dwConnID, length, QByteArray::fromStdString(data).toHex().toStdString());
     Q_UNUSED(dwConnID);
-    //qDebug() << "token " << getBaseToken();
-    //qDebug() << "socket th " << QThread::currentThreadId() << length;
     if (!mTcpClientPtr.IsValid()) return;
     mTcpClientPtr->Send((BYTE*)data.data(), (int)length);
 }

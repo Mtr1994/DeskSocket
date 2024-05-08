@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>360</width>
-    <height>128</height>
+    <height>146</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -76,21 +76,27 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="btnConfirm">
-          <property name="text">
-           <string>确认</string>
+         <widget class="QPushButton" name="btnCancel">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
           </property>
-          <property name="Ok" stdset="0">
+          <property name="text">
+           <string>取消</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="Cancel" stdset="0">
            <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btnCancel">
+         <widget class="QPushButton" name="btnConfirm">
           <property name="text">
-           <string>取消</string>
+           <string>确认</string>
           </property>
-          <property name="Cancel" stdset="0">
+          <property name="Ok" stdset="0">
            <bool>true</bool>
           </property>
          </widget>
@@ -106,6 +112,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="tbAddress">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
         </property>
@@ -123,6 +132,9 @@
       </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="tbPort">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
         </property>

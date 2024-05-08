@@ -82,7 +82,7 @@
      <x>0</x>
      <y>0</y>
      <width>841</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNew">
@@ -168,10 +168,10 @@
   </action>
   <action name="actionAddUDPBroadcast">
    <property name="text">
-    <string>UDP 局域网广播</string>
+    <string>UDP 广播端</string>
    </property>
    <property name="toolTip">
-    <string>UDP 局域网广播</string>
+    <string>UDP 广播端</string>
    </property>
   </action>
   <action name="actionJSONFormat">

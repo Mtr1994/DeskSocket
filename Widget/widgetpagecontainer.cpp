@@ -10,9 +10,6 @@
 
 #include <QTabBar>
 
-// test
-#include <QDebug>
-
 WidgetPageContainer::WidgetPageContainer(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetPageContainer)
@@ -101,8 +98,7 @@ void WidgetPageContainer::slot_recv_new_network_object(NetworkObject *netObj, ui
     int index = ui->tabWidget->addTab(content, "-----");
     ui->tabWidget->setCurrentIndex(index);
 
-    qDebug() << "slot_recv_new_network_object " << dwConnID << netObj->getObjectDetail(dwConnID).token;
-
+    LOG_DEBUG("new network object {} {}", dwConnID, netObj->getObjectDetail(dwConnID).token.toStdString());
     mListToken.append(netObj->getObjectDetail(dwConnID).token);
 }
 

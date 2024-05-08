@@ -8,11 +8,6 @@
 #include <QPainter>
 #include <QRect>
 
-#include "Public/defines.h"
-
-// test
-#include <QDebug>
-
 class TreeItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

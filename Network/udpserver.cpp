@@ -44,6 +44,13 @@ void UdpServer::close()
     emit sgl_delete_network_object_finish();
 }
 
+void UdpServer::edit(const QString &address, uint16_t port)
+{
+    mLocalAddress = address;
+    mLocalPort = port;
+    emit AppSignal::getInstance()->sgl_update_network_object(getObjectDetail(-1).token);
+}
+
 void UdpServer::send(const std::string &data, uint32_t length, int32_t dwConnID)
 {
     mUdpServer->Send(dwConnID, (BYTE*)data.data(), length);

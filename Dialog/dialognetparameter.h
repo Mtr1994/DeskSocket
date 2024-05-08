@@ -13,6 +13,7 @@ class DialogNetParameter : public QDialog
 
 public:
     explicit DialogNetParameter(int type, const QString& title, QWidget *parent = nullptr);
+    explicit DialogNetParameter(const QString& address, const QString& port, const QString& token, QWidget *parent = nullptr);
     ~DialogNetParameter();
 
 private:
@@ -27,6 +28,10 @@ private:
     Ui::DialogNetParameter *ui;
 
     int mNetworkObjectType = -1;
+
+    bool mIsEditStatus = false;
+
+    QString mNetObjectToken;
 };
 
 #endif // DIALOGNETPARAMETER_H

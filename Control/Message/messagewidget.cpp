@@ -12,9 +12,6 @@
 #include <QLabel>
 #include <QGraphicsDropShadowEffect>
 
-// test
-#include <QDebug>
-
 QList<int> MessageWidget::mListSerialNumber = {};
 
 MessageWidget::MessageWidget(int type, int position, QWidget *parent)

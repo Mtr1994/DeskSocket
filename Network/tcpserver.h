@@ -4,13 +4,9 @@
 #include "networkobject.h"
 #include "HPSocket/HPSocket.h"
 #include "Public/appsignal.h"
-#include "Network/tcpsocket.h"
 
 #include <QTimer>
 #include <thread>
-
-// test
-#include <QDebug>
 
 class TcpSocketListener : public QObject, public CTcpServerListener
 {
@@ -46,7 +42,6 @@ public:
     {
         Q_UNUSED(pSender);Q_UNUSED(dwConnID);
         std::string data = std::string((const char*)pData, iLength);
-        qDebug() << "slave recv " << iLength;
         emit AppSignal::getInstance()->sgl_recv_network_data(mBaseToken + QString::number(dwConnID), data, iLength);
         return HR_OK;
     }
@@ -86,6 +81,7 @@ public:
     void stop(int32_t dwConnID) override;
     void clear() override;
     void close()override;
+    void edit(const QString &address, uint16_t port) override;
     void send(const std::string &data, uint32_t length, int32_t dwConnID) override;
     NetworkObjectDetail getObjectDetail(int32_t dwConnID) override;
 

@@ -2,11 +2,9 @@
 #include "ui_widgetnetwrokobjectview.h"
 #include "Public/appsignal.h"
 #include "Public/treeitemdelegate.h"
+#include "Log/logger.h"
 
 #include <QMenu>
-
-// test
-#include <QDebug>
 
 WidgetNetwrokObjectView::WidgetNetwrokObjectView(QWidget *parent) :
     QWidget(parent),
@@ -59,17 +57,28 @@ void WidgetNetwrokObjectView::slot_view_custom_context_menu_requested(const QPoi
         menu.setWindowFlags(menu.windowFlags() | Qt::NoDropShadowWindowHint | Qt::FramelessWindowHint);
         menu.setAttribute(Qt::WA_TranslucentBackground);
         int status = item->data(Qt::UserRole + 2).toUInt();
-        QAction actionStart("开始监听");
+        QAction actionStart("启动服务");
         actionStart.setEnabled(status >= Server_Stoping);
-        connect(&actionStart, &QAction::triggered, [token]()
+        connect(&actionStart, &QAction::triggered, [item, token]()
         {
+            item->setData(Server_Starting, Qt::UserRole + 2);
             emit AppSignal::getInstance()->sgl_start_network_object(token);
         });
-        QAction actionStop("停止监听");
+        QAction actionStop("停止服务");
         actionStop.setDisabled(status >= Server_Stoping);
         connect(&actionStop, &QAction::triggered, [token]()
         {
             emit AppSignal::getInstance()->sgl_stop_network_object(token);
+        });
+        QAction actionEdit("编辑服务");
+        actionEdit.setEnabled(status >= Server_Stoping);
+        connect(&actionEdit, &QAction::triggered, this, [netObj]()
+        {
+            NetworkObjectDetail detail = netObj->getObjectDetail();
+            QString address = detail.localAddress;
+            QString port = QString::number(detail.localPort);
+            QString token = detail.token;
+            emit AppSignal::getInstance()->sgl_edit_network_object(address, port, token);
         });
         QAction actiondelete_server("删除服务");
         connect(&actiondelete_server, &QAction::triggered, [token]()
@@ -85,6 +94,7 @@ void WidgetNetwrokObjectView::slot_view_custom_context_menu_requested(const QPoi
 
         menu.addAction(&actionStart);
         menu.addAction(&actionStop);
+        menu.addAction(&actionEdit);
         menu.addAction(&actiondelete_server);
         menu.addAction(&actionDeleteConnect);
 
@@ -95,8 +105,8 @@ void WidgetNetwrokObjectView::slot_view_custom_context_menu_requested(const QPoi
         QMenu menu(this);
         menu.setWindowFlags(menu.windowFlags() | Qt::NoDropShadowWindowHint | Qt::FramelessWindowHint);
         menu.setAttribute(Qt::WA_TranslucentBackground);
-        QAction actionDeleteClient("删除连接");
-        connect(&actionDeleteClient, &QAction::triggered, [netObj, dwConnID]()
+        QAction actionDeleteClient("关闭连接");
+        connect(&actionDeleteClient, &QAction::triggered, this, [netObj, dwConnID]()
         {
             emit AppSignal::getInstance()->sgl_stop_network_object(netObj->getObjectDetail().token, dwConnID);
         });
@@ -111,17 +121,30 @@ void WidgetNetwrokObjectView::slot_view_custom_context_menu_requested(const QPoi
         menu.setAttribute(Qt::WA_TranslucentBackground);
         int status = item->data(Qt::UserRole + 2).toUInt();
 
-        QAction actionReconnect("重新连接");
+        QAction actionReconnect("启动连接");
         actionReconnect.setEnabled(status >= Client_Stoping);
-        connect(&actionReconnect, &QAction::triggered, [token]()
+        connect(&actionReconnect, &QAction::triggered, this, [item, token]()
         {
+            item->setData(Client_Connecting, Qt::UserRole + 2);
             emit AppSignal::getInstance()->sgl_start_network_object(token);
         });
         menu.addAction(&actionReconnect);
 
+        QAction actionEdit("编辑连接");
+        actionEdit.setEnabled(status >= Client_Stoping);
+        connect(&actionEdit, &QAction::triggered, this, [netObj]()
+        {
+            NetworkObjectDetail detail = netObj->getObjectDetail();
+            QString address = detail.peerAddress;
+            QString port = QString::number(detail.peerPort);
+            QString token = detail.token;
+            emit AppSignal::getInstance()->sgl_edit_network_object(address, port, token);
+        });
+        menu.addAction(&actionEdit);
+
         QAction actionDisconnect("关闭连接");
         actionDisconnect.setDisabled(status >= Client_Stoping);
-        connect(&actionDisconnect, &QAction::triggered, [token]()
+        connect(&actionDisconnect, &QAction::triggered, this, [token]()
         {
             emit AppSignal::getInstance()->sgl_stop_network_object(token);
         });
@@ -158,13 +181,13 @@ void WidgetNetwrokObjectView::slot_create_network_object_finish(NetworkObject *n
 
 void WidgetNetwrokObjectView::slot_recv_new_network_object(NetworkObject *netObj, uint16_t dwConnID)
 {
-    qDebug() << "WidgetNetwrokObjectView::slot_recv_new_network_object " << (nullptr == netObj);
+    LOG_INFO("new network object {}", dwConnID);
     if (nullptr == netObj) return;
     NetworkObjectDetail detail = netObj->getObjectDetail();
     QString serverToken = detail.token;
 
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, serverToken, 1, Qt::MatchRecursive | Qt::MatchExactly);
-    qDebug() << "slot_recv_new_network_object size " << list.size();
+    LOG_INFO("match network object, result size is {}", list.size());
     if (list.isEmpty()) return;
 
     detail = netObj->getObjectDetail(dwConnID);
@@ -187,15 +210,15 @@ void WidgetNetwrokObjectView::slot_recv_new_network_object(NetworkObject *netObj
 
 void WidgetNetwrokObjectView::slot_update_network_object(const QString &token)
 {
-    qDebug() << "WidgetNetwrokObjectView::slot_update_network_object";
+    LOG_INFO("update network object, token is {}", token.toStdString());
     QModelIndexList list = mModelSockets->match(mModelSockets->index(0, 0), Qt::UserRole + 1, token, 1, Qt::MatchRecursive | Qt::MatchExactly);
     if (list.isEmpty()) return;
 
     QStandardItem *item = mModelSockets->itemFromIndex(list.at(0));
     NetworkObject *netObj = mMapNetworkObject.value(token);
     if (nullptr == netObj) return;
-    qDebug() << "status  " << netObj->getObjectDetail().status;
     item->setData(netObj->getObjectDetail().status, Qt::UserRole + 2);
+    item->setText(netObj->getObjectDetail().name);
 }
 
 void WidgetNetwrokObjectView::slot_delete_network_object(const QString &token)
@@ -212,7 +235,7 @@ void WidgetNetwrokObjectView::slot_current_network_object_change(const QModelInd
     QStandardItem *item = mModelSockets->itemFromIndex(current);
     if (nullptr == item) return;
     QString token = item->data(Qt::UserRole + 1).toString();
-    qDebug() << "token " << token;
+    LOG_INFO("current object {}", token.toStdString());
     emit AppSignal::getInstance()->sgl_current_network_object_change(token);
 }
 
@@ -220,6 +243,5 @@ void WidgetNetwrokObjectView::slot_network_object_click(const QModelIndex &index
 {
     if (!index.isValid()) return;
     slot_current_network_object_change(index,index);
-
-    qDebug() << "slot_network_object_click";
 }
+

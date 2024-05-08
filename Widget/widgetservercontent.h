@@ -26,6 +26,7 @@ private:
 
 private slots:
     void slot_update_network_object(const QString &token);
+    void slot_recreate_network_object(const QString &token, const QString &address, uint16_t port);
 
 private:
     Ui::WidgetServerContent *ui;

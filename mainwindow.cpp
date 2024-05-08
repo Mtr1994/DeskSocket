@@ -11,9 +11,7 @@
 #include "Public/defines.h"
 #include "Network/networkmanager.h"
 #include "Control/Message/messagewidget.h"
-
-// test
-#include <QDebug>
+#include "Public/appconfig.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,10 +31,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    if (QGuiApplication::screens().size() < 0) return;
-    uint16_t baseSize = QGuiApplication::screens().at(0)->physicalDotsPerInch() * 16;
-    resize(baseSize * 0.64, baseSize * 0.64 * 0.618);
-    LOG_DEBUG(QString("dot pre inch is %1").arg(QString::number(baseSize / 16)).toStdString());
+    float pointSize = AppConfig::getInstance()->getValue("PointSize", "value").toFloat();
+    setMinimumSize(pointSize * 96, pointSize * 96 * 0.618);
+    LOG_DEBUG(QString("dot pre inch is %1").arg(QString::number(pointSize)).toStdString());
 
     NetworkManager::getInstance()->init();
 
@@ -46,6 +43,7 @@ void MainWindow::init()
     connect(ui->actionAddUdpClient, &QAction::triggered, this, &MainWindow::slot_create_udp_client);
     connect(ui->actionAddUDPBroadcast, &QAction::triggered, this, &MainWindow::slot_create_udp_cast_client);
     connect(AppSignal::getInstance(), &AppSignal::sgl_show_system_toast_message, this, &MainWindow::slot_show_system_toast_message);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_edit_network_object, this, &MainWindow::slot_edit_network_object);
 
     connect(ui->actionVersion, &QAction::triggered, this, &MainWindow::slot_show_about_us);
 
@@ -110,4 +108,10 @@ void MainWindow::slot_show_system_toast_message(const QString &msg, int status)
 {
     MessageWidget *message = new MessageWidget(status, MessageWidget::P_Top_Center, this);
     message->showMessage("  " + msg);
+}
+
+void MainWindow::slot_edit_network_object(const QString &address, const QString &port, const QString &token)
+{
+    DialogNetParameter dialog(address, port, token, this);
+    dialog.exec();
 }

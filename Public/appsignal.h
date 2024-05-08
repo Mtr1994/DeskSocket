@@ -17,7 +17,9 @@ public:
     static AppSignal* getInstance();
 
 signals:
-    void sgl_prepare_network_object(int type, const QString& address, uint16_t port);
+    void sgl_create_network_object(int type, const QString& address, uint16_t port);
+
+    void sgl_recreate_network_object(const QString &token, const QString &address, uint16_t port);
 
     void sgl_create_network_object_finish(NetworkObject* netObj);
 
@@ -28,6 +30,8 @@ signals:
     void sgl_start_network_object(const QString& token);
 
     void sgl_clear_network_object(const QString& token);
+
+    void sgl_edit_network_object(const QString &address, const QString &port, const QString &token);
 
     void sgl_stop_network_object(const QString& token, int32_t dwConnID = -1);
 

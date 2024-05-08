@@ -7,9 +7,6 @@
 
 #include <QObject>
 
-// test
-#include <QDebug>
-
 class TcpClientListener : public QObject, public CTcpClientListener
 {
     Q_OBJECT
@@ -72,8 +69,6 @@ public:
         Q_UNUSED(pSender);Q_UNUSED(enOperation); Q_UNUSED(iErrorCode);Q_UNUSED(dwConnID);
         if (!mActiveStatus) return HR_OK;
         emit AppSignal::getInstance()->sgl_update_network_object(mBaseToken);
-
-        qDebug() << "tcp OnClose " << pSender->GetState();
         return HR_OK;
     }
 
@@ -92,6 +87,7 @@ public:
     void stop(int32_t dwConnID) override;
     void clear() override;
     void close()override;
+    void edit(const QString &address, uint16_t port) override;
     void send(const std::string &data, uint32_t length, int32_t dwConnID) override;
     NetworkObjectDetail getObjectDetail(int32_t dwConnID) override;
 

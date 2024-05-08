@@ -5,6 +5,7 @@
 #include <QStandardItem>
 #include <QByteArray>
 #include <QList>
+#include <QTimer>
 
 #include "Public/defines.h"
 
@@ -36,9 +37,15 @@ private slots:
 
     void slot_tb_sender_custom_menu_request(const QPoint &pos);
 
+    void slot_btn_auto_send_click();
+
+    void slot_auto_sent_trigger();
+
     void slot_update_network_object(const QString &token);
 
     void slot_recv_network_data(const QString &token, const std::string &data, uint16_t length);
+
+    void slot_recreate_network_object(const QString &token, const QString &address, uint16_t port);
 
 private:
     void updateStatistics();
@@ -56,6 +63,9 @@ private:
 
     // 接收的字节数量
     uint64_t mTotalRecvBytes = 0;
+
+    // 自动发送计时器
+    QTimer mAutoSendTimer;
 };
 
 #endif // WIDGETSOCKETCONTENT_H

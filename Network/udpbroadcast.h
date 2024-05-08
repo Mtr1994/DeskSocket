@@ -5,9 +5,6 @@
 #include "HPSocket/HPSocket.h"
 #include "Public/appsignal.h"
 
-// test
-#include <QDebug>
-
 class UdpBroadcastListener : public QObject, public CUdpCastListener
 {
     Q_OBJECT
@@ -27,7 +24,6 @@ public:
     EnHandleResult OnPrepareConnect(IUdpCast* pSender, CONNID dwConnID, SOCKET socket) override
     {
         Q_UNUSED(pSender);Q_UNUSED(dwConnID);Q_UNUSED(socket);
-        qDebug() << "udp cast OnPrepareConnect";
         return HR_OK;
     }
 
@@ -35,7 +31,6 @@ public:
     {
         Q_UNUSED(dwConnID); Q_UNUSED(pSender);
         if (!mActiveStatus) return HR_OK;
-        qDebug() << "udp cast OnConnect";
         emit AppSignal::getInstance()->sgl_update_network_object(mBaseToken);
         return HR_OK;
     }
@@ -76,6 +71,7 @@ public:
     void stop(int32_t dwConnID) override;
     void clear() override;
     void close()override;
+    void edit(const QString &address, uint16_t port) override;
     void send(const std::string &data, uint32_t length, int32_t dwConnID) override;
     NetworkObjectDetail getObjectDetail(int32_t dwConnID) override;
 

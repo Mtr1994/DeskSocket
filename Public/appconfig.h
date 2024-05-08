@@ -10,7 +10,7 @@ class AppConfig : public QObject
 public:
     static AppConfig *getInstance();
 
-    void init();
+    bool init();
 
     QString getValue(const QString &entry, const QString &item);
 

@@ -36,6 +36,8 @@ private slots:
 
     void slot_show_system_toast_message(const QString &msg, int status);
 
+    void slot_edit_network_object(const QString &address, const QString &port, const QString &token);
+
 private:
     Ui::MainWindow *ui;
 };
