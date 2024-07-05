@@ -30,7 +30,7 @@ Makefile*
 *build-*
 *.qm
 *.prl
-Output
+build
 
 # Qt unit tests
 target_wrapper.*

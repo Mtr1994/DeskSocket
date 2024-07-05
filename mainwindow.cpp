@@ -11,7 +11,6 @@
 #include "Public/defines.h"
 #include "Network/networkmanager.h"
 #include "Control/Message/messagewidget.h"
-#include "Public/appconfig.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,9 +30,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    float pointSize = AppConfig::getInstance()->getValue("PointSize", "value").toFloat();
-    setMinimumSize(pointSize * 96, pointSize * 96 * 0.618);
-    LOG_DEBUG(QString("dot pre inch is %1").arg(QString::number(pointSize)).toStdString());
+    float dpi = screen()->physicalDotsPerInch();
+    resize(dpi * 10, dpi * 10 * 0.618);
+    LOG_DEBUG(QString("dot pre inch is %1").arg(QString::number(dpi)).toStdString());
 
     NetworkManager::getInstance()->init();
 

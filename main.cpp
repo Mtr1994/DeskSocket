@@ -2,8 +2,6 @@
 
 #include <QApplication>
 #include <QFile>
-#include <QFont>
-#include <QFontMetricsF>
 
 #include "Log/logger.h"
 #include "Public/appconfig.h"
@@ -24,10 +22,6 @@ int main(int argc, char *argv[])
     int log = AppConfig::getInstance()->getValue("Setting", "log").toUInt();
     log = (log > 2) ? (2 + 1) : (log + 1);
     Logger::init(log);
-
-    // 写入基础尺寸
-    float pointSize = QFontMetricsF(QFont("Microsoft Yahei", 9)).averageCharWidth();
-    AppConfig::getInstance()->setValue("PointSize", "value", QString::number(pointSize * 2, 'f', 2));
 
     MainWindow w;
     w.show();

@@ -36,8 +36,8 @@ QWidget#widgetServerIcon
 
 QWidget#widgetNetworkViewBase
 {
-    max-width: 15em;
-    min-width: 15em;
+    max-width: 18em;
+    min-width: 18em;
 }
 
 QWidget#widgetServerDetailsBase
@@ -84,11 +84,11 @@ QDockWidget
 /* QPushButton */
 QPushButton[Ok="true"]
 {
-    min-height: 1.6em;
+    min-height: 2.4em;
     border: 1px solid #aa409eff;
     border-radius: 2px;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
     color: #fefefe;
     background-color: #409eff;
 }
@@ -110,11 +110,11 @@ QPushButton[Ok="true"]:!enabled
 
 QPushButton[Cancel="true"]
 {
-    min-height: 1.6em;
+    min-height: 2.4em;
     border: 1px solid #dcdfe6;
     border-radius: 2px;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
     color: #666666;
     background-color: #f3f4f5;
 }
@@ -180,8 +180,8 @@ QPushButton#btnCopyResult:pressed
 /* QLineEdit */
 QLineEdit
 {
-    min-width: 9em;
-    min-height: 1.6em;
+    min-width: 16em;
+    min-height: 2.4em;
     border: 1px solid #dcdfe6;
     border-radius: 0.2em;
     padding-left: 0.6em;
@@ -205,8 +205,8 @@ QLineEdit:!enabled
 
 QLineEdit#tbAddress,#tbPort
 {
-    min-height: 1.8em;
-    min-width: 15.05em;
+    min-height: 2.4em;
+    min-width: 16em;
 }
 
 /* Line */
@@ -328,8 +328,8 @@ QMenu::item:selected
 /* QComboBox */
 QComboBox
 {
-    min-width: 14em;
-    min-height: 1.8em;
+    min-width: 16em;
+    min-height: 2.4em;
     border: 1px solid #dcdfe6;
     border-radius: 0.2em;
     padding-left: 0.6em;
@@ -367,7 +367,7 @@ QComboBox QAbstractItemView::item
 {
     font: 9pt "Microsoft YaHei";
     color: #696b6f;
-    min-height: 1.8em;
+    min-height: 2.4em;
     padding-left: 0.5em;
 }
 
