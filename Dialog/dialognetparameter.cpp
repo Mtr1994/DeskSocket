@@ -1,8 +1,12 @@
 ﻿#include "dialognetparameter.h"
 #include "ui_dialognetparameter.h"
 
-#include <QRegularExpressionValidator>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <QRegExpValidator>
+#else
 #include <QRegularExpression>
+#include <QRegularExpressionValidator>
+#endif
 
 #include "Public/defines.h"
 #include "Public/appsignal.h"
@@ -38,9 +42,13 @@ DialogNetParameter::~DialogNetParameter()
 
 void DialogNetParameter::init(const QString &title)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    ui->tbAddress->setValidator(new QRegExpValidator(QRegExp("((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}")));
+    ui->tbPort->setValidator(new QRegExpValidator(QRegExp("([0-9]|[1-9]\\d{1,3}|[1-5]\\d{4}|6[0-4]\\d{4}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])")));
+#else
     ui->tbAddress->setValidator(new QRegularExpressionValidator(QRegularExpression("((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}")));
     ui->tbPort->setValidator(new QRegularExpressionValidator(QRegularExpression("([0-9]|[1-9]\\d{1,3}|[1-5]\\d{4}|6[0-4]\\d{4}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])")));
-
+#endif
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
     setWindowTitle(title);
 

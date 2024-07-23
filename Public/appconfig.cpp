@@ -1,6 +1,8 @@
 ﻿#include "appconfig.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QTextCodec>
+#endif
 #include <QFile>
 
 AppConfig::AppConfig(QObject *parent) : QObject(parent)
@@ -18,7 +20,9 @@ bool AppConfig::init()
     }
 
     mSetting = new QSettings("conf.ini", QSettings::IniFormat);
-
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    mSetting->setIniCodec(QTextCodec::codecForName("utf-8"));
+#endif
     if (!exits)
     {
         // 默认编码类型
