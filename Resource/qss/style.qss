@@ -289,9 +289,8 @@ QComboBox::down-arrow
 
 QComboBox QAbstractItemView::item
 {
-    font: 9pt "Microsoft YaHei";
     color: #696b6f;
-    min-height: 2.4em;
+    padding: 8px 22px;
     padding-left: 0.5em;
 }
 
@@ -392,7 +391,6 @@ QListView
 QListView::item
 {
     background-color: #fefefe;
-    min-height: 1.2em;
     color: #666666;
 }
 
