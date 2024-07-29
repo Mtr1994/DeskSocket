@@ -35,7 +35,8 @@ QWidget#widgetServerIcon
 
 QWidget#widgetNetworkViewBase
 {
-    min-width: 18em;
+    min-width: 16em;
+    max-width: 16em;
 }
 
 QWidget#widgetServerDetailsBase
