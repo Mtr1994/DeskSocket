@@ -1,7 +1,7 @@
 ﻿QWidget
 {
-    font: 9pt "Microsoft YaHei UI";
     border-radius: 3px;
+    font: 9pt "Microsoft YaHei UI";
 }
 
 QWidget:focus
@@ -24,27 +24,28 @@ QWidget#widgetServerDetailBase
 {
     background-color: #fefefe;
     border: 1px solid #dddddd;
-    border-radius: 0.2em;
 }
 
 QWidget#widgetServerIcon
 {
     min-width: 24em;
     min-height: 5em;
-    border-radius: 0.3em;
     background-color: #f3f4f5;
 }
 
 QWidget#widgetNetworkViewBase
 {
-    max-width: 16em;
     min-width: 16em;
 }
 
 QWidget#widgetServerDetailsBase
 {
-    border-radius: 0.3em;
     background-color: #f3f4f5;
+}
+
+QWidget[WSB]
+{
+    min-width: 18em;
 }
 
 /* TreeView */
@@ -83,10 +84,17 @@ QDockWidget
 }
 
 /* QPushButton */
+QPushButton
+{
+    padding: 9px 15px;
+    border-width: 1px;
+    border-style: solid;
+    font-weight: 500;
+}
+
 QPushButton[Ok="true"]
 {
-    border: 1px solid #409eff;
-    padding: 8px 22px;
+    border-color: #409eff;
     color: #fefefe;
     background-color: #409eff;
 }
@@ -108,8 +116,7 @@ QPushButton[Ok="true"]:!enabled
 
 QPushButton[Cancel="true"]
 {
-    border: 1px solid #dcdfe6;
-    padding: 8px 22px;
+    border-color: #dcdfe6;
     color: #666666;
     background-color: #f3f4f5;
 }
@@ -131,7 +138,7 @@ QPushButton[Cancel="true"]:!enabled
 
 QPushButton[menu="true"]
 {
-    font: 8pt "微软雅黑";
+    font-size: 8pt;
     min-height: 2em;
     min-width: 2em;
     border: none;
@@ -175,7 +182,7 @@ QPushButton#btnCopyResult:pressed
 QLineEdit
 {
     border: 1px solid #dcdfe6;
-    padding: 8px 22px;
+    padding: 10px 20px;
     padding-left: 0.3em;
     color: #333333;
 }
@@ -216,7 +223,7 @@ QMenuBar::item
     padding-left: 1em;
     padding-right: 1em;
     background-color: transparent;
-    border-radius: 2px;
+    border-radius: 3px;
 }
 
 QMenuBar::item::selected
@@ -253,8 +260,7 @@ QMenu::item:selected
 /* QComboBox */
 QComboBox
 {
-    min-width: 16em;
-    padding: 8px 22px;
+    padding: 10px 20px;
     border: 1px solid #dcdfe6;
     padding-left: 0.3em;
     color: #333333;
@@ -290,7 +296,7 @@ QComboBox::down-arrow
 QComboBox QAbstractItemView::item
 {
     color: #696b6f;
-    padding: 8px 22px;
+    padding: 10px 20px;
     padding-left: 0.5em;
 }
 

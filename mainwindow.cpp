@@ -30,7 +30,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    float dpi = screen()->physicalDotsPerInch();
+    float dpi = screen()->logicalDotsPerInch();
     resize(dpi * 11, dpi * 11 * 0.618);
     LOG_DEBUG(QString("dot pre inch is %1").arg(QString::number(dpi)).toStdString());
 
