@@ -26,6 +26,9 @@ private slots:
 
 private:
     Ui::WidgetFormatPos *ui;
+
+    bool mFormatPosStatus = false;
+    bool mFormatDmsStatus = false;
 };
 
 #endif // WIDGETFORMATPOS_H

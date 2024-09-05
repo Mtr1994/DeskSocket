@@ -37,6 +37,7 @@ void WidgetFormatPos::init()
 
 void WidgetFormatPos::slot_btn_format_to_dms_click()
 {
+    mFormatPosStatus = false;
     ui->lbFormatPosResultA->setText("等待转换");
     double longitude = ui->tbLongitude->text().trimmed().toDouble();
     double latitude = ui->tbLatitude->text().trimmed().toDouble();
@@ -68,10 +69,16 @@ void WidgetFormatPos::slot_btn_format_to_dms_click()
     QString latStr = QString("%1%2°%3′%4″").arg(isNagtiveLat ? "-" : "", QString::number(floor(d)), QString::number(floor(m)), QString::number(s, 'f', 4));
 
     ui->lbFormatPosResultA->setText(QString("经度: %1   纬度: %2").arg(lonStr, latStr));
+    mFormatPosStatus = true;
 }
 
 void WidgetFormatPos::slot_btn_copy_dms_click()
 {
+    if (!mFormatDmsStatus)
+    {
+        emit AppSignal::getInstance()->sgl_show_system_toast_message("没有经纬度数据可以复制", 3);
+        return;
+    }
     QString content = ui->lbFormatPosResultB->text().trimmed();
     QApplication::clipboard()->setText(content);
     emit AppSignal::getInstance()->sgl_show_system_toast_message(QString("已复制到剪贴板: %1").arg(content), 1);
@@ -79,6 +86,7 @@ void WidgetFormatPos::slot_btn_copy_dms_click()
 
 void WidgetFormatPos::slot_btn_format_to_pos_click()
 {
+    mFormatDmsStatus = false;
     ui->lbFormatPosResultB->setText("等待转换");
     QString dms = ui->tbdms->text().trimmed();
     QStringList list;
@@ -130,10 +138,16 @@ void WidgetFormatPos::slot_btn_format_to_pos_click()
     }
     QString posStr = QString::number(pos, 'f', 6);
     ui->lbFormatPosResultB->setText(QString("经度/纬度：%1%2").arg(isNagtivePos ? "-" : "", posStr));
+    mFormatDmsStatus = true;
 }
 
 void WidgetFormatPos::slot_btn_copy_pos_click()
 {
+    if (!mFormatPosStatus)
+    {
+        emit AppSignal::getInstance()->sgl_show_system_toast_message("没有经纬度数据可以复制", 3);
+        return;
+    }
     QString content = ui->lbFormatPosResultA->text().trimmed();
     QApplication::clipboard()->setText(content);
     emit AppSignal::getInstance()->sgl_show_system_toast_message(QString("已复制到剪贴板: %1").arg(content), 1);
