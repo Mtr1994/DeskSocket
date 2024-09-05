@@ -11,6 +11,7 @@
 #include "Public/defines.h"
 #include "Network/networkmanager.h"
 #include "Control/Message/messagewidget.h"
+#include "Public/appconfig.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,14 +26,19 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    // 保存系统状态
+    saveAppStatus();
+
     delete ui;
 }
 
 void MainWindow::init()
 {
-    float dpi = screen()->logicalDotsPerInch();
-    resize(dpi * 11, dpi * 11 * 0.618);
-    LOG_DEBUG(QString("dot pre inch is %1").arg(QString::number(dpi)).toStdString());
+    float w = AppConfig::getInstance()->getValue("Geometry", "width").toFloat();
+    float h = AppConfig::getInstance()->getValue("Geometry", "height").toFloat();
+    bool max = AppConfig::getInstance()->getValue("Geometry", "max").toUInt();
+    bool flag = max | (0 == w) | (0 == h);
+    (flag) ? showMaximized() : resize(w / devicePixelRatio(), h / devicePixelRatio());
 
     NetworkManager::getInstance()->init();
 
@@ -48,6 +54,7 @@ void MainWindow::init()
 
     // 工具窗口
     connect(ui->actionJSONFormat, &QAction::triggered, this, &MainWindow::slot_open_format_json_dialog);
+    connect(ui->actionFormatPos, &QAction::triggered, this, &MainWindow::slot_open_format_pos_dialog);
 
     // 设置窗口
     connect(ui->actionSetting, &QAction::triggered, this, &MainWindow::slot_open_setting_dialog);
@@ -98,6 +105,11 @@ void MainWindow::slot_open_format_json_dialog()
     ui->tpContainer->createCustomContent("FormatJson");
 }
 
+void MainWindow::slot_open_format_pos_dialog()
+{
+    ui->tpContainer->createCustomContent("FormatPos");
+}
+
 void MainWindow::slot_open_setting_dialog()
 {
     ui->tpContainer->createCustomContent("Setting");
@@ -113,4 +125,11 @@ void MainWindow::slot_edit_network_object(const QString &address, const QString 
 {
     DialogNetParameter dialog(address, port, token, this);
     dialog.exec();
+}
+
+void MainWindow::saveAppStatus()
+{
+    AppConfig::getInstance()->setValue("Geometry", "max", isMaximized() ? "1" : "0");
+    AppConfig::getInstance()->setValue("Geometry", "width", QString::number(width() * devicePixelRatio(), 'f', 2));
+    AppConfig::getInstance()->setValue("Geometry", "height", QString::number(height() * devicePixelRatio(), 'f', 2));
 }

@@ -5,6 +5,7 @@
 #include "Widget/widgetservercontent.h"
 #include "Widget/widgetversioncontent.h"
 #include "Widget/widgetappsetting.h"
+#include "Widget/widgetformatpos.h"
 #include "Log/logger.h"
 #include "Widget/Tools/widgetformatjson.h"
 
@@ -56,6 +57,11 @@ void WidgetPageContainer::createCustomContent(const QString &name)
         else if (name == "FormatJson")
         {
             WidgetFormatJson *content = new WidgetFormatJson(this);
+            index = ui->tabWidget->addTab(content, "-----");
+        }
+        else if (name == "FormatPos")
+        {
+            WidgetFormatPos *content = new WidgetFormatPos(this);
             index = ui->tabWidget->addTab(content, "-----");
         }
 

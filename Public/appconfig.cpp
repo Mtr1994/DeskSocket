@@ -51,4 +51,5 @@ void AppConfig::setValue(const QString& pEntry, const QString& pItem, const QStr
 {
     if (nullptr == mSetting) return;
     mSetting->setValue(pEntry + "/" + pItem, pValue);
+    mSetting->sync();
 }

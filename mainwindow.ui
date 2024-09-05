@@ -106,6 +106,7 @@
      <string>工具</string>
     </property>
     <addaction name="actionJSONFormat"/>
+    <addaction name="actionFormatPos"/>
    </widget>
    <widget class="QMenu" name="menuSetting">
     <property name="title">
@@ -188,6 +189,14 @@
    </property>
    <property name="toolTip">
     <string>基础设置</string>
+   </property>
+  </action>
+  <action name="actionFormatPos">
+   <property name="text">
+    <string>经纬度格式转换</string>
+   </property>
+   <property name="toolTip">
+    <string>经纬度格式转换</string>
    </property>
   </action>
  </widget>

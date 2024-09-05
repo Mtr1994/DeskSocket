@@ -37,6 +37,7 @@ SOURCES += \
     Public/appconstants.cpp \
     Widget/Tools/widgetformatjson.cpp \
     Widget/widgetappsetting.cpp \
+    Widget/widgetformatpos.cpp \
     Widget/widgetnetwrokobjectview.cpp \
     Widget/widgetpagecontainer.cpp \
     Widget/widgetservercontent.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
     Public/treeitemdelegate.h \
     Widget/Tools/widgetformatjson.h \
     Widget/widgetappsetting.h \
+    Widget/widgetformatpos.h \
     Widget/widgetnetwrokobjectview.h \
     Widget/widgetpagecontainer.h \
     Widget/widgetservercontent.h \
@@ -74,6 +76,7 @@ FORMS += \
     Dialog/dialognetparameter.ui \
     Widget/Tools/widgetformatjson.ui \
     Widget/widgetappsetting.ui \
+    Widget/widgetformatpos.ui \
     Widget/widgetnetwrokobjectview.ui \
     Widget/widgetpagecontainer.ui \
     Widget/widgetservercontent.ui \
