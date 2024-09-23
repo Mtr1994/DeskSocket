@@ -13,7 +13,7 @@
 class Logger
 {
 public:
-    enum { LOG_CONSOLE = 1, LOG_SINK, LOG_DAILY };
+    enum { LOG_CONSOLE = 1, LOG_ROTATE, LOG_DAILY };
     Logger();
     ~Logger();
 

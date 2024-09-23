@@ -5,7 +5,12 @@
     },
     "1": {
         "1": "CONSOLE",
-        "2": "SINK",
+        "2": "ROTATE",
         "3": "DAILY"
+    },
+    "2": {
+        "smallVersion": "24.07.05",
+        "version": "24.07.05.1100",
+        "qtVersion": "Qt 6.6.3"
     }
 }

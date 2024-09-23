@@ -435,6 +435,11 @@ QLabel[title_b2]
     font-weight: bold;
 }
 
+QLabel[titlev2]
+{
+    font: 700 11pt "Microsoft YaHei UI";
+}
+
 QLabel#lbServerStatus
 {
     color: #fc9153;

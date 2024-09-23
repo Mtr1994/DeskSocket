@@ -22,10 +22,7 @@ void AppConstants::init()
 
 void AppConstants::fillComboBox(ItemType type, QComboBox *cb)
 {
-    if (mJsonDocument.isEmpty())
-    {
-        init();
-    }
+    if (mJsonDocument.isEmpty()) init();
 
     QJsonObject obj = mJsonDocument.object().value(QString::number(type)).toObject();
     QStringList keys = obj.keys();
@@ -36,4 +33,12 @@ void AppConstants::fillComboBox(ItemType type, QComboBox *cb)
        cb->addItem(obj.value(keys.at(index)).toString(), keys.at(index).toInt());
     }
     cb->setView(new QListView());
+}
+
+QString AppConstants::getValue(ItemType type, const QString &key)
+{
+    if (mJsonDocument.isEmpty()) init();
+
+    QJsonObject obj = mJsonDocument.object().value(QString::number(type)).toObject();
+    return obj.value(key).toString();
 }

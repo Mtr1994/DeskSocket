@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 CONFIG += c++11
 
-VERSION = 24.07.05.11
+VERSION = 24.07.05.1100
 
 lessThan(QT_MAJOR_VERSION, 6): win32: QMAKE_CXXFLAGS += -execution-charset:utf-8
 

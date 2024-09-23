@@ -28,10 +28,10 @@ void Logger::init(int type)
         spdlog::set_default_logger(console);
         spdlog::set_level(spdlog::level::debug);
     }
-    else if (type == LOG_SINK)
+    else if (type == LOG_ROTATE)
     {
         // Create a file rotating logger with 2 MB size max and 1 rotated files
-        auto logger = spdlog::rotating_logger_mt("rotate_log", "./logs/sink_log.txt", 1024 * 1024 * 2, 0);
+        auto logger = spdlog::rotating_logger_mt("rotate_log", "./logs/sink_log.txt", 1024 * 1024 * 64, 0);
         logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%s:%#]: %v");
         logger->flush_on(spdlog::level::debug);
 
@@ -53,7 +53,7 @@ void Logger::init(int type)
 
     LOG_DEBUG("------------------------- logger system start -------------------------");
 
-    std::string logtype = (type == LOG_CONSOLE) ? "LOG_CONSOLE" : ((type == LOG_SINK) ? "LOG_SINK" : "LOG_DAILY");
+    std::string logtype = (type == LOG_CONSOLE) ? "LOG_CONSOLE" : ((type == LOG_ROTATE) ? "LOG_ROTATE" : "LOG_DAILY");
     LOG_DEBUG("{} init success", logtype);
 }
 

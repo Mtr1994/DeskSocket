@@ -99,10 +99,13 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_3">
               <property name="styleSheet">
-               <string notr="true">font: 700 11pt &quot;Microsoft YaHei UI&quot;;</string>
+               <string notr="true"/>
               </property>
               <property name="text">
                <string>网络设置</string>
+              </property>
+              <property name="titlev2" stdset="0">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -181,10 +184,13 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_5">
               <property name="styleSheet">
-               <string notr="true">font: 700 11pt &quot;Microsoft YaHei UI&quot;;</string>
+               <string notr="true"/>
               </property>
               <property name="text">
                <string>自动发送设置</string>
+              </property>
+              <property name="titlev2" stdset="0">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -273,10 +279,13 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_2">
               <property name="styleSheet">
-               <string notr="true">font: 700 11pt &quot;Microsoft YaHei UI&quot;;</string>
+               <string notr="true"/>
               </property>
               <property name="text">
                <string>编码设置</string>
+              </property>
+              <property name="titlev2" stdset="0">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -368,10 +377,13 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_7">
               <property name="styleSheet">
-               <string notr="true">font: 700 11pt &quot;Microsoft YaHei UI&quot;;</string>
+               <string notr="true"/>
               </property>
               <property name="text">
                <string>日志类型设置</string>
+              </property>
+              <property name="titlev2" stdset="0">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

@@ -8,7 +8,7 @@
 class AppConstants
 {
 public:
-    enum ItemType { Item_CodeType, Item_Log_Type };
+    enum ItemType { Item_CodeType, Item_Log_Type, Item_Version_Text };
     AppConstants();
 
 private:
@@ -16,6 +16,7 @@ private:
 
 public:
     static void fillComboBox(ItemType type, QComboBox* cb);
+    static QString getValue(ItemType type, const QString& key);
 
 private:
     static QJsonDocument mJsonDocument;

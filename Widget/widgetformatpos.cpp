@@ -30,7 +30,7 @@ void WidgetFormatPos::init()
     connect(ui->btnCopyPos, &QPushButton::clicked, this, &WidgetFormatPos::slot_btn_copy_pos_click);
 
     //
-    QRegularExpression regExp("^(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)$");
+    QRegularExpression regExp("^(-?\\d+(\\.\\d+)?)(°)?$");
     ui->tbLongitude->setValidator(new QRegularExpressionValidator(regExp));
     ui->tbLatitude->setValidator(new QRegularExpressionValidator(regExp));
 }
@@ -39,8 +39,8 @@ void WidgetFormatPos::slot_btn_format_to_dms_click()
 {
     mFormatPosStatus = false;
     ui->lbFormatPosResultA->setText("等待转换");
-    double longitude = ui->tbLongitude->text().trimmed().toDouble();
-    double latitude = ui->tbLatitude->text().trimmed().toDouble();
+    double longitude = ui->tbLongitude->text().trimmed().remove("°").toDouble();
+    double latitude = ui->tbLatitude->text().trimmed().remove("°").toDouble();
 
     bool valid = true;
     if (longitude > 180 || longitude< -180) valid = false;
