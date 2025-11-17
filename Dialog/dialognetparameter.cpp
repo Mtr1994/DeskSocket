@@ -58,19 +58,9 @@ void DialogNetParameter::init(const QString &title)
     }
     else
     {
-        if (mNetworkObjectType == Udp_Client_Cast)
-        {
-            ui->tbAddress->setText("255.255.255.255");
-            ui->tbAddress->setEnabled(false);
-        }
-        else
-        {
-            ui->tbAddress->setText(AppConfig::getInstance()->getValue("Para", "address"));
-            ui->tbPort->setText(AppConfig::getInstance()->getValue("Para", "port"));
-        }
+        ui->tbAddress->setText(AppConfig::getInstance()->getValue("Para", "address"));
+        ui->tbPort->setText(AppConfig::getInstance()->getValue("Para", "port"));
     }
-
-
     connect(ui->btnCancel, &QPushButton::clicked, this, &DialogNetParameter::slot_btn_cancel_clicked);
     connect(ui->btnConfirm, &QPushButton::clicked, this, &DialogNetParameter::slot_btn_confirm_clicked);
 }

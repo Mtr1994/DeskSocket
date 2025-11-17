@@ -11,7 +11,7 @@ UdpBroadcast::UdpBroadcast(const QString &address, uint16_t port, QObject *paren
 void UdpBroadcast::start()
 {
     if (mUdpCastPtr->GetState() <= SS_STARTED) return;
-    mUdpCastPtr->Start(LPCTSTR("255.255.255.255"), mLocalPort, false, LPCTSTR("0.0.0.0"));
+    mUdpCastPtr->Start(LPCTSTR(mLocalAddress.toStdString().data()), mLocalPort, false);
 }
 
 void UdpBroadcast::stop(int32_t dwConnID)

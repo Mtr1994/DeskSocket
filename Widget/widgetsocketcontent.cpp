@@ -77,15 +77,16 @@ void WidgetSocketContent::slot_btn_send_click()
     if (nullptr == mNetworkObject) return;
     if (mNetworkObject->getObjectDetail().status != 1) return;
 
-    if (ui->tbSendDatas->toPlainText().isEmpty()) return;
+    QString plainText = ui->tbSendDatas->toPlainText() + "\r\n";
+    if (plainText.isEmpty()) return;
     QByteArray package;
     if (ui->menuHexSend->isChecked())
     {
-        package = QByteArray::fromHex(ui->tbSendDatas->toPlainText().trimmed().toStdString().data());
+        package = QByteArray::fromHex(plainText.trimmed().toStdString().data());
     }
     else
     {
-        package = QByteArray::fromStdString(ui->tbSendDatas->toPlainText().toStdString().data());
+        package = QByteArray::fromStdString(plainText.toStdString().data());
 
         QString codeName = AppConfig::getInstance()->getValue("Setting", "format");
         if (codeName.isEmpty()) codeName = "UTF-8";
