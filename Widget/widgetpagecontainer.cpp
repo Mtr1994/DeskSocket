@@ -5,9 +5,9 @@
 #include "Widget/widgetservercontent.h"
 #include "Widget/widgetversioncontent.h"
 #include "Widget/widgetappsetting.h"
-#include "Widget/widgetformatpos.h"
 #include "Log/logger.h"
 #include "Widget/Tools/widgetformatjson.h"
+#include "Widget/Tools/widgetformatpos.h"
 
 #include <QTabBar>
 
@@ -79,6 +79,10 @@ void WidgetPageContainer::slot_create_network_object_finish(NetworkObject *netOb
         WidgetServerContent *content = new WidgetServerContent(netObj, this);
         int index = ui->tabWidget->addTab(content, "-----");
         ui->tabWidget->setCurrentIndex(index);
+    }
+    else if (type <= Udp_Client_Slave)
+    {
+        LOG_DEBUG("************* do not action here");
     }
     else if (type <= Udp_Client_Cast)
     {

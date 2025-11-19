@@ -65,7 +65,7 @@ QTreeView
 
 QTreeView::item
 {
-    padding: 10px 24px;
+    padding: 8px 24px;
     background-color: #00000000;
     color: #222222;
 }
@@ -93,7 +93,7 @@ QDockWidget
 /* QPushButton */
 QPushButton
 {
-    padding: 6px 12px;
+    padding: 6px 18px;
     border-width: 1px;
     border-style: solid;
     font-weight: 500;
@@ -245,6 +245,7 @@ QMenuBar
 {
     background-color: #fefefe;
     border: none;
+    border-radius: 0;
     border-bottom: 1px solid #dddddd;
     min-height: 1.6em;
     padding: 2px;
@@ -409,36 +410,38 @@ QScrollBar::vertical
 {
     background: #dddddd;
     border: 1px solid #dddddd;
-    margin:0px,0px,0px,0px;
-    width: 0.48em;
+    border-radius: 4px;
+    margin: 0px 0px 0px 0px;
+    width: 9px;
 }
 
 QScrollBar::sub-page:vertical {
-    background: rgba(0, 0, 0, 6);
+    background: rgba(0, 0, 0, 0);
 }
 
 QScrollBar::add-page:vertical {
-    background: rgba(0, 0, 0, 6);
+    background: rgba(0, 0, 0, 0);
 }
 
 QScrollBar::handle:vertical
 {
     background-color: rgba(108, 113, 125, 128);
     border: none;
-    min-height: 5em;
-    width: 0.48em;
+    border-radius: 4px;
+    min-height: 3em;
+    width: 9px;
 }
 
 QScrollBar::add-line:vertical
 {
-    height: 0em;
+    height: 0;
     subcontrol-origin: margin;
 }
 
 QScrollBar::sub-line:vertical
 {
-    height: 0em;
-    subcontrol-origin:margin;
+    height: 0;
+    subcontrol-origin: margin;
 }
 
 /* QDialog */

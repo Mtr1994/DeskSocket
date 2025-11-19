@@ -18,10 +18,21 @@ public:
     {
         QRect rect(option.rect);
         rect.setLeft(0);
+        rect.adjust(2, 2, -2, -2);
 
         // 绘制底色
-        if (option.state & QStyle::State_Selected) painter->fillRect(rect, QBrush(QColor(124, 179, 241, 85)));
-        else if (option.state & QStyle::State_MouseOver) painter->fillRect(rect, QBrush(QColor(124, 179, 241, 51)));
+        if (option.state & QStyle::State_Selected)
+        {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QBrush(QColor(124, 179, 241, 85)));
+            painter->drawRoundedRect(rect, 2, 2);
+        }
+        else if (option.state & QStyle::State_MouseOver)
+        {
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QBrush(QColor(124, 179, 241, 51)));
+            painter->drawRoundedRect(rect, 2, 2);
+        }
 
         // 判断节点类型
         int node = index.data(Qt::UserRole + 3).toUInt();

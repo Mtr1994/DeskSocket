@@ -35,7 +35,7 @@
       <item row="0" column="0">
        <widget class="QTextEdit" name="tbValue">
         <property name="contextMenuPolicy">
-         <enum>Qt::CustomContextMenu</enum>
+         <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
         </property>
         <property name="acceptRichText">
          <bool>false</bool>
@@ -52,10 +52,10 @@
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>9</number>
          </property>
          <property name="horizontalSpacing">
-          <number>24</number>
+          <number>18</number>
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label">
@@ -63,14 +63,14 @@
             <string>* 请通过鼠标右键或 CTRL + C 快捷键复制内容</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignmentFlag::AlignCenter</set>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
