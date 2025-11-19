@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>841</width>
-    <height>545</height>
+    <width>396</width>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="contextMenuPolicy">
-    <enum>Qt::CustomContextMenu</enum>
+    <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
@@ -64,10 +64,10 @@
        </size>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::StrongFocus</enum>
+       <enum>Qt::FocusPolicy::StrongFocus</enum>
       </property>
       <property name="contextMenuPolicy">
-       <enum>Qt::CustomContextMenu</enum>
+       <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -81,8 +81,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>841</width>
-     <height>20</height>
+     <width>396</width>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNew">
@@ -120,6 +120,10 @@
    <addaction name="menuTool"/>
   </widget>
   <action name="actionAddTcpServer">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/fenlei.svg</normaloff>:/Resource/image/icon057/fenlei.svg</iconset>
+   </property>
    <property name="text">
     <string>TCP 服务器</string>
    </property>
@@ -128,6 +132,10 @@
    </property>
   </action>
   <action name="actionAddTcpClient">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/tianjiahaoyou.svg</normaloff>:/Resource/image/icon057/tianjiahaoyou.svg</iconset>
+   </property>
    <property name="text">
     <string>TCP 客户端</string>
    </property>
@@ -136,6 +144,10 @@
    </property>
   </action>
   <action name="actionVersion">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/zidingyi.svg</normaloff>:/Resource/image/icon057/zidingyi.svg</iconset>
+   </property>
    <property name="text">
     <string>版本</string>
    </property>
@@ -144,6 +156,10 @@
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/yiwen.svg</normaloff>:/Resource/image/icon057/yiwen.svg</iconset>
+   </property>
    <property name="text">
     <string>关于</string>
    </property>
@@ -152,6 +168,10 @@
    </property>
   </action>
   <action name="actionAddUdpServer">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/fenlei.svg</normaloff>:/Resource/image/icon057/fenlei.svg</iconset>
+   </property>
    <property name="text">
     <string>UDP 服务端</string>
    </property>
@@ -160,6 +180,10 @@
    </property>
   </action>
   <action name="actionAddUdpClient">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/tianjiahaoyou.svg</normaloff>:/Resource/image/icon057/tianjiahaoyou.svg</iconset>
+   </property>
    <property name="text">
     <string>UDP 客户端</string>
    </property>
@@ -168,6 +192,10 @@
    </property>
   </action>
   <action name="actionAddUDPBroadcast">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/tongzhi.svg</normaloff>:/Resource/image/icon057/tongzhi.svg</iconset>
+   </property>
    <property name="text">
     <string>UDP 广播端</string>
    </property>
@@ -176,6 +204,10 @@
    </property>
   </action>
   <action name="actionJSONFormat">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/biaoqian.svg</normaloff>:/Resource/image/icon057/biaoqian.svg</iconset>
+   </property>
    <property name="text">
     <string>JSON 格式化</string>
    </property>
@@ -184,6 +216,10 @@
    </property>
   </action>
   <action name="actionSetting">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/shezhi.svg</normaloff>:/Resource/image/icon057/shezhi.svg</iconset>
+   </property>
    <property name="text">
     <string>基础设置</string>
    </property>
@@ -192,6 +228,10 @@
    </property>
   </action>
   <action name="actionFormatPos">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/ziyuan.svg</normaloff>:/Resource/image/icon057/ziyuan.svg</iconset>
+   </property>
    <property name="text">
     <string>经纬度格式转换</string>
    </property>
@@ -214,6 +254,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

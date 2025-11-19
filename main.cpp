@@ -1,7 +1,7 @@
 ﻿#include "mainwindow.h"
 
 #include <QApplication>
-#include <QFile>
+#include <QStyleFactory>
 
 #include "Log/logger.h"
 #include "Public/appconfig.h"
@@ -11,6 +11,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QApplication::setStyle(QStyleFactory::create("windowsvista"));
 
     // 加载样式
     qApp->setStyleSheet("file:///:/Resource/qss/style.qss");

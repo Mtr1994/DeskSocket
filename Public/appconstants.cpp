@@ -33,6 +33,12 @@ void AppConstants::fillComboBox(ItemType type, QComboBox *cb)
        cb->addItem(obj.value(keys.at(index)).toString(), keys.at(index).toInt());
     }
     cb->setView(new QListView());
+
+    // 设置无阴影
+    cb->view()->parentWidget()->setWindowFlags(cb->view()->parentWidget()->windowFlags()
+                                               | Qt::NoDropShadowWindowHint
+                                               | Qt::FramelessWindowHint);
+    cb->view()->parentWidget()->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 QString AppConstants::getValue(ItemType type, const QString &key)

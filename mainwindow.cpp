@@ -5,7 +5,6 @@
 #include <QScreen>
 #include <QRect>
 
-#include "Log/logger.h"
 #include "Public/appsignal.h"
 #include "Dialog/dialognetparameter.h"
 #include "Public/defines.h"
@@ -59,10 +58,13 @@ void MainWindow::init()
     // 设置窗口
     connect(ui->actionSetting, &QAction::triggered, this, &MainWindow::slot_open_setting_dialog);
 
-    ui->menuNew->setWindowFlag(Qt::NoDropShadowWindowHint);
-    ui->menuTool->setWindowFlag(Qt::NoDropShadowWindowHint);
-    ui->menuHelp->setWindowFlag(Qt::NoDropShadowWindowHint);
-    ui->menuSetting->setWindowFlag(Qt::NoDropShadowWindowHint);
+    for (auto &obj : ui->menubar->children())
+    {
+        QMenu *menu = dynamic_cast<QMenu *>(obj);
+        if (nullptr == menu) continue;
+        menu->setWindowFlags(Qt::NoDropShadowWindowHint | Qt::Popup | Qt::FramelessWindowHint);
+        menu->setAttribute(Qt::WA_TranslucentBackground);
+    }
 }
 
 void MainWindow::slot_create_tcp_server()

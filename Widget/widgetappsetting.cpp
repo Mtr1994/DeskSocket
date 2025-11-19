@@ -48,6 +48,9 @@ void WidgetAppSetting::init()
     int log = AppConfig::getInstance()->getValue("Setting", "log").toUInt();
     ui->cbbLogType->setCurrentIndex(log);
 
+    // 隐藏
+    ui->widgetNetworkSetting->setVisible(false);
+
     connect(ui->btnOk, &QPushButton::clicked, this, &WidgetAppSetting::slot_btn_ok_click);
     connect(ui->btnReset, &QPushButton::clicked, this, &WidgetAppSetting::slot_btn_reset_click);
 }
