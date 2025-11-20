@@ -80,10 +80,6 @@ void WidgetPageContainer::slot_create_network_object_finish(NetworkObject *netOb
         int index = ui->tabWidget->addTab(content, "-----");
         ui->tabWidget->setCurrentIndex(index);
     }
-    else if (type <= Udp_Client_Slave)
-    {
-        LOG_DEBUG("************* do not action here");
-    }
     else if (type <= Udp_Client_Cast)
     {
         WidgetSocketContent *content = new WidgetSocketContent(netObj, this);

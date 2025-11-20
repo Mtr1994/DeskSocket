@@ -175,6 +175,7 @@ void WidgetNetwrokObjectView::slot_create_network_object_finish(NetworkObject *n
 
     item->setData(-1, Qt::UserRole + 6);
     mModelSockets->appendRow(item);
+    ui->tvNetworkObject->setCurrentIndex(item->index());
 
     mMapNetworkObject.insert(detail.token, netObj);
 }
@@ -201,6 +202,7 @@ void WidgetNetwrokObjectView::slot_recv_new_network_object(NetworkObject *netObj
 
     QStandardItem *parentNode = mModelSockets->itemFromIndex(list.at(0));
     parentNode->appendRow(item);
+    ui->tvNetworkObject->setCurrentIndex(item->index());
 
     mMapNetworkObject.insert(detail.token, netObj);
 
