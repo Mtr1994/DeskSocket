@@ -13,7 +13,7 @@ jobs:
     strategy:
       # 矩阵配置
       matrix:
-        qt-ver: [6.6.2]
+        qt-ver: [6.8.3]
         qt-arch: [win64_msvc2019_64, win32_msvc2019]
         # 配置qt-arch的额外设置msvc-arch，qt-arch-install
         include:
