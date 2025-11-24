@@ -25,20 +25,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    // 保存系统状态
-    saveAppStatus();
-
+    AppConfig::getInstance()->setValue("Main", "Geometry", saveGeometry().toHex());
     delete ui;
 }
 
 void MainWindow::init()
 {
-    float w = AppConfig::getInstance()->getValue("Geometry", "width").toFloat();
-    float h = AppConfig::getInstance()->getValue("Geometry", "height").toFloat();
-    bool max = AppConfig::getInstance()->getValue("Geometry", "max").toUInt();
-    bool flag = max | (0 == w) | (0 == h);
-    (flag) ? showMaximized() : resize(w / devicePixelRatio(), h / devicePixelRatio());
-
+    QString geo = AppConfig::getInstance()->getValue("Main", "Geometry");
+    restoreGeometry(QByteArray::fromHex(geo.toStdString().data()));
     NetworkManager::getInstance()->init();
 
     connect(ui->actionAddTcpServer, &QAction::triggered, this, &MainWindow::slot_create_tcp_server);
@@ -65,6 +59,9 @@ void MainWindow::init()
         menu->setWindowFlags(Qt::NoDropShadowWindowHint | Qt::Popup | Qt::FramelessWindowHint);
         menu->setAttribute(Qt::WA_TranslucentBackground);
     }
+
+    // 软件更新
+    connect(ui->actionAutoUpdate, &QAction::triggered, this, &MainWindow::slot_auto_update_dialog);
 }
 
 void MainWindow::slot_create_tcp_server()
@@ -117,6 +114,12 @@ void MainWindow::slot_open_setting_dialog()
     ui->tpContainer->createCustomContent("Setting");
 }
 
+void MainWindow::slot_auto_update_dialog()
+{
+    close();
+    exit(3);
+}
+
 void MainWindow::slot_show_system_toast_message(const QString &msg, int status)
 {
     MessageWidget *message = new MessageWidget(status, MessageWidget::P_Top_Center, this);
@@ -127,11 +130,4 @@ void MainWindow::slot_edit_network_object(const QString &address, const QString 
 {
     DialogNetParameter dialog(address, port, token, this);
     dialog.exec();
-}
-
-void MainWindow::saveAppStatus()
-{
-    AppConfig::getInstance()->setValue("Geometry", "max", isMaximized() ? "1" : "0");
-    AppConfig::getInstance()->setValue("Geometry", "width", QString::number(width() * devicePixelRatio(), 'f', 2));
-    AppConfig::getInstance()->setValue("Geometry", "height", QString::number(height() * devicePixelRatio(), 'f', 2));
 }

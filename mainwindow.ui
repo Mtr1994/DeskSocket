@@ -97,9 +97,10 @@
    </widget>
    <widget class="QMenu" name="menuTool">
     <property name="title">
-     <string>帮助</string>
+     <string>关于</string>
     </property>
     <addaction name="actionVersion"/>
+    <addaction name="actionAutoUpdate"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -237,6 +238,18 @@
    </property>
    <property name="toolTip">
     <string>经纬度格式转换</string>
+   </property>
+  </action>
+  <action name="actionAutoUpdate">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/Resource/image/icon057/fenxiang.svg</normaloff>:/Resource/image/icon057/fenxiang.svg</iconset>
+   </property>
+   <property name="text">
+    <string>软件更新</string>
+   </property>
+   <property name="toolTip">
+    <string>软件更新</string>
    </property>
   </action>
  </widget>
