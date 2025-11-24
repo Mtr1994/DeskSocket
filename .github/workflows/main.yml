@@ -51,9 +51,9 @@ jobs:
       # 编译msvc
       - name: build-msvc
         shell: cmd
-         env:
+        env:
           ENV_VCVARSALL: ${{ env.vcvarsall-path }}
           ENV_QT_PATH: ${{ env.qt-install-path }}
-         run: |
+        run: |
           call python ci\generate-version.py
           call "ci\win\build_for_win.bat" RelWithDebInfo ${{ matrix.msvc-arch }}
