@@ -51,5 +51,6 @@ jobs:
           ENV_VCVARSALL: ${{ env.vcvarsall-path }}
           ENV_QT_PATH: ${{ env.qt-install-path }}
         run: |
-          call python ci\generate-version.py
-          call "ci\win\build_for_win.bat" RelWithDebInfo ${{ matrix.msvc-arch }}
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.msvc_arch }}
+          qmake
+          nmake
