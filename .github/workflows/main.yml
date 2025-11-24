@@ -13,38 +13,47 @@ jobs:
     strategy:
       # 矩阵配置
       matrix:
-        qt_ver: [6.2.2]
-        qt_target: [desktop]
-        qt_arch: win64_msvc2019_64
-        msvc_arch: x64
-        qt_arch_install: msvc2019_64
+        qt-ver: [6.6.2]
+        qt-arch: [win64_msvc2019_64, win32_msvc2019]
+        # 配置qt-arch的额外设置msvc-arch，qt-arch-install
+        include:
+          - qt-arch: win64_msvc2019_64
+            msvc-arch: x64
+            qt-arch-install: msvc2019_64
+          - qt-arch: win32_msvc2019
+            msvc-arch: x86
+            qt-arch-install: msvc2019
+    env:
+      target-name: DeskSocket
+      vcvarsall-path: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
+      vcinstall-path: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC'
+      qt-install-path: ${{ github.workspace }}/${{ matrix.qt-ver }}
+      plantform-des: win
     # 步骤
     steps:
       # 安装Qt
       - name: Install Qt
         # 使用外部action。这个action专门用来安装Qt
-        uses: jurplel/install-qt-action@v4
+        uses: jurplel/install-qt-action@v4.1.1
         with:
-          # Version of Qt to install
-          version: ${{ matrix.qt_ver }}
+          version: ${{ matrix.qt-ver }}
           # Target platform for build
-          target: ${{ matrix.qt_target }}
+          target: desktop
           # Architecture for Windows/Android
-          arch: ${{ matrix.qt_arch }}
+          arch: ${{ matrix.qt-arch }}
+          cached: ${{ steps.cache-qt.outputs.cache-hit }}
       # 拉取代码
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: 0
+          submodules: 'true'
+          ssh-key: ${{ secrets.BOT_SSH_KEY }}
       # 编译msvc
       - name: build-msvc
         shell: cmd
-        env:
-          vc_arch: ${{ matrix.msvc_arch }}
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.msvc_arch }}
-          qmake
-          nmake
-          echo winSdkDir=%WindowsSdkDir% >> %GITHUB_ENV%
-          echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
-          echo vcToolsInstallDir=%VCToolsInstallDir% >> %GITHUB_ENV%
-          echo vcToolsRedistDir=%VCToolsRedistDir% >> %GITHUB_ENV%
+         env:
+          ENV_VCVARSALL: ${{ env.vcvarsall-path }}
+          ENV_QT_PATH: ${{ env.qt-install-path }}
+         run: |
+          call python ci\generate-version.py
+          call "ci\win\build_for_win.bat" RelWithDebInfo ${{ matrix.msvc-arch }}
