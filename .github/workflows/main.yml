@@ -41,7 +41,6 @@ jobs:
           target: desktop
           # Architecture for Windows/Android
           arch: ${{ matrix.qt-arch }}
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
       # 拉取代码
       - uses: actions/checkout@v2
         with:
