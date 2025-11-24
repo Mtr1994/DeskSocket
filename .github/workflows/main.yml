@@ -15,24 +15,13 @@ jobs:
       matrix:
         qt_ver: [6.2.2]
         qt_target: [desktop]
-        # mingw用不了
-        # qt_arch: [win64_msvc2017_64, win32_msvc2017, win32_mingw53,win32_mingw73]
         qt_arch: [win64_msvc2019_64]
-        # 从矩阵中除外的配置
-        exclude: 
-          # 不存在5.9.8-win32_msvc2017的版本
-          - qt_ver: 6.2.2
-            qt_arch: win64_msvc2019
-        # 额外设置msvc_arch
-        include:
-          - qt_arch: win64_msvc2019_64
-            msvc_arch: x64
     # 步骤
     steps:
       # 安装Qt
       - name: Install Qt
         # 使用外部action。这个action专门用来安装Qt
-        uses: jurplel/install-qt-action@v4.0.0
+        uses: jurplel/install-qt-action@v4
         with:
           # Version of Qt to install
           version: ${{ matrix.qt_ver }}
@@ -41,7 +30,7 @@ jobs:
           # Architecture for Windows/Android
           arch: ${{ matrix.qt_arch }}
       # 拉取代码
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 1
       # 编译msvc
