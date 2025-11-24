@@ -14,12 +14,12 @@ jobs:
       # 矩阵配置
       matrix:
         qt-ver: [6.8.3]
-        qt-arch: [win64_msvc2019_64, win32_msvc2019]
+        qt-arch: [win64_msvc2022_64]
         # 配置qt-arch的额外设置msvc-arch，qt-arch-install
         include:
-          - qt-arch: win64_msvc2019_64
+          - qt-arch: win64_msvc2022_64
             msvc-arch: x64
-            qt-arch-install: msvc2019_64
+            qt-arch-install: msvc2022_64
     env:
       target-name: DeskSocket
       vcvarsall-path: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
