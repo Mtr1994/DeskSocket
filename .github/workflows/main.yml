@@ -20,9 +20,6 @@ jobs:
           - qt-arch: win64_msvc2019_64
             msvc-arch: x64
             qt-arch-install: msvc2019_64
-          - qt-arch: win32_msvc2019
-            msvc-arch: x86
-            qt-arch-install: msvc2019
     env:
       target-name: DeskSocket
       vcvarsall-path: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
