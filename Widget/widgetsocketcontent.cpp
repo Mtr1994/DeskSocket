@@ -77,7 +77,8 @@ void WidgetSocketContent::slot_btn_send_click()
     if (nullptr == mNetworkObject) return;
     if (mNetworkObject->getObjectDetail().status != 1) return;
 
-    QString plainText = ui->tbSendDatas->toPlainText() + "\r\n";
+    QString suffix = ui->menuAppReturn->isChecked() ? "\r\n" : "";
+    QString plainText = QString("%1%2").arg(ui->tbSendDatas->toPlainText(), suffix);
     if (plainText.isEmpty()) return;
     QByteArray package;
     if (ui->menuHexSend->isChecked())

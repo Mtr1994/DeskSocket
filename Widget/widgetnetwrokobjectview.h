@@ -32,9 +32,7 @@ private slots:
 
 private:
     Ui::WidgetNetwrokObjectView *ui;
-
     QStandardItemModel *mModelSockets = nullptr;
-
     QMap<QString, NetworkObject*> mMapNetworkObject;
 };
 
