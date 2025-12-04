@@ -16,7 +16,10 @@ void UdpSocket::start()
 void UdpSocket::stop(int32_t dwConnID)
 {
     Q_UNUSED(dwConnID);
-    mUdpClientPtr->Stop();
+    bool status = mUdpClientPtr->Stop();
+    if (!status) return;
+    QString token = getBaseToken();
+    emit AppSignal::getInstance()->sgl_update_network_object(token);
 }
 
 void UdpSocket::clear()
@@ -37,7 +40,8 @@ void UdpSocket::edit(const QString &address, uint16_t port)
 {
     mPeerAddress = address;
     mPeerPort = port;
-    emit AppSignal::getInstance()->sgl_update_network_object(getObjectDetail(-1).token);
+    QString token = getBaseToken();
+    emit AppSignal::getInstance()->sgl_update_network_object(token);
 }
 
 void UdpSocket::send(const std::string &data, uint32_t length, int32_t dwConnID)

@@ -1,5 +1,7 @@
 ﻿#include "udpserver.h"
 
+#include <QDebug>
+
 UdpServer::UdpServer(const QString &address, uint16_t port, QObject *parent)
     : NetworkObject{parent}, mLocalAddress(address), mLocalPort(port), mUdpServerListener(this)
 {
@@ -15,8 +17,17 @@ void UdpServer::start()
 
 void UdpServer::stop(int32_t dwConnID)
 {
-    if (dwConnID < 0) mUdpServer->Stop();
-    else mUdpServer->Disconnect(dwConnID);
+    if (dwConnID < 0)
+    {
+        bool status = mUdpServer->Stop();
+        if (!status) return;
+        QString token = getBaseToken();
+        emit AppSignal::getInstance()->sgl_update_network_object(token);
+    }
+    else
+    {
+        mUdpServer->Disconnect(dwConnID);
+    }
 }
 
 void UdpServer::clear()
@@ -48,7 +59,8 @@ void UdpServer::edit(const QString &address, uint16_t port)
 {
     mLocalAddress = address;
     mLocalPort = port;
-    emit AppSignal::getInstance()->sgl_update_network_object(getObjectDetail(-1).token);
+    QString token = getBaseToken();
+    emit AppSignal::getInstance()->sgl_update_network_object(token);
 }
 
 void UdpServer::send(const std::string &data, uint32_t length, int32_t dwConnID)

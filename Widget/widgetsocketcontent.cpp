@@ -170,6 +170,8 @@ void WidgetSocketContent::slot_update_network_object(const QString &token)
     if (nullptr == mNetworkObject) return;
     NetworkObjectDetail detail = mNetworkObject->getObjectDetail(mDwConnID);
     if (detail.token != token) return;
+    if (detail.status == mSocketStatus) return;
+    mSocketStatus = detail.status;
     LOG_INFO("update network object, token is {}", token.toStdString());
     if (detail.status == 0)
     {

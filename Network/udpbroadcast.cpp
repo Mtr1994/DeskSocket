@@ -17,7 +17,10 @@ void UdpBroadcast::start()
 void UdpBroadcast::stop(int32_t dwConnID)
 {
     Q_UNUSED(dwConnID);
-    mUdpCastPtr->Stop();
+    bool status = mUdpCastPtr->Stop();
+    if (!status) return;
+    QString token = getBaseToken();
+    emit AppSignal::getInstance()->sgl_update_network_object(token);
 }
 
 void UdpBroadcast::clear()
@@ -38,7 +41,8 @@ void UdpBroadcast::edit(const QString &address, uint16_t port)
 {
     mLocalAddress = address;
     mLocalPort = port;
-    emit AppSignal::getInstance()->sgl_update_network_object(getObjectDetail(-1).token);
+    QString token = getBaseToken();
+    emit AppSignal::getInstance()->sgl_update_network_object(token);
 }
 
 void UdpBroadcast::send(const std::string &data, uint32_t length, int32_t dwConnID)

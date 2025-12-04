@@ -66,6 +66,7 @@ private:
 
     // 自动发送计时器
     QTimer mAutoSendTimer;
+    int mSocketStatus = -1;
 };
 
 #endif // WIDGETSOCKETCONTENT_H

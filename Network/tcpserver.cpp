@@ -18,8 +18,17 @@ void TcpServer::start()
 void TcpServer::stop(int32_t dwConnID)
 {
     LOG_DEBUG("tcp connect close {}", dwConnID);
-    if (dwConnID < 0) mTcpPackServer->Stop();
-    else mTcpPackServer->Disconnect(dwConnID);
+    if (dwConnID < 0)
+    {
+        bool status = mTcpPackServer->Stop();
+        if (!status) return;
+        QString token = getBaseToken();
+        emit AppSignal::getInstance()->sgl_update_network_object(token);
+    }
+    else
+    {
+        mTcpPackServer->Disconnect(dwConnID);
+    }
 }
 
 void TcpServer::clear()
@@ -51,7 +60,8 @@ void TcpServer::edit(const QString &address, uint16_t port)
 {
     mLocalAddress = address;
     mLocalPort = port;
-    emit AppSignal::getInstance()->sgl_update_network_object(getObjectDetail(-1).token);
+    QString token = getBaseToken();
+    emit AppSignal::getInstance()->sgl_update_network_object(token);
 }
 
 void TcpServer::send(const std::string &data, uint32_t length, int32_t dwConnID)
