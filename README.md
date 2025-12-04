@@ -1,7 +1,7 @@
 # DeskSocket
 
-![Platform](https://img.shields.io/badge/paltform-win10_x64-brightgreen)
-![Qt Version](https://img.shields.io/badge/_Qt_-5.15.2-yellowgreen)
+![Platform](https://img.shields.io/badge/paltform-win11_x64-brightgreen)
+![Qt Version](https://img.shields.io/badge/_Qt_-6.8.3-yellowgreen)
 ![Build](https://img.shields.io/badge/build-MSVC_2019_x64-blue)
 
 #### 一、简介
