@@ -26,5 +26,9 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
-    return a.exec();
+    int code = a.exec();
+
+    QString geometry = w.saveGeometry().toHex();
+    AppConfig::getInstance()->setValue("Main", "Geometry", geometry);
+    return code;
 }

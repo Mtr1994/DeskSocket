@@ -25,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    AppConfig::getInstance()->setValue("Main", "Geometry", saveGeometry().toHex());
     delete ui;
 }
 
