@@ -116,6 +116,7 @@ void MainWindow::slot_open_setting_dialog()
 
 void MainWindow::slot_auto_update_dialog()
 {
+    return;
     close();
     exit(3);
 }
